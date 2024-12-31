@@ -1412,7 +1412,7 @@ $row_count7 = mysqli_num_rows($result7);
                                                 <input type="number" name="selectmonth" min="1" max="12" value="<?php echo $selectedMonth; ?>" required>
                                                 <button type="submit" class="btn btn-primary">Enter</button>
                                             </form><span style="float:right">
-                                                <button id="download" class="btn btn-success">Download as Excel</button></span><br><br>
+                                                <button id="download1" class="btn btn-success">Download as Excel</button></span><br><br>
 
                                             <table id="Rworkers" class="table table-striped table-bordered">
                                                 <thead style="background: linear-gradient(to bottom right, #cc66ff 1%, #0033cc 100%); color: white;">
@@ -2713,6 +2713,8 @@ $row_count7 = mysqli_num_rows($result7);
                     // Reset the image source to a default or blank placeholder
                     $("#modalImage2").attr("src", "path/to/placeholder_image.jpg");
                 });
+
+                //to download as xlsheet record table
                 document.getElementById('download').addEventListener('click', function() {
                     var wb = XLSX.utils.book_new();
                     var ws = XLSX.utils.table_to_sheet(document.getElementById('record_table'));
@@ -2720,6 +2722,16 @@ $row_count7 = mysqli_num_rows($result7);
 
                     // Create and trigger the download
                     XLSX.writeFile(wb, 'complaints_data.xlsx');
+                });
+
+                //to download as xlsheet workers record table
+                document.getElementById('download1').addEventListener('click', function() {
+                    var we = XLSX.utils.book_new();
+                    var wg = XLSX.utils.table_to_sheet(document.getElementById('Rworkers'));
+                    XLSX.utils.book_append_sheet(we, wg, "Workers Data");
+
+                    // Create and trigger the download
+                    XLSX.writeFile(we, 'workers_data.xlsx');
                 });
 
                 //worker phone number fertch
@@ -2845,42 +2857,42 @@ $row_count7 = mysqli_num_rows($result7);
 
                             if (res.status == 200) {
                                 swal({
-                            title: "success!",
-                            text: "Completed sucessfully!",
-                            icon: "success",
-                            button: "Ok",
-                            timer: null
-                        });
+                                    title: "success!",
+                                    text: "Completed sucessfully!",
+                                    icon: "success",
+                                    button: "Ok",
+                                    timer: null
+                                });
 
-                        $("#DoneModal").modal("hide");
+                                $("#DoneModal").modal("hide");
 
-                        // Reset the form
-                        $("#manager_feedback")[0].reset();
-                        $('#finished_table').DataTable().destroy();
-                        $('#completed_table').DataTable().destroy();
-                        $('#record_table').DataTable().destroy();
-                        $('#completed_table').DataTable().destroy();
+                                // Reset the form
+                                $("#manager_feedback")[0].reset();
+                                $('#finished_table').DataTable().destroy();
+                                $('#completed_table').DataTable().destroy();
+                                $('#record_table').DataTable().destroy();
+                                $('#completed_table').DataTable().destroy();
 
-                        $("#finished_table").load(location.href + " #finished_table > *", function() {
-                            // Reinitialize the DataTable after the content is loaded
-                            $('#finished_table').DataTable();
-                        });
-                        $("#completed_table").load(location.href + " #completed_table > *", function() {
-                            // Reinitialize the DataTable after the content is loaded
-                            $('#completed_table').DataTable();
-                        });
-                        $("#record_table").load(location.href + " #record_table > *", function() {
-                            // Reinitialize the DataTable after the content is loaded
-                            $('#record_table').DataTable();
-                        });
-                        $("#Rworkers").load(location.href + " #Rworkers > *", function() {
-                            // Reinitialize the DataTable after the content is loaded
-                            $('#Rworkers').DataTable();
-                        });
-                        $("#navref3").load(location.href + " #navref3");
-                        $("#navref4").load(location.href + " #navref4");
-                        $("#navref5").load(location.href + " #navref5");
-                    
+                                $("#finished_table").load(location.href + " #finished_table > *", function() {
+                                    // Reinitialize the DataTable after the content is loaded
+                                    $('#finished_table').DataTable();
+                                });
+                                $("#completed_table").load(location.href + " #completed_table > *", function() {
+                                    // Reinitialize the DataTable after the content is loaded
+                                    $('#completed_table').DataTable();
+                                });
+                                $("#record_table").load(location.href + " #record_table > *", function() {
+                                    // Reinitialize the DataTable after the content is loaded
+                                    $('#record_table').DataTable();
+                                });
+                                $("#Rworkers").load(location.href + " #Rworkers > *", function() {
+                                    // Reinitialize the DataTable after the content is loaded
+                                    $('#Rworkers').DataTable();
+                                });
+                                $("#navref3").load(location.href + " #navref3");
+                                $("#navref4").load(location.href + " #navref4");
+                                $("#navref5").load(location.href + " #navref5");
+
 
 
                                 // Display success message
@@ -3026,28 +3038,27 @@ $row_count7 = mysqli_num_rows($result7);
                         })
 
                     })
-                    $('.average').each(function(){
-        var average = $(this);
-        var id = average.data('value');
-        $.ajax({
-            type:"POST",
-            url:"worker_count.php",
-            data:{
-                average:true,
-                id:id
-            },
-            success:function(response){
-                console.log(response);
-                var res = jQuery.parseJSON(response);
-                if(res.status==200){
-                    average.text(res.data);
-                }
-                else{
-                    console.log("error");
-                }
-            }
-        })
-    })
+                    $('.average').each(function() {
+                        var average = $(this);
+                        var id = average.data('value');
+                        $.ajax({
+                            type: "POST",
+                            url: "worker_count.php",
+                            data: {
+                                average: true,
+                                id: id
+                            },
+                            success: function(response) {
+                                console.log(response);
+                                var res = jQuery.parseJSON(response);
+                                if (res.status == 200) {
+                                    average.text(res.data);
+                                } else {
+                                    console.log("error");
+                                }
+                            }
+                        })
+                    })
                 });
 
 
@@ -3065,32 +3076,29 @@ $row_count7 = mysqli_num_rows($result7);
 
 
 
-                $(document).on('click','.emailbtn',function(e){
-
-        
-e.preventDefault();
-$.ajax({
-    type:"POST",
-    url:"mail.php",
-    data:{
-        noapproval:true,
-    },
-    success:function(response){
-        var res = jQuery.parseJSON(response);
-        if(res.status==200){
-            console.log("success");
-        }
-        else{
-            console.log("error");
-        }
-    }
-})
+                $(document).on('click', '.emailbtn', function(e) {
 
 
+                    e.preventDefault();
+                    $.ajax({
+                        type: "POST",
+                        url: "mail.php",
+                        data: {
+                            noapproval: true,
+                        },
+                        success: function(response) {
+                            var res = jQuery.parseJSON(response);
+                            if (res.status == 200) {
+                                console.log("success");
+                            } else {
+                                console.log("error");
+                            }
+                        }
+                    })
 
-});
 
 
+                });
             </script>
 
 
