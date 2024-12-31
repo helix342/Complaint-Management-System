@@ -46,10 +46,12 @@ if (mysqli_num_rows($query_run2) > 0) {
     <p>The following complaints have not been accepted by the worker:</p>
     <table border='1' cellpadding='5' cellspacing='0'>
         <tr>
+            <th>S.No</th>
             <th>Complaint ID</th>
             <th>Registration Date</th>
             <th>Faculty ID</th>
         </tr>";
+        $sno = 1;
 
     while ($row2 = mysqli_fetch_assoc($query_run2)) {
         $id = $row2['id'];
@@ -58,10 +60,12 @@ if (mysqli_num_rows($query_run2) > 0) {
 
         $emailBody .= "
         <tr>
+            <td>$sno</td>
             <td>$id</td>
             <td>$rdate</td>
             <td>$f_id</td>
         </tr>";
+        $sno+=1;
     }
 
     $emailBody .= "
