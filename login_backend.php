@@ -14,7 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     $user = mysqli_fetch_array($result);
 
-    if($user['role']=='infra'){
+    if($user['role']=='jksir'){
         $_SESSION['faculty_dept'] = $faculty_dept;
         $_SESSION['faculty_id'] = $faculty_id;
         header("Location: facinfra.php"); // Redirect to the infrastructure completedtable page
@@ -29,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 
 
-elseif($user['role']=='staff'){
+elseif($user['role']=='infra'){
     // If user exists
     if (mysqli_num_rows($result) == 1) {
         $_SESSION['faculty_id'] = $faculty_id; // Store faculty ID in session
