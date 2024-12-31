@@ -36,69 +36,80 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 */
 $currentDate = date("Y-m-d");
 
-        $query2 = "SELECT * FROM complaints_detail WHERE DATEDIFF('$currentDate',m_date_of_reg) > 1 AND status = '9' ";
-        $query_run2 = mysqli_query($conn, $query2);
-        if (mysqli_num_rows($query_run2) > 0) {
-            $row2 = mysqli_fetch_assoc($query_run2);
-            $id= $row2['id'];
-            $rdate = $row2['date_of_reg']; 
-            $f_id = $row2['fac_id'];
-        }
-        try {
-            // SMTP settings
+$query2 = "SELECT * FROM complaints_detail WHERE DATEDIFF('$currentDate',manager_approve) > 1 AND status = '9'";
+$query_run2 = mysqli_query($conn, $query2);
 
-            $mail->isSMTP();
-            $mail->Host = 'smtp.gmail.com';
-            $mail->SMTPAuth = true;
-            $mail->Username = 'mkceinfocorner@gmail.com'; // Your Gmail email address
-            $mail->Password = 'npdllnbipximwvnq'; // Your Gmail password
-            $mail->SMTPSecure = 'tls';
-            $mail->Port = 587;
+if (mysqli_num_rows($query_run2) > 0) {
+    // Initialize the email body
+    $emailBody = "
+    <p>Dear Manager,</p>
+    <p>The following complaints have not been accepted by the worker:</p>
+    <table border='1' cellpadding='5' cellspacing='0'>
+        <tr>
+            <th>Complaint ID</th>
+            <th>Registration Date</th>
+            <th>Faculty ID</th>
+        </tr>";
 
-            // Sender and recipient
-            $mail->setFrom('mkceinfocorner@gmail.com', 'MKCE_INFO_CORNER');
-            $mail->addAddress($email);
-            $mail->addAddress($email1);
-            $mail->addAddress($email2);
-            $mail->addAddress($email3);
+    while ($row2 = mysqli_fetch_assoc($query_run2)) {
+        $id = $row2['id'];
+        $rdate = $row2['date_of_reg'];
+        $f_id = $row2['fac_id'];
 
+        $emailBody .= "
+        <tr>
+            <td>$id</td>
+            <td>$rdate</td>
+            <td>$f_id</td>
+        </tr>";
+    }
 
+    $emailBody .= "
+    </table>
+    <p>Please take necessary action.</p>
+    <p>Regards,<br>Complaint Management Team</p>";
 
-            // Email content
-            $mail->Subject = 'Complaint not Accepted';
-            $mail->isHTML(true);
-            $mail->Body = "
-            <p>Dear Manager,</p>
-            <p>The complaint with ID <strong>$id</strong>, raised on <strong>$rdate</strong>,From the faculty_ID <strong>$f_id</strong> 
-            has not been accepted by the worker.</p>
-            <p>Please take necessary action.</p>
-            <p>Regards,<br>Complaint Management Team</p>";
+    try {
+        // SMTP settings
+        $mail = new PHPMailer(true);
+        $mail->isSMTP();
+        $mail->Host = 'smtp.gmail.com';
+        $mail->SMTPAuth = true;
+        $mail->Username = 'mkceinfocorner@gmail.com'; // Your Gmail email address
+        $mail->Password = 'npdllnbipximwvnq'; // Your Gmail password
+        $mail->SMTPSecure = 'tls';
+        $mail->Port = 587;
 
+        // Sender and recipient
+        $mail->setFrom('mkceinfocorner@gmail.com', 'MKCE_INFO_CORNER');
+        $mail->addAddress($email);
+        $mail->addAddress($email1);
+        $mail->addAddress($email2);
+        $mail->addAddress($email3);
 
-            // Send the email
-            $mail->send();
+        // Email content
+        $mail->Subject = 'Pending Complaints Not Accepted';
+        $mail->isHTML(true);
+        $mail->Body = $emailBody;
 
-            $res = [
-                'status' => 200,
-                'message' => 'Password sent successfully to your Email!'
-            ];
-            echo json_encode($res);
-            return;
-        } catch (Exception $e) {
-            echo 'Email could not be sent. Error: ', $mail->ErrorInfo;
-        }
-    } else {
-        // Email not found in the database
+        // Send the email
+        $mail->send();
+
         $res = [
-            'status' => 500,
-            'message' => 'Email not found. Kindly Check your Email and Faculty ID!'
+            'status' => 200,
+            'message' => 'Email sent successfully with all pending complaints!'
         ];
         echo json_encode($res);
-        return;
+    } catch (Exception $e) {
+        echo 'Email could not be sent. Error: ', $mail->ErrorInfo;
     }
 } else {
-    echo 'Invalid request';
+    $res = [
+        'status' => 500,
+        'message' => 'No complaints found with status 9 and manager approval delay!'
+    ];
+    echo json_encode($res);
 }
-
-// Close the database connection
-$conn->close();
+    }
+} 
+    
