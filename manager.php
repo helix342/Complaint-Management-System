@@ -3072,6 +3072,9 @@ e.preventDefault();
 $.ajax({
     type:"POST",
     url:"mail.php",
+    data:{
+        noapproval:true,
+    },
     success:function(response){
         var res = jQuery.parseJSON(response);
         if(res.status==200){
@@ -3086,6 +3089,8 @@ $.ajax({
 
 
 });
+
+
             </script>
 
 

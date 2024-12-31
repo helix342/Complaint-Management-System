@@ -442,7 +442,7 @@ if (isset($_POST['form1'])) {
                                                             </td>
                                                             <td class="text-center">
                                                                 <button type="button"
-                                                                    class="btn btn-success acceptcomplaint worker"
+                                                                    class="btn btn-success acceptcomplaint"
                                                                     value="<?php echo $row4['id']; ?>"
                                                                     ><i class="fas fa-check"></i></button>
                                                                
@@ -960,7 +960,7 @@ if (isset($_POST['form1'])) {
 
 
             $.ajax({
-                url: "work.php",
+                url: "new_work.php",
                 type: "POST",
                 data: {
             'form': true,
@@ -981,6 +981,23 @@ if (isset($_POST['form1'])) {
                     alert("An error occurred: " + error);
                 }
             });
+            $.ajax({
+                type:"POST",
+                url:"mail.php",
+                data:{
+                    approved:true,
+                    id:user_id,
+                },
+                success:function(response){
+                    var res = jQuery.parseJSON(response);
+                    if(res.status==200){
+                        console.log("Success");
+                    }
+                    else{
+                        console.log("error");
+                    }
+                }
+            })
         });
 
         $(document).on("click", ".viewcomplaint", function(e) {
