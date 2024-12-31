@@ -13,8 +13,6 @@ if (isset($_POST['noapproval'])){
     $email1 = "saransoundhar06@gmail.com";
     $email2 = "samiisboss1574@gmail.com";
     $email3 = "rabinsmith27124s@gmail.com";    
-
-
     // Check if the email exists in the database
     $query = "SELECT * FROM complaints_detail WHERE status = 9";
     $stmt = $conn->prepare($query);
