@@ -1407,9 +1407,10 @@ $row_count7 = mysqli_num_rows($result7);
                                         <div class="table-responsive">
                                             <h5 class="card-title">Worker's Record</h5>
 
-                                            <form method="POST" action="">
-                                                <label for="selectmonth">Select Month (1-12): </label>
-                                                <input type="number" name="selectmonth" min="1" max="12" value="<?php echo $selectedMonth; ?>" required>
+                                            <form method="POST" id="datesubmit">
+                                                <label for="selectmonth">Select Start and end Date</label>
+                                                <input type="date" name="fromdate">
+                                                <input type="date" name="todate">
                                                 <button type="submit" class="btn btn-primary">Enter</button>
                                             </form><span style="float:right">
                                                 <button id="download1" class="btn btn-success">Download as Excel</button></span><br><br>
