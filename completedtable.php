@@ -522,6 +522,12 @@ $resultfac = mysqli_query($conn,$facquery);
                                     <!--pending work modal end -->
 
 
+
+
+
+                                    
+
+
                                     <!-- Pending table Start-->
                                     <div class="row">
                                         <div class="col-md-12">
@@ -547,43 +553,28 @@ $resultfac = mysqli_query($conn,$facquery);
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
-                                                                <?php
+                                                            <?php
                                                                 $s = 1;
                                                                 while ($row = mysqli_fetch_assoc($result5)) {
                                                                     $statusMessage = '';
-                                                                    $hodforward = '';
-                                                                    $principalforward = '';
-                                                                    $managerforward = '';
-                                                                    $forwardedtoprincipal = '';
-                                                                    $infraforward = '';
-                                                                    $sendtoworker = '';
                                                                     switch ($row['status']) {
-                                                                        case 2:
+                                                                        case 1:
                                                                             $statusMessage = 'Pending';
                                                                             break;
-
+                                                                        case 2:
+                                                                            $statusMessage = 'Approved by Infra';
+                                                                            break;
                                                                         case 4:
-                                                                            $infraforward = 'Approved by Infra';
-                                                                            $hodforward = 'Approved by HOD';
+                                                                            $statusMessage = 'Approved by HOD';
                                                                             break;
                                                                         case 6:
-                                                                            $infraforward = 'Approved by Infra';
-                                                                            $hodforward = 'Approved by HOD';
-                                                                            $managerforward = ' Approved by Manager';
-                                                                            $forwardedtoprincipal = 'Sent to Principal for Approval';
+                                                                            $statusMessage = 'Sent to Principal for Approval';
                                                                             break;
                                                                         case 8:
-                                                                            $infraforward = 'Approved by Infra';
-                                                                            $hodforward = 'Approved by HOD';
-                                                                            $managerforward = ' Approved by Manager';
-                                                                            $forwardedtoprincipal = 'Sent to Principal for Approval';
-                                                                            $forwardedtoprincipal = 'Approved by Principal ';
+                                                                            $statusMessage = 'Approved by Principal ';
                                                                             break;
                                                                         case 9:
-                                                                            $infraforward = 'Approved by Infra';
-                                                                            $hodforward = 'Approved by HOD';
-                                                                            $principalforward = ' Approved by Manager';
-                                                                            $sendtoworker = 'Worker send to worker';
+                                                                            $statusMessage = ' Approved by Manager';
                                                                             break;
                                                                         default:
                                                                             $statusMessage = 'Unknown Status';
@@ -602,13 +593,16 @@ $resultfac = mysqli_query($conn,$facquery);
                                                                             </button>
                                                                         </td>
                                                                         <td class="text-center">
-                                                                    <?php if ($row['status'] == 11 || $row['status'] == 18) { ?>
-                                                                        <!-- Button to open the feedback modal -->
-                                                                        <button type="button" class="btn btn-info feedbackBtn" data-problem-id="<?php echo $row['id']; ?>" data-bs-toggle="modal" data-bs-target="#feedback_modal">Feedback</button>
-                                                                    <?php } else { ?>
-                                                                        <button type="button" disabled>Feedback</button>
-                                                                    <?php } ?>
-                                                                </td>
+                                                                            <?php if ($row['status'] == 2) { ?>
+                                                                                <center>
+                                                                                    <button class="btn btndelete btn-danger" type="button" value="<?php echo $row['id']; ?>">
+                                                                                        <i class="fas fa-times"></i>
+                                                                                    </button>
+                                                                                </center>
+                                                                            <?php } else { ?>
+                                                                                <span class="badge bg-success" style="font-size: 1.2em; color: #000; padding: 0.25em 0.5em;"><?php echo $statusMessage; ?></span>
+                                                                            <?php } ?>
+                                                                        </td>
                                                                     </tr>
                                                                 <?php
                                                                     $s++;

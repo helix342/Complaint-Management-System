@@ -399,7 +399,7 @@ if (isset($_POST['form1'])) {
                             <!-- Tab panes -->
                             <div class="tab-content tabcontent-border">
                                 <!--completed start-->
-                                <div class="tab-pane active p-20" id="principal" role="tabpanel">
+                                <div class="tab-pane active p-20" id="pri ncipal" role="tabpanel">
                                     <div class="p-20">
                                         <div class="table-responsive">
                                             <h5 class="card-title">Work Assign</h5>
@@ -408,7 +408,7 @@ if (isset($_POST['form1'])) {
                                                     style="background: linear-gradient(to bottom right, #cc66ff 1%, #0033cc 100%); color: white;">
                                                     <tr>
                                                         <th><b>S.No</b></th>
-                                                        <th><b>raised Date</b></th>
+                                                        <th><b>Raised Date</b></th>
                                                         <th><b>Venue</b></th>
                                                         <th><b>Complaint</b></th>
                                                         <th><b>Picture</b></th>
@@ -476,6 +476,7 @@ if (isset($_POST['form1'])) {
                                     // Fetch data based on the selected month
                                     $sql8 = "SELECT * FROM complaints_detail WHERE status='16'AND type_of_problem='$dept' AND MONTH(date_of_completion) = $selectedMonth AND YEAR(date_of_completion) = YEAR(CURDATE())";
                                     $result8 = mysqli_query($conn, $sql8);
+
                                     ?>
                               
                                 <div class="tab-pane p-10" id="record" role="tabpanel">
@@ -956,10 +957,7 @@ if (isset($_POST['form1'])) {
             e.preventDefault();
             var user_id = $(this).val();
             console.log(user_id);
-
-
-
-            $.ajax({
+           $.ajax({
                 url: "new_work.php",
                 type: "POST",
                 data: {
@@ -970,8 +968,12 @@ if (isset($_POST['form1'])) {
                     // Directly check if response contains "Success" or "Error"
                     if (response.includes("Success")) {
                         alertify.success("asigned successfully!");
+                        $('#principal_table').DataTable().destroy();
+                        $("#principal_table").load(location.href + " #principal_table > *", function() {
+                            $('#principal_table').DataTable();
+                        });
                     
-                        window.location.reload();
+                       
 
                     } else {
                         alert(response);
