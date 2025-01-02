@@ -1397,16 +1397,15 @@ $row_count7 = mysqli_num_rows($result7);
                                 $from_date = isset($_POST['from_date']) ? $_POST['from_date'] : '';
                                 $to_date = isset($_POST['to_date']) ? $_POST['to_date'] : '';
 
-                                echo "From Date: " . $from_date . "<br>";
-                                echo "To Date: " . $to_date . "<br>";
-
                                 $sql9 = "SELECT worker_details.worker_id, worker_details.worker_first_name, worker_details.worker_dept, 
                                 COUNT(complaints_detail.id) AS total_completed_works, AVG(complaints_detail.rating) AS avg_faculty_rating, 
                                 AVG(complaints_detail.mrating) AS avg_manager_rating FROM worker_details INNER JOIN complaints_detail ON 
-                                worker_details.worker_id = complaints_detail.worker_id WHERE worker_details.usertype = 'worker' AND complaints_detail.status = '16' AND ( (complaints_detail.date_of_completion >= '2024-12-12' AND complaints_detail.date_of_completion <= '2025-01-10') ) GROUP BY worker_details.worker_id";
+                                worker_details.worker_id = complaints_detail.worker_id WHERE worker_details.usertype = 'worker' AND complaints_detail.status = '16'
+                                AND ( (complaints_detail.date_of_completion >= '$from_date' AND complaints_detail.date_of_completion <= '$to_date') )
+                                GROUP BY worker_details.worker_id";
 
 
-$result9 = mysqli_query($conn, $sql9);
+                                $result9 = mysqli_query($conn, $sql9);
                                
                             
 
@@ -2991,7 +2990,7 @@ $result9 = mysqli_query($conn, $sql9);
 
 
 
-
+/*
                 $(document).ready(function() {
                     $('.totalworks').each(function() {
                         var works = $(this);
@@ -3094,7 +3093,7 @@ $result9 = mysqli_query($conn, $sql9);
                         avg.textContent = average;
                     });
                 });
-
+*/
 
 
 
