@@ -505,7 +505,7 @@ $row_count7 = mysqli_num_rows($result7);
 
 
 
-            
+
 
             <div class="modal fade" id="addworker" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog" role="document">
@@ -1388,30 +1388,44 @@ $row_count7 = mysqli_num_rows($result7);
                                     </div>
                                 </div>
 
+
+
                                 <!-- Workers Record Table -->
 
                                 <?php
-                                // Set default month as the current month if no input is provided
-                                $selectedMonth = isset($_POST['selectmonth']) ? $_POST['selectmonth'] : date('m');
+  
+                                $from_date = isset($_POST['from_date']) ? $_POST['from_date'] : '';
+                                $to_date = isset($_POST['to_date']) ? $_POST['to_date'] : '';
 
-                                // Fetch data based on the selected month
-                                $sql9 = "SELECT * FROM worker_details WHERE usertype ='worker' ";
-                                $result9 = mysqli_query($conn, $sql9);
-                                $sql10 = "SELECT COUNT(*) AS noofworks FROM complaints_detail WHERE status='16'";
-                                $res = mysqli_query($conn, $sql10);
-                                $val = mysqli_num_rows($res);
+                                echo "From Date: " . $from_date . "<br>";
+                                echo "To Date: " . $to_date . "<br>";
 
+                                $sql9 = "SELECT worker_details.worker_id, worker_details.worker_first_name, worker_details.worker_dept, 
+                                COUNT(complaints_detail.id) AS total_completed_works, AVG(complaints_detail.rating) AS avg_faculty_rating, 
+                                AVG(complaints_detail.mrating) AS avg_manager_rating FROM worker_details INNER JOIN complaints_detail ON 
+                                worker_details.worker_id = complaints_detail.worker_id WHERE worker_details.usertype = 'worker' AND complaints_detail.status = '16' AND ( (complaints_detail.date_of_completion >= '2024-12-12' AND complaints_detail.date_of_completion <= '2025-01-10') ) GROUP BY worker_details.worker_id";
+
+
+$result9 = mysqli_query($conn, $sql9);
+                               
+                            
+
+                            
                                 ?>
+
                                 <div class="tab-pane p-20" id="workersr" role="tabpanel">
                                     <div class="p-20">
                                         <div class="table-responsive">
                                             <h5 class="card-title">Worker's Record</h5>
 
-                                            <form method="POST" id="datesubmit">
-                                                <label for="selectmonth">Select Start and end Date</label>
-                                                <input type="date" name="fromdate">
-                                                <input type="date" name="todate">
-                                                <button type="submit" class="btn btn-primary">Enter</button>
+                                            <form method="POST" action="">
+                                                <label for="from_date">From Date: </label>
+                                                <input type="date" name="from_date" value="<?php echo $from_date; ?>" required>
+
+                                                <label for="to_date">To Date: </label>
+                                                <input type="date" name="to_date" value="<?php echo $to_date; ?>" required>
+
+                                                <button type="submit" class="btn btn-primary">Filter</button>
                                             </form><span style="float:right">
                                                 <button id="download1" class="btn btn-success">Download as Excel</button></span><br><br>
 
@@ -1454,17 +1468,23 @@ $row_count7 = mysqli_num_rows($result7);
                                                     <?php
                                                     $s = 1;
                                                     while ($row = mysqli_fetch_assoc($result9)) {
-                                                        $pid = $row['id'];
+                                                        $worker_id = $row['worker_id'];
+                                                        $completed_works = $row['total_completed_works'];
+                                                        $avg_faculty_rating = $row['avg_faculty_rating'] ? round($row['avg_faculty_rating'], 2) : 'N/A';
+                                                        $avg_manager_rating = $row['avg_manager_rating'] ? round($row['avg_manager_rating'], 2) : 'N/A';
+                                                        $avg_rating = ($avg_faculty_rating != 'N/A' && $avg_manager_rating != 'N/A')
+                                                            ? round(($avg_faculty_rating + $avg_manager_rating) / 2, 2)
+                                                            : 'N/A';
                                                     ?>
                                                         <tr>
-                                                            <td class="text-center"><?php echo $s ?></td>
-                                                            <td class="text-center"><?php echo $row['worker_id'] ?></td>
-                                                            <td class="text-center"><?php echo $row['worker_first_name'] ?></td>
-                                                            <td class="text-center"><?php echo $row['worker_dept'] ?></td>
-                                                            <td class="text-center totalworks" data-value="<?php echo $row['worker_id']; ?>"></td>
-                                                            <td class="text-center facultyr" data-value="<?php echo $row['worker_id']; ?>"></td>
-                                                            <td class="text-center managerr" data-value="<?php echo $row['worker_id']; ?>"></td>
-                                                            <td class="text-center average" data-value="<?php echo $row['worker_id']; ?>"></td>
+                                                            <td class="text-center"><?php echo $s; ?></td>
+                                                            <td class="text-center"><?php echo $row['worker_id']; ?></td>
+                                                            <td class="text-center"><?php echo $row['worker_first_name']; ?></td>
+                                                            <td class="text-center"><?php echo $row['worker_dept']; ?></td>
+                                                            <td class="text-center"><?php echo $completed_works; ?></td>
+                                                            <td class="text-center"><?php echo $avg_faculty_rating; ?></td>
+                                                            <td class="text-center"><?php echo $avg_manager_rating; ?></td>
+                                                            <td class="text-center"><?php echo $avg_rating; ?></td>
                                                         </tr>
                                                     <?php
                                                         $s++;
@@ -3080,20 +3100,19 @@ $row_count7 = mysqli_num_rows($result7);
 
 
 
-                $(document),on("click","#datesubmit",function(e){
+                $(document), on("click", "#datesubmit", function(e) {
                     e.preventDefault();
                     var form = new FormData(this);
-                    form.append("date",true);
+                    form.append("date", true);
                     $.ajax({
-                        type:"POST",
-                        url:"testbackend.php",
-                        data:form,
-                        success:function(response){
+                        type: "POST",
+                        url: "testbackend.php",
+                        data: form,
+                        success: function(response) {
                             var res = jQuery.parseJSON(response);
-                            if(res.status==200){
+                            if (res.status == 200) {
                                 console.log("success");
-                            }
-                            else{
+                            } else {
                                 console.log("failed");
                             }
                         }
