@@ -27,7 +27,28 @@
                     }
                 }
             })
-        })
+        });
+
+        $(document).ready(function(e) {
+$.ajax({
+    type: "POST",
+    url: "mail.php",
+    data: {
+        noapproval: true,
+    },
+    success: function(response) {
+        var res = jQuery.parseJSON(response);
+        if (res.status == 200) {
+            console.log("success");
+        } else {
+            console.log("error");
+        }
+    }
+});
+
+
+
+});
 
 
 

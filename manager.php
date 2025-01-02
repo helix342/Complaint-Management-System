@@ -502,7 +502,6 @@ $row_count7 = mysqli_num_rows($result7);
 
 
 
-            <button type="button" class="btn emailbtn">EMAIL</button>
 
 
 
@@ -3077,29 +3076,7 @@ $row_count7 = mysqli_num_rows($result7);
 
 
 
-                $(document).on('click', '.emailbtn', function(e) {
 
-
-                    e.preventDefault();
-                    $.ajax({
-                        type: "POST",
-                        url: "mail.php",
-                        data: {
-                            noapproval: true,
-                        },
-                        success: function(response) {
-                            var res = jQuery.parseJSON(response);
-                            if (res.status == 200) {
-                                console.log("success");
-                            } else {
-                                console.log("error");
-                            }
-                        }
-                    })
-
-
-
-                });
 
 
                 $(document),on("click","#datesubmit",function(e){

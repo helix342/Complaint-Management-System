@@ -45,7 +45,7 @@ if (isset($_POST['fetch_details'])) {
     FROM 
         complaints_detail AS cd
     JOIN 
-        faculty AS f ON cd.faculty_id = f.faculty_id
+        faculty_details AS f ON cd.faculty_id = f.faculty_id
     WHERE 
         cd.id = (SELECT problem_id FROM manager WHERE task_id = ?)
 ";

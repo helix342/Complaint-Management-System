@@ -150,10 +150,7 @@ if(isset($_POST['deadline'])){
         </tr>";
         $sno+=1;
     }
-    $emailBody .= "
-    </table>
-    <p>Please take necessary action.</p>
-    <p>Regards,<br>Complaint Management Team</p>";
+
 
 
     try {
