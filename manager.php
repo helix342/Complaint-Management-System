@@ -1392,7 +1392,13 @@ $row_count7 = mysqli_num_rows($result7);
 
                                 <?php
                                 // Set default month as the current month if no input is provided
-                                $selectedMonth = isset($_POST['selectmonth']) ? $_POST['selectmonth'] : date('m');
+                                $fromdate = "2024-12-26";
+                                $todate = date("Y-m-d");
+
+                                if(isset($_POST["worker_count"])){
+                                    $fromdate = $_POST["selectfromdate"];
+                                    $todate = $_POST["selecttodate"];
+                                }
 
                                 // Fetch data based on the selected month
                                 $sql9 = "SELECT * FROM worker_details WHERE usertype ='worker' ";
@@ -1407,9 +1413,11 @@ $row_count7 = mysqli_num_rows($result7);
                                         <div class="table-responsive">
                                             <h5 class="card-title">Worker's Record</h5>
 
-                                            <form method="POST" action="">
-                                                <label for="selectmonth">Select Month (1-12): </label>
-                                                <input type="number" name="selectmonth" min="1" max="12" value="<?php echo $selectedMonth; ?>" required>
+                                            <form id="worker_track">
+                                                <label for="selectfromdate">Select From Date: </label>
+                                                <input type="date" name="selectfromdate" value="<?php echo $selectedMonth; ?>" required>
+                                                <label for="selecttodate">Select To Date: </label>
+                                                <input type="date" name="selecttodate" value="<?php echo $selectedMonth; ?>" required>
                                                 <button type="submit" class="btn btn-primary">Enter</button>
                                             </form><span style="float:right">
                                                 <button id="download1" class="btn btn-success">Download as Excel</button></span><br><br>
@@ -3075,10 +3083,32 @@ $row_count7 = mysqli_num_rows($result7);
                 });
 
 
+                //to count the worker task based on date
+                $(document).on("submit","#worker_track",function(e){
+                    e.preventDefault();
+                    var data = new FormData(this);
+                    console.log(data);
+                    data.append("worker_count",true);
+                    $.ajax({
+                        type:"POST",
+                        url:"manager.php",
+                        data:data,
+                        contentType:false,
+                        processData:false,
+                        success:function(response){
+                            console.log(response);
+                            var res = jQuery.parseJSON(response);
+                            if(res.status == 200){
+                                console.log("success");
+                            }
+                            else{
+                                console.log("error");
+                            }
+                        }
+                    })
+                })
 
                 $(document).on('click', '.emailbtn', function(e) {
-
-
                     e.preventDefault();
                     $.ajax({
                         type: "POST",
