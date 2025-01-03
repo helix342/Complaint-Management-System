@@ -67,6 +67,35 @@ if (isset($_POST['see_worker_detail'])) {
     }
 }
 
+//delete user
+if(isset($_POST["delete_user"])){
+    $id = mysqli_real_escape_string($conn, $_POST['id']);
+
+    $query = "DELETE FROM faculty_details WHERE id = '$id' ";
+
+    $query_obj = mysqli_query($conn,$query);
+    if($query_obj){
+        $res=[
+            'status'=>200,
+        ];
+        echo json_encode($res);
+    }
+}
+
+if(isset($_POST["delete_worker"])){
+    $id = mysqli_real_escape_string($conn, $_POST['id']);
+
+    $query = "DELETE FROM worker_details WHERE id = '$id' ";
+
+    $query_obj = mysqli_query($conn,$query);
+    if($query_obj){
+        $res=[
+            'status'=>200,
+        ];
+        echo json_encode($res);
+    }
+}
+
 
 //reject reason
 if (isset($_POST["reject_complaint"])) {

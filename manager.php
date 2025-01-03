@@ -1516,7 +1516,8 @@ $result11 = mysqli_query($conn, $sql11);
                                                                         <td class="text-center"><?php echo $row['faculty_name'] ?></td>
                                                                         <td class="text-center"><?php echo $row['department'] ?></td>
                                                                         <td class="text-center"><?php echo $row['role'] ?></td>                                                                        
-                                                                        <td class="text-center"><button tupe="button" class="btn btn-danger">Delete</button></td>
+                                                                        <td class="text-center"><button tupe="button" class="btn btn-danger deleteuser"
+                                                                        value="<?php echo $row["id"] ?>">Delete</button></td>
                                                                     </tr>
                                                                 <?php
                                                                     $s++;
@@ -1541,7 +1542,7 @@ $result11 = mysqli_query($conn, $sql11);
                                 </div>
                             </div>
 
-                             <!-- manage user Modal -->
+                             <!-- manage wo Modal -->
                              <div class="modal fade" id="manageworkermodal" tabindex="-1" role="dialog" aria-labelledby="manageworkermodalLabel" aria-hidden="true">
                                 <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
                                     <div class="modal-content" style="border-radius: 8px; box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15); background-color: #f9f9f9;">
@@ -1599,7 +1600,8 @@ $result11 = mysqli_query($conn, $sql11);
                                                                         <td class="text-center"><?php echo $row['worker_first_name'] ?></td>
                                                                         <td class="text-center"><?php echo $row['worker_dept'] ?></td>
                                                                         <td class="text-center"><?php echo $row['usertype'] ?></td>                                                                        
-                                                                        <td class="text-center"><button tupe="button" class="btn btn-danger">Delete</button></td>
+                                                                        <td class="text-center"><button tupe="button" class="btn btn-danger deleteworker"
+                                                                         value="<?php echo $row["id"] ?>">Delete</button></td>
                                                                     </tr>
                                                                 <?php
                                                                     $s++;
@@ -3331,6 +3333,52 @@ $result11 = mysqli_query($conn, $sql11);
                                     });
                                 });
                 */
+
+                //delete user
+                $(document).on("click",".deleteuser",function(e){
+                    e.preventDefault();
+                    var id = $(this).val();
+                    console.log(id);
+                    $.ajax({
+                        type: "POST",
+                        url: "testbackend.php",
+                        data: {
+                            delete_user: true,
+                            id:id,
+                        },
+                        success: function(response) {
+                            var res = jQuery.parseJSON(response);
+                            console.log(res);
+                            if(res.status == 200){
+                                alert("user deleted succesfully!");
+                            }
+                        },
+                    });
+
+                });
+
+                 //delete worker
+                 $(document).on("click",".deleteworker",function(e){
+                    e.preventDefault();
+                    var id = $(this).val();
+                    console.log(id);
+                    $.ajax({
+                        type: "POST",
+                        url: "testbackend.php",
+                        data: {
+                            delete_worker: true,
+                            id:id,
+                        },
+                        success: function(response) {
+                            var res = jQuery.parseJSON(response);
+                            console.log(res);
+                            if(res.status == 200){
+                                alert("user deleted succesfully!");
+                            }
+                        },
+                    });
+
+                });
 
 
 
