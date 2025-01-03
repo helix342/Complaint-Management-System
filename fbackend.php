@@ -1,5 +1,4 @@
 <?php
-header('Content-Type: application/json');
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 session_start();
@@ -303,6 +302,18 @@ if (isset($_POST['get_feedback'])) {
 
 
 $fac_id = $_SESSION['faculty_id'];
+if(isset($_POST['changep'])){
+    $newp = $_POST['pass'];
+    $sql = "UPDATE faculty_details SET password = '$newp' WHERE faculty_id ='$fac_id'";
+    if(mysqli_query($conn,$sql)){
+        $res=[
+            "status"=>200,
+            "message"=>"password changed",
+        ];
+        echo json_encode($res);
+    }
+
+}
 
 
 
@@ -325,6 +336,7 @@ if (isset($_POST['fac'])) {
     echo $options;
     exit();  
 }
+
 
 
 

@@ -1,7 +1,6 @@
 <?php
 include('db.php');
 
-// Database connection
 session_start();
 
 if (isset($_SESSION['worker_id'])) {
@@ -19,7 +18,6 @@ $dept = $srow['worker_dept'];
 
 
 
-// Prepare and execute the query to filter by department
 //New task query
 $sql = "
     SELECT 
@@ -53,7 +51,6 @@ $sql = "
         cd.status = '7'
 ";
 
-// Filter by department
 $stmt = $conn->prepare($sql);
 $stmt->execute();
 $result = $stmt->get_result();
@@ -95,14 +92,12 @@ $sql1 = "
         cd.status = '10'
 ";
 
-// Filter by department
 $stmt = $conn->prepare($sql1);
 $stmt->execute();
 $result1 = $stmt->get_result();
 $progcount = mysqli_num_rows($result1);
 
 
-//waiting for approval query
 $sql2 = "
     SELECT 
         cd.id,
@@ -136,7 +131,6 @@ $sql2 = "
         (cd.status = '11' OR cd.status = '18')
 ";
 
-// Filter by department
 $stmt = $conn->prepare($sql2);
 $stmt->execute();
 $result2 = $stmt->get_result();
@@ -177,7 +171,6 @@ $sql3 = "
         cd.status = '16'
 ";
 
-// Filter by department
 $stmt = $conn->prepare($sql3);
 $stmt->execute();
 $result3 = $stmt->get_result();
@@ -219,7 +212,6 @@ $sql4 = "
 ";
 
 
-// Filter by department
 $stmt = $conn->prepare($sql4);
 $stmt->execute();
 $result4 = $stmt->get_result();

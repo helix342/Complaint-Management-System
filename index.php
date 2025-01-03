@@ -1,11 +1,6 @@
 <?php
-// Database connection
-$host = "localhost";  // Your database host
-$user = "root";       // Your database username
-$password = "";       // Your database password
-$dbname = "complaints"; // Your database name
+include('db.php');
 
-$conn = new mysqli($host, $user, $password, $dbname);
 
 session_start();
 
@@ -22,14 +17,6 @@ $qry_run = mysqli_query($conn,$qry);
 $srow  = mysqli_fetch_array($qry_run);
 $dept = $srow['worker_dept'];
 
-
-
-
-//new task count
-
-
-
-//count for side bar starts
 
 $q1 = "SELECT * FROM complaints_detail as cd JOIN manager as m on cd.id = m.problem_id WHERE cd.status = '7' AND m.worker_id LIKE 'CIV%'";
 $q2 = "SELECT * FROM complaints_detail as cd JOIN manager as m on cd.id = m.problem_id WHERE cd.status = '7' AND m.worker_id LIKE 'CAR%'";
@@ -81,8 +68,6 @@ $row  = mysqli_fetch_array($qry_run);
 
 
 
-//count for side bar ends
-// Prepare and execute the query to filter by department
 //New task query
 $sql = "
     SELECT 
@@ -116,7 +101,6 @@ $sql = "
         cd.status = '9'
 ";
 
-// Filter by department
 $stmt = $conn->prepare($sql);
 $stmt->execute();
 $result = $stmt->get_result();
@@ -158,7 +142,6 @@ $sql1 = "
         cd.status = '10'
 ";
 
-// Filter by department
 $stmt = $conn->prepare($sql1);
 $stmt->execute();
 $result1 = $stmt->get_result();
@@ -199,7 +182,6 @@ $sql2 = "
         (cd.status = '11' OR cd.status = '18')
 ";
 
-// Filter by department
 $stmt = $conn->prepare($sql2);
 $stmt->execute();
 $result2 = $stmt->get_result();
@@ -240,7 +222,6 @@ $sql3 = "
         cd.status = '16'
 ";
 
-// Filter by department
 $stmt = $conn->prepare($sql3);
 $stmt->execute();
 $result3 = $stmt->get_result();
@@ -282,7 +263,6 @@ $sql4 = "
 ";
 
 
-// Filter by department
 $stmt = $conn->prepare($sql4);
 $stmt->execute();
 $result4 = $stmt->get_result();
@@ -339,12 +319,7 @@ $notcount = mysqli_num_rows($result4);
                                
                             </div>
                         </li>
-                        <!-- <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle text-muted waves-effect waves-dark pro-pic" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="assets/images/users/1.jpg" alt="user" class="rounded-circle" width="31"></a>
-                            <div class="dropdown-menu dropdown-menu-right user-dd animated">
-                                <a class="dropdown-item" href="javascript:void(0)"><i class="fa fa-power-off m-r-5 m-l-5"></i>&nbsp;&nbsp;&nbsp;Logout</a>
-                            </div>
-                        </li> -->
+                       
                     </ul>
                 </div>
             </nav>
@@ -366,15 +341,7 @@ $notcount = mysqli_num_rows($result4);
                 <div class="row">
                     <div class="col-12 d-flex no-block align-items-center">
                         <marquee><b>WELCOME TO M.KUMARASAMY COLLEGE OF ENGINEERING - THALAVAPALAYAM,KARUR - 639113.</b></marquee>
-                        <!-- <h4 class="page-title">DASHBOARD</h4> -->
-                        <!-- <div class="ml-auto text-right">
-                            <nav aria-label="breadcrumb">
-                                <ol class="breadcrumb">
-                                    <li class="breadcrumb-item"><a href="#">Home</a></li>
-                                    <li class="breadcrumb-item active" aria-current="page">Dashboard</li>
-                                </ol>
-                            </nav>
-                        </div> -->
+                       
                     </div>
                 </div>
             </div>

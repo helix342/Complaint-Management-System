@@ -6,7 +6,7 @@ $sql1 = "
 SELECT cd.*, faculty_details.faculty_name, faculty_details.department, faculty_details.faculty_contact, faculty_details.faculty_mail
 FROM complaints_detail cd
 JOIN faculty_details ON cd.faculty_id = faculty_details.faculty_id
-WHERE cd.status IN ('4','9')
+WHERE cd.status IN ('22','9')
 ";
 $result1 = mysqli_query($conn, $sql1);
 $row_count1 = mysqli_num_rows($result1);
@@ -519,34 +519,34 @@ $row_count7 = mysqli_num_rows($result7);
                                     <option value="transport">Transport</option>
                                     <option value="house">House Keeping</option>
 
-                                </select>
-                                <select id="role" name="w_role" style="width: 100%; padding: 10px; border-radius: 4px; border: 1px solid #ccc; margin-bottom: 15px;">
-                                    <option value="all">Select Role</option>
-                                    <option value="head">Head</option>
-                                    <option value="worker">Worker</option>
+                                    </select>
+                                    <select id="role" name="w_role" style="width: 100%; padding: 10px; border-radius: 4px; border: 1px solid #ccc; margin-bottom: 15px;">
+                                        <option value="all">Select Role</option>
+                                        <option value="head">Head</option>
+                                        <option value="worker">Worker</option>
 
 
-                                </select>
+                                    </select>
 
 
-                                <select id="gender" name="w_gender" style="width: 100%; padding: 10px; border-radius: 4px; border: 1px solid #ccc; margin-bottom: 15px;">
-                                    <option value="all">Select Gender</option>
-                                    <option value="male">Male</option>
-                                    <option value="female">Female</option>
-                                </select>
+                                    <select id="gender" name="w_gender" style="width: 100%; padding: 10px; border-radius: 4px; border: 1px solid #ccc; margin-bottom: 15px;">
+                                        <option value="all">Select Gender</option>
+                                        <option value="male">Male</option>
+                                        <option value="female">Female</option>
+                                    </select>
 
 
 
-                                <input type="text" name="w_phone" placeholder="Enter Phone Number" style="width: 100%; padding: 10px; border-radius: 4px; border: 1px solid #ccc; margin-bottom: 15px;">
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" style="background-color: #6c757d; border: none; padding: 10px 20px;">Close</button>
-                                <button type="submit" class="btn btn-primary" style="background-color: #007bff; border: none; padding: 10px 20px;">Add</button>
-                            </div>
-                        </form>
+                                    <input type="text" name="w_phone" placeholder="Enter Phone Number" style="width: 100%; padding: 10px; border-radius: 4px; border: 1px solid #ccc; margin-bottom: 15px;">
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" style="background-color: #6c757d; border: none; padding: 10px 20px;">Close</button>
+                                    <button type="submit" class="btn btn-primary" style="background-color: #007bff; border: none; padding: 10px 20px;">Add</button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
-            </div>
             <!-- ============================================================== -->
             <!-- End Bread crumb and right sidebar toggle -->
             <!-- ============================================================== -->
@@ -3102,6 +3102,8 @@ $row_count7 = mysqli_num_rows($result7);
                         type: "POST",
                         url: "testbackend.php",
                         data: form,
+                        processData:false,
+                        contentType:false,
                         success: function(response) {
                             var res = jQuery.parseJSON(response);
                             if (res.status == 200) {
