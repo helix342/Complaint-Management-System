@@ -34,7 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 
 
-elseif($user['role']=='infra'){
+elseif($user['role']=='infra' or 'student'){
     // If user exists
     if (mysqli_num_rows($result) == 1) {
         $_SESSION['faculty_id'] = $faculty_id; // Store faculty ID in session
