@@ -1,5 +1,8 @@
 <?php
 include("db.php");
+session_start();
+$_session['eo_id'] = 12345;
+$eo_id = $_session['eo_id'];
 
 $sql = "
 SELECT cd.*, faculty_details.faculty_name, faculty_details.department, faculty_details.faculty_contact, faculty_details.faculty_mail
@@ -406,6 +409,7 @@ $result3 = mysqli_query($conn, $sql3);
                                                     </div>
                                                 </div>
                                             </div>
+                                            
                                             <!-------------------------pending tab---------------------------->
                                             <div class="tab-pane p-20" id="pending" role="tabpanel">
                                                 <div class="row">
@@ -415,7 +419,7 @@ $result3 = mysqli_query($conn, $sql3);
                                                                 <h4>
                                                                     Raise Complaint
                                                                     <button type="button" style="float:right; font-size:20px;"
-                                                                        class="btn btn-info mdi mdi-plus-box-outline btnraisecomp" data-toggle="modal" data-target="#cmodal"></button><br>
+                                                                        class="btn btn-info mdi mdi-plus-box-outline" data-toggle="modal" data-target="#cmodal"></button><br>
                                                                 </h4>
                                                             </div>
 
@@ -1049,18 +1053,11 @@ $result3 = mysqli_query($conn, $sql3);
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form id="addnewuser" enctype="multipart/form-data" onsubmit="handleSubmit(event)">
+                <form id="addcomp" enctype="multipart/form-data" onsubmit="handleSubmit(event)">
                     <div class="modal-body">
-                        <div class="mb-3">
-                            <input type="hidden" id="hidden_faculty_id" value="<?php echo $row['id']; ?>">
-                            <input type="hidden" class="form-control" name="faculty_id" id="faculty_id" value="<?php echo $row['faculty_id']; ?>" readonly>
-                        </div>
+                       
 
-                        <div class="form-group mb-3">
-                            <label for="faculty" class="font-weight-bold">Choose Faculty</label>
-                            <select class="form-control" name="cfaculty" id="cfaculty">
-                            </select>
-                        </div>
+                      
 
                         <div class="mb-3">
                             <label for="block" class="form-label">Block <span style="color: red;">*</span></label>
@@ -1159,6 +1156,46 @@ $result3 = mysqli_query($conn, $sql3);
             </div>
         </div>
     </div>
+    <div class="modal fade" id="raisemodal" tabindex="-1"
+                                        aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header" style="background:linear-gradient(to bottom right, #cc66ff 1%, #0033cc 100%);background-color:#7460ee;">
+                                                    <h5 class="modal-title" id="exampleModalLabel">Raise Complaint</h5>
+                                                    <button class="spbutton" type="button" class="btn-close" data-bs-dismiss="modal"
+                                                        aria-label="Close">
+                                                </div>
+                                                <div>
+                                                    <form id="addnewuser" enctype="multipart/form-data" onsubmit="handleSubmit(event)">
+                                                        <div class="modal-body">
+                                                            <div class="mb-3">
+                                                                <input type="hidden" id="hidden_faculty_id" value="<?php echo $_SESSION['faculty_id']; ?>">
+                                                                <input type="hidden" class="form-control" name="faculty_id" id="faculty_id" value="<?php echo $_SESSION['faculty_id']; ?>" readonly>
+                                                            </div>
+                                                            
+
+                                                            <div class="mb-3">
+                                                                <label for="block" class="form-label">Block <span style="color: red;">*</span></label>
+                                                                <input type="text" class="form-control" name="block_venue" placeholder="Eg:RK-206" required>
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label for="venue" class="form-label">Venue <span style="color: red;">*</span></label>
+                                                                <select id="dropdown" class="form-control" name="venue_name" onchange="checkIfOthers()"
+                                                                    style="width: 100%; height:36px;">
+                                                                    <option>Select</option>
+                                                                    <option value="class">Class Room</option>
+                                                                    <option value="department">Department</option>
+                                                                    <option value="lab">Lab</option>
+                                                                    <option value="staff_room">Staff Room</option>
+                                                                    <option id="oth" value="Other">Others</option>
+                                                                </select>
+                                                            </div>
+
+                            <div id="othersInput" style="display: none;">
+                                <label class="form-label" for="otherValue">Please specify: <span style="color: red;">*</span></label>
+                                <input class="form-control" type="text" id="otherValue" name="otherValue"> <br>
+                            </div>
+
 
     <!------------Rejected Reason modal-------------->
     <div class="modal fade" id="problemrejected" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -1201,6 +1238,7 @@ $result3 = mysqli_query($conn, $sql3);
     <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap4.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/alertifyjs/build/css/alertify.min.css" />
     <script src="https://cdn.jsdelivr.net/npm/alertifyjs/build/alertify.min.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
     <!-- Set Today date in Raise Complaint-->
     <script>
@@ -1229,6 +1267,7 @@ $result3 = mysqli_query($conn, $sql3);
     </script>
 
     <script>
+
         //Tool Tip
         $(function() {
             // Initialize the tooltip
@@ -1557,6 +1596,75 @@ $result3 = mysqli_query($conn, $sql3);
                 }
             });
         });
+
+        $(document).on('submit', '#addcomp', function(e) {
+            e.preventDefault(); // Prevent form from submitting normally
+            var formData = new FormData(this);
+            formData.append("eo",true);
+            $.ajax({
+                type: "POST",
+                url: "eo_backend.php",
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                    var res = typeof response === 'string' ? JSON.parse(response) : response;
+                    if (res.status === 200) {
+                        swal("Complaint Submitted!", "", "success");
+                        $('#cmodal').modal('hide');
+                        $('#addcomp')[0].reset(); // Reset the form
+                        $('#navref1').load(location.href + " #navref1");
+                        $('#navref2').load(location.href + " #navref2");
+                        $('#navref3').load(location.href + " #navref3");
+                        $('#dashref').load(location.href + " #dashref");
+
+                        $('#user').DataTable().destroy();
+                        $("#user").load(location.href + " #user > *", function() {
+                            $('#user').DataTable();
+                        });
+                    } else {
+                        console.error("Error:", res.message);
+                        alert("Something went wrong! Try again.");
+                    }
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.error("AJAX Error:", textStatus, errorThrown);
+                    alert("Failed to process response. Please try again.");
+                }
+            });
+        });
+
+
+        function checkIfOthers() {
+            const dropdown = document.getElementById('dropdown');
+            const othersInput = document.getElementById('othersInput');
+
+            // Show the input field if "Others" is selected
+            if (dropdown.value === 'Other') {
+                othersInput.style.display = 'block';
+            } else {
+                othersInput.style.display = 'none';
+            }
+        }
+
+        function handleSubmit(event) {
+            event.preventDefault(); // Prevent form submission for demo purposes
+            const dropdown = document.getElementById('dropdown');
+            const selectedValue = dropdown.value;
+            let finalValue;
+
+            // Get the appropriate value based on the dropdown selection
+            if (selectedValue === 'Other') {
+                finalValue = document.getElementById('otherValue').value;
+            } else {
+                finalValue = selectedValue;
+            }
+
+            console.log("Selected Category:", finalValue);
+            // You can then send this data to the backend or process it further
+            $("#oth").val(finalValue);
+        }
+        
     </script>
 </body>
 
