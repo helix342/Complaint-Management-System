@@ -287,28 +287,6 @@ if (isset($_POST['hod'])) {
 }
 
 //Approve Button for Faculty Infra
-if (isset($_POST['approvefacbtn'])) {
-    try {
-        $id = mysqli_real_escape_string($conn, $_POST['approvefac']);
-        
-        $query = "UPDATE complaints_detail SET status = '22' WHERE id='$id'";
-        
-        if (mysqli_query($conn, $query))    {
-            $res = [
-                'status' => 200,
-                'message' => 'Details Updated Successfully'
-            ];
-            echo json_encode($res);
-        } else {
-            throw new Exception('Query Failed: ' . mysqli_error($conn));
-        }
-    } catch (Exception $e) {
-        $res = [
-            'status' => 500,
-            'message' => 'Error: ' . $e->getMessage()
-        ];
-        echo json_encode($res);
-    }
-}
+
 }
 ?>

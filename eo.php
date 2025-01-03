@@ -1407,17 +1407,19 @@ $result3 = mysqli_query($conn, $sql3);
             e.preventDefault();
 
             var approveidfac = $(this).val();
+            console.log(approveidfac);
 
             alertify.confirm('Confirmation', 'Are you sure you want to approve this complaint?',
                 function() {
                     $.ajax({
                         type: "POST",
-                        url: "hodbackend.php",
+                        url: "eobackend.php",
                         data: {
                             'approvefacbtn': true,
                             'approvefac': approveidfac
                         },
                         success: function(response) {
+                            console.log(response);
                             var res = jQuery.parseJSON(response);
                             if (res.status == 500) {
                                 alertify.error(res.message);
