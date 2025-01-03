@@ -1515,9 +1515,9 @@ $result11 = mysqli_query($conn, $sql11);
                                                                         <td class="text-center"><?php echo $s ?></td>
                                                                         <td class="text-center"><?php echo $row['faculty_name'] ?></td>
                                                                         <td class="text-center"><?php echo $row['department'] ?></td>
-                                                                        <td class="text-center"><?php echo $row['role'] ?></td>                                                                        
+                                                                        <td class="text-center"><?php echo $row['role'] ?></td>
                                                                         <td class="text-center"><button tupe="button" class="btn btn-danger deleteuser"
-                                                                        value="<?php echo $row["id"] ?>">Delete</button></td>
+                                                                                value="<?php echo $row["id"] ?>">Delete</button></td>
                                                                     </tr>
                                                                 <?php
                                                                     $s++;
@@ -1542,8 +1542,8 @@ $result11 = mysqli_query($conn, $sql11);
                                 </div>
                             </div>
 
-                             <!-- manage wo Modal -->
-                             <div class="modal fade" id="manageworkermodal" tabindex="-1" role="dialog" aria-labelledby="manageworkermodalLabel" aria-hidden="true">
+                            <!-- manage wo Modal -->
+                            <div class="modal fade" id="manageworkermodal" tabindex="-1" role="dialog" aria-labelledby="manageworkermodalLabel" aria-hidden="true">
                                 <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
                                     <div class="modal-content" style="border-radius: 8px; box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15); background-color: #f9f9f9;">
 
@@ -1599,9 +1599,9 @@ $result11 = mysqli_query($conn, $sql11);
                                                                         <td class="text-center"><?php echo $s ?></td>
                                                                         <td class="text-center"><?php echo $row['worker_first_name'] ?></td>
                                                                         <td class="text-center"><?php echo $row['worker_dept'] ?></td>
-                                                                        <td class="text-center"><?php echo $row['usertype'] ?></td>                                                                        
+                                                                        <td class="text-center"><?php echo $row['usertype'] ?></td>
                                                                         <td class="text-center"><button tupe="button" class="btn btn-danger deleteworker"
-                                                                         value="<?php echo $row["id"] ?>">Delete</button></td>
+                                                                                value="<?php echo $row["id"] ?>">Delete</button></td>
                                                                     </tr>
                                                                 <?php
                                                                     $s++;
@@ -1642,7 +1642,7 @@ $result11 = mysqli_query($conn, $sql11);
                                                 <input type="text" name="name" placeholder="Enter User Name" style="width: 100%; padding: 10px; border-radius: 4px; border: 1px solid #ccc; margin-bottom: 15px;">
                                                 <input type="text" name="userid" placeholder="Enter User Id" style="width: 100%; padding: 10px; border-radius: 4px; border: 1px solid #ccc; margin-bottom: 15px;">
                                                 <input type="tel" name="phone" placeholder="Enter Phone number" style="width: 100%; padding: 10px; border-radius: 4px; border: 1px solid #ccc; margin-bottom: 15px;">
-                                                <input type="email" name="email" placeholder="Enter User Id" style="width: 100%; padding: 10px; border-radius: 4px; border: 1px solid #ccc; margin-bottom: 15px;">
+                                                <input type="email" name="email" placeholder="Enter Mail Id" style="width: 100%; padding: 10px; border-radius: 4px; border: 1px solid #ccc; margin-bottom: 15px;">
                                                 <select id="department" name="u_dept" style="width: 100%; padding: 10px; border-radius: 4px; border: 1px solid #ccc; margin-bottom: 15px;">
                                                     <option value="all">Select department</option>
                                                     <option value="Freshman Engineering">Freshman Engineering</option>
@@ -1660,11 +1660,8 @@ $result11 = mysqli_query($conn, $sql11);
                                                 </select>
                                                 <select id="role" name="u_role" style="width: 100%; padding: 10px; border-radius: 4px; border: 1px solid #ccc; margin-bottom: 15px;">
                                                     <option value="all">Select Role</option>
-                                                    <option value="hod">Hod</option>
                                                     <option value="infra">Infra</option>
                                                     <option value="student">Student</option>
-                                                    <option value="eo">Estate Officer</option>
-                                                    <option value="manager">Manager</option>
                                                 </select>
                                             </div>
                                             <div class="modal-footer">
@@ -1727,7 +1724,7 @@ $result11 = mysqli_query($conn, $sql11);
                                 </div>
                             </div>
 
-                            
+
 
                             <!-- Reject Modal -->
                             <div class="modal fade" id="rejectModal" tabindex="-1" role="dialog"
@@ -2372,7 +2369,6 @@ $result11 = mysqli_query($conn, $sql11);
                         pageLength: 5,
                     });
                 });
-
             </script>
             <script>
                 //reject complaint
@@ -3335,7 +3331,7 @@ $result11 = mysqli_query($conn, $sql11);
                 */
 
                 //delete user
-                $(document).on("click",".deleteuser",function(e){
+                $(document).on("click", ".deleteuser", function(e) {
                     e.preventDefault();
                     var id = $(this).val();
                     console.log(id);
@@ -3344,21 +3340,29 @@ $result11 = mysqli_query($conn, $sql11);
                         url: "testbackend.php",
                         data: {
                             delete_user: true,
-                            id:id,
+                            id: id,
                         },
                         success: function(response) {
                             var res = jQuery.parseJSON(response);
                             console.log(res);
-                            if(res.status == 200){
+                            if (res.status == 200) {
                                 alert("user deleted succesfully!");
+                                $('#user_display').DataTable().destroy();
+
+                                $("#user_display").load(location.href + " #user_display > *", function() {
+                                    $('#user_display').DataTable({
+                                        pageLength: 5
+                                    });
+                                });
+
                             }
                         },
                     });
 
                 });
 
-                 //delete worker
-                 $(document).on("click",".deleteworker",function(e){
+                //delete worker
+                $(document).on("click", ".deleteworker", function(e) {
                     e.preventDefault();
                     var id = $(this).val();
                     console.log(id);
@@ -3367,13 +3371,21 @@ $result11 = mysqli_query($conn, $sql11);
                         url: "testbackend.php",
                         data: {
                             delete_worker: true,
-                            id:id,
+                            id: id,
                         },
                         success: function(response) {
                             var res = jQuery.parseJSON(response);
                             console.log(res);
-                            if(res.status == 200){
+                            if (res.status == 200) {
                                 alert("user deleted succesfully!");
+                                $('#worker_display').DataTable().destroy();
+
+                                $("#worker_display").load(location.href + " #worker_display > *", function() {
+                                    $('#worker_display').DataTable({
+                                        pageLength: 5
+                                    });
+                                });
+
                             }
                         },
                     });
@@ -3402,6 +3414,13 @@ $result11 = mysqli_query($conn, $sql11);
 
                                 $("#adduser").modal("hide");
                                 $("#user_data")[0].reset();
+                                $('#user_display').DataTable().destroy();
+
+                                $("#user_display").load(location.href + " #user_display > *", function() {
+                                    $('#user_display').DataTable({
+                                        pageLength: 5
+                                    });
+                                });
                             } else {
                                 alert("user not added");
                             }
