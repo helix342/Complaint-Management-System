@@ -1,5 +1,8 @@
 <?php
 include("db.php");
+session_start();
+$_session['hod_id']= 12345;
+$hod_id =  $_session['hod_id'];
 $sql = "
 SELECT cd.*, faculty_details.faculty_name, faculty_details.department, faculty_details.faculty_contact, faculty_details.faculty_mail
 FROM complaints_detail cd
@@ -405,6 +408,8 @@ $result3 = mysqli_query($conn, $sql3);
                                                     </div>
                                                 </div>
                                             </div>
+
+                                            
                                             <!-------------------------pending tab---------------------------->
                                             <div class="tab-pane p-20" id="pending" role="tabpanel">
                                                 <div class="row">
@@ -413,10 +418,12 @@ $result3 = mysqli_query($conn, $sql3);
                                                             <div class="card-header">
                                                                 <h4>
                                                                     Raise Complaint
-                                                                    <button type="button" style="float:right; font-size:20px;"
-                                                                        class="btn btn-info mdi mdi-plus-box-outline btnraisecomp" data-toggle="modal" data-target="#cmodal"></button><br>
+                                                                    <button type="button" class="btn btn-info float-right fac" data-toggle="modal" data-target="#raisemodal">Raise Compliant</button>
+                                                                    <br>
                                                                 </h4>
                                                             </div>
+
+                                                            
 
                                                             <div class="card-body">
                                                                 <div class="table-container">
@@ -1034,100 +1041,7 @@ $result3 = mysqli_query($conn, $sql3);
         </div>
     </div>
 
-    <!-- Raise Complaint Modal -->
-    <div id="cmodal" class="modal fade" tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header"
-                    style="background: linear-gradient(to bottom right, #cc66ff 1%, #0033cc 100%); color: white;">
-                    <h5 class="modal-title">Raise Complaint</h5>
-                    <button type="button" class="close" data-dismiss="modal"
-                        aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <form id="addnewuser" enctype="multipart/form-data" onsubmit="handleSubmit(event)">
-                    <div class="modal-body">
-                        <div class="mb-3">
-                            <input type="hidden" id="hidden_faculty_id" value="<?php echo $_SESSION['faculty_id']; ?>">
-                            <input type="hidden" class="form-control" name="faculty_id" id="faculty_id" value="<?php echo $_SESSION['faculty_id']; ?>" readonly>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="block" class="form-label">Block <span style="color: red;">*</span></label>
-                            <input type="text" class="form-control" name="block_venue" placeholder="Eg:RK-206" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="venue" class="form-label">Venue <span style="color: red;">*</span></label>
-                            <select id="dropdown" class="form-control" name="venue_name" onchange="checkIfOthers()">
-                                <option>Select</option>
-                                <option value="class">Class Room</option>
-                                <option value="department">Department</option>
-                                <option value="lab">Lab</option>
-                                <option value="staff_room">Staff Room</option>
-                                <option id="oth" value="Other">Others</option>
-                            </select>
-                        </div>
-
-                        <div id="othersInput" style="display: none;">
-                            <label class="form-label" for="otherValue">Please specify: <span style="color: red;">*</span></label>
-                            <input class="form-control" type="text" id="otherValue" name="otherValue">
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="type_of_problem" class="form-label">Type of Problem <span style="color: red;">*</span></label>
-                            <select class="form-control" name="type_of_problem">
-                                <option>Select</option>
-                                <option value="elecrtical">ELECTRICAL</option>
-                                <option value="civil">CIVIL</option>
-                                <option value="itkm">IT INFRA</option>
-                                <option value="transport">TRANSPORT</option>
-                                <option value="house">HOUSE KEEPING</option>
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label for="description" class="form-label">Problem Description <span style="color: red;">*</span></label>
-                            <input type="text" class="form-control" name="problem_description" placeholder="Enter Description" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="images" class="form-label">Image <span style="color: red;">*</span> </label>
-                            <input type="file" class="form-control" name="images" id="images" onchange="validateSize(this)" required>
-                        </div>
-                        <div class="mb-3">
-                            <input type="hidden" class="form-control" name="date_of_reg" id="date_of_reg" required>
-                        </div>
-                    </div>
-                    <input type="hidden" name="status" value="2">
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Submit</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <!-- Image Modal-->
-    <div id="imageModal1" class="modal fade" tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header"
-                    style="background: linear-gradient(to bottom right, #cc66ff 1%, #0033cc 100%); color: white;">
-                    <h5 class="modal-title">View Image</h5>
-                    <button type="button" class="close" data-dismiss="modal"
-                        aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <img id="modalImage" src="" alt="Image Preview" style="max-width: 100%; display: none;" />
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                </div>
-            </div>
-        </div>
-    </div>
+    
 
     <!-----------After Image Modal------------>
     <div id="aftercomp" class="modal fade" tabindex="-1" role="dialog">
@@ -1150,6 +1064,81 @@ $result3 = mysqli_query($conn, $sql3);
             </div>
         </div>
     </div>
+
+    <div class="tab-pane p-20" id="home" role="tabpanel">
+                                    <div class="modal fade" id="raisemodal" tabindex="-1"
+                                        aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header" style="background:linear-gradient(to bottom right, #cc66ff 1%, #0033cc 100%);background-color:#7460ee;">
+                                                    <h5 class="modal-title" id="exampleModalLabel">Raise Complaint</h5>
+                                                    <button class="spbutton" type="button" class="btn-close" data-bs-dismiss="modal"
+                                                        aria-label="Close">
+                                                </div>
+                                                <div>
+                                                    <form id="addnewuser" enctype="multipart/form-data" onsubmit="handleSubmit(event)">
+                                                        <div class="modal-body">
+                                                            <div class="mb-3">
+                                                                <input type="hidden" id="hidden_faculty_id" value="<?php echo $_SESSION['faculty_id']; ?>">
+                                                                <input type="hidden" class="form-control" name="faculty_id" id="faculty_id" value="<?php echo $_SESSION['faculty_id']; ?>" readonly>
+                                                            </div>
+                                                            
+
+                                                            <div class="mb-3">
+                                                                <label for="block" class="form-label">Block <span style="color: red;">*</span></label>
+                                                                <input type="text" class="form-control" name="block_venue" placeholder="Eg:RK-206" required>
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label for="venue" class="form-label">Venue <span style="color: red;">*</span></label>
+                                                                <select id="dropdown" class="form-control" name="venue_name" onchange="checkIfOthers()"
+                                                                    style="width: 100%; height:36px;">
+                                                                    <option>Select</option>
+                                                                    <option value="class">Class Room</option>
+                                                                    <option value="department">Department</option>
+                                                                    <option value="lab">Lab</option>
+                                                                    <option value="staff_room">Staff Room</option>
+                                                                    <option id="oth" value="Other">Others</option>
+                                                                </select>
+                                                            </div>
+
+                                                            <div id="othersInput" style="display: none;">
+                                                                <label class="form-label" for="otherValue">Please specify: <span style="color: red;">*</span></label>
+                                                                <input class="form-control" type="text" id="otherValue" name="otherValue"> <br>
+                                                            </div>
+
+                                                            <div class="mb-3">
+                                                                <label for="type_of_problem" class="form-label">Type of Problem <span style="color: red;">*</span></label>
+                                                                <select class="form-control" name="type_of_problem" style="width: 100%; height:36px;">
+                                                                    <option>Select</option>
+                                                                    <option value="elecrtical">ELECTRICAL</option>
+                                                                    <option value="civil">CIVIL</option>
+                                                                    <option value="itkm">IT INFRA </option>
+                                                                    <option value="transport">TRANSPORT</option>
+                                                                    <option value="house">HOUSE KEEPING </option>
+                                                                </select>
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label for="description" class="form-label">Problem Description <span style="color: red;">*</span></label>
+                                                                <input type="text" class="form-control" name="problem_description" placeholder="Enter Description" required>
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label for="images" class="form-label">Image <span style="color: red;">*</span> </label>
+                                                                <input type="file" class="form-control" name="images" id="images" onchange="validateSize(this)" required>
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <input type="hidden" class="form-control" name="date_of_reg" id="date_of_reg" required>
+                                                            </div>
+                                                        </div>
+                                                        <input type="hidden" name="status" value="2">
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                            <button type="submit" class="btn btn-primary">Submit</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
 
     <!------------Rejected Reason modal-------------->
     <div class="modal fade" id="problemrejected" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -1192,6 +1181,8 @@ $result3 = mysqli_query($conn, $sql3);
     <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap4.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/alertifyjs/build/css/alertify.min.css" />
     <script src="https://cdn.jsdelivr.net/npm/alertifyjs/build/alertify.min.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
 
     <!-- Set Today date in Raise Complaint-->
     <script>
@@ -1406,7 +1397,7 @@ $result3 = mysqli_query($conn, $sql3);
         $(document).on('submit', '#addnewuser', function(e) {
             e.preventDefault(); // Prevent form from submitting normally
             var formData = new FormData(this);
-            console.log("alert");
+            formData.append("hod",true);
             $.ajax({
                 type: "POST",
                 url: "hodbackend.php",
@@ -1417,7 +1408,7 @@ $result3 = mysqli_query($conn, $sql3);
                     var res = typeof response === 'string' ? JSON.parse(response) : response;
                     if (res.status === 200) {
                         swal("Complaint Submitted!", "", "success");
-                        $('#cmodal').modal('hide');
+                        $('#raisemodal').modal('hide');
                         $('#addnewuser')[0].reset(); // Reset the form
                         $('#navref1').load(location.href + " #navref1");
                         $('#navref2').load(location.href + " #navref2");
@@ -1439,7 +1430,6 @@ $result3 = mysqli_query($conn, $sql3);
                 }
             });
         });
-
         // problem description
         $(document).on('click', '#seeproblem', function(e) {
             e.preventDefault();
@@ -1561,6 +1551,36 @@ $result3 = mysqli_query($conn, $sql3);
                 }
             });
         });
+
+        function checkIfOthers() {
+            const dropdown = document.getElementById('dropdown');
+            const othersInput = document.getElementById('othersInput');
+
+            // Show the input field if "Others" is selected
+            if (dropdown.value === 'Other') {
+                othersInput.style.display = 'block';
+            } else {
+                othersInput.style.display = 'none';
+            }
+        }
+
+        function handleSubmit(event) {
+            event.preventDefault(); // Prevent form submission for demo purposes
+            const dropdown = document.getElementById('dropdown');
+            const selectedValue = dropdown.value;
+            let finalValue;
+
+            // Get the appropriate value based on the dropdown selection
+            if (selectedValue === 'Other') {
+                finalValue = document.getElementById('otherValue').value;
+            } else {
+                finalValue = selectedValue;
+            }
+
+            console.log("Selected Category:", finalValue);
+            // You can then send this data to the backend or process it further
+            $("#oth").val(finalValue);
+        }
 
         //Rejected Tab Feedback
         $(document).on('click', '#rejectedfeedback', function(e) {

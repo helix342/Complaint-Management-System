@@ -507,54 +507,54 @@ $row_count7 = mysqli_num_rows($result7);
 
 
 
-            <div class="modal fade" id="addworker" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content" style="border-radius: 8px; border: 1px solid #ccc;">
-                        <div class="modal-header" style="background-color: #f8f9fa; border-bottom: 2px solid #e9ecef;">
-                            <h5 class="modal-title" id="exampleModalLabel">Add Worker</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
+                <div class="modal fade" id="addworker" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content" style="border-radius: 8px; border: 1px solid #ccc;">
+                            <div class="modal-header" style="background-color: #f8f9fa; border-bottom: 2px solid #e9ecef;">
+                                <h5 class="modal-title" id="exampleModalLabel">Add Worker</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <form id="workers">
+                                <div class="modal-body" style="padding: 20px; background-color: #f5f5f5;">
+                                    <input type="text" name="w_name" placeholder="Enter Worker Name" style="width: 100%; padding: 10px; border-radius: 4px; border: 1px solid #ccc; margin-bottom: 15px;">
+                                    <select id="department" name="w_dept" style="width: 100%; padding: 10px; border-radius: 4px; border: 1px solid #ccc; margin-bottom: 15px;">
+                                        <option value="all">Select department</option>
+                                        <option value="civil">Civil</option>
+                                        <option value="electrical">Electrical</option>
+                                        <option value="itkm">itkm</option>
+                                        <option value="transport">Transport</option>
+                                        <option value="house">House Keeping</option>
+
+                                    </select>
+                                    <select id="role" name="w_role" style="width: 100%; padding: 10px; border-radius: 4px; border: 1px solid #ccc; margin-bottom: 15px;">
+                                        <option value="all">Select Role</option>
+                                        <option value="head">Head</option>
+                                        <option value="worker">Worker</option>
+
+
+                                    </select>
+
+
+                                    <select id="gender" name="w_gender" style="width: 100%; padding: 10px; border-radius: 4px; border: 1px solid #ccc; margin-bottom: 15px;">
+                                        <option value="all">Select Gender</option>
+                                        <option value="male">Male</option>
+                                        <option value="female">Female</option>
+                                    </select>
+
+
+
+                                    <input type="text" name="w_phone" placeholder="Enter Phone Number" style="width: 100%; padding: 10px; border-radius: 4px; border: 1px solid #ccc; margin-bottom: 15px;">
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" style="background-color: #6c757d; border: none; padding: 10px 20px;">Close</button>
+                                    <button type="submit" class="btn btn-primary" style="background-color: #007bff; border: none; padding: 10px 20px;">Add</button>
+                                </div>
+                            </form>
                         </div>
-                        <form id="workers">
-                            <div class="modal-body" style="padding: 20px; background-color: #f5f5f5;">
-                                <input type="text" name="w_name" placeholder="Enter Worker Name" style="width: 100%; padding: 10px; border-radius: 4px; border: 1px solid #ccc; margin-bottom: 15px;">
-                                <select id="department" name="w_dept" style="width: 100%; padding: 10px; border-radius: 4px; border: 1px solid #ccc; margin-bottom: 15px;">
-                                    <option value="all">Select department</option>
-                                    <option value="civil">Civil</option>
-                                    <option value="electrical">Electrical</option>
-                                    <option value="itkm">itkm</option>
-                                    <option value="transport">Transport</option>
-                                    <option value="house">House Keeping</option>
-
-                                </select>
-                                <select id="role" name="w_role" style="width: 100%; padding: 10px; border-radius: 4px; border: 1px solid #ccc; margin-bottom: 15px;">
-                                    <option value="all">Select Role</option>
-                                    <option value="head">Head</option>
-                                    <option value="worker">Worker</option>
-
-
-                                </select>
-
-
-                                <select id="gender" name="w_gender" style="width: 100%; padding: 10px; border-radius: 4px; border: 1px solid #ccc; margin-bottom: 15px;">
-                                    <option value="all">Select Gender</option>
-                                    <option value="male">Male</option>
-                                    <option value="female">Female</option>
-                                </select>
-
-
-
-                                <input type="text" name="w_phone" placeholder="Enter Phone Number" style="width: 100%; padding: 10px; border-radius: 4px; border: 1px solid #ccc; margin-bottom: 15px;">
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" style="background-color: #6c757d; border: none; padding: 10px 20px;">Close</button>
-                                <button type="submit" class="btn btn-primary" style="background-color: #007bff; border: none; padding: 10px 20px;">Add</button>
-                            </div>
-                        </form>
                     </div>
                 </div>
-            </div>
             <!-- ============================================================== -->
             <!-- End Bread crumb and right sidebar toggle -->
             <!-- ============================================================== -->
@@ -3107,6 +3107,8 @@ $row_count7 = mysqli_num_rows($result7);
                         type: "POST",
                         url: "testbackend.php",
                         data: form,
+                        processData:false,
+                        contentType:false,
                         success: function(response) {
                             var res = jQuery.parseJSON(response);
                             if (res.status == 200) {

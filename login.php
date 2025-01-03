@@ -10,15 +10,14 @@ if ($data === false) {
     die("Connection error");
 }
 
-$error_flag = false; // Error flag to trigger SweetAlert
-$success_flag = false; // Success flag to trigger SweetAlert
+$error_flag = false;
+$success_flag = false; 
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $worker_id = $_POST["worker_id"];
     $password = $_POST["password"];
     $_SESSION['worker_id'] = $worker_id;
 
-    // Prepare and bind
     $stmt = $data->prepare("SELECT * FROM worker_details WHERE worker_id = ? AND password = ?");
     $stmt->bind_param("ss", $worker_id, $password);
     $stmt->execute();
@@ -27,17 +26,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if ($row) {
         $_SESSION["worker_id"] = $worker_id;
-        $success_flag = true; // Set the success flag for SweetAlert
-
+        $success_flag = true;
         if ($row["usertype"] == "head") {
-            // Delay redirect to show SweetAlert
             echo "<script>
                     setTimeout(function() {
                         window.location.href = 'index.php';
                     }, 2000); // Redirect after 2 seconds
                   </script>";
         } elseif ($row["usertype"] == "admin") {
-            // Delay redirect to show SweetAlert
             echo "<script>
                     setTimeout(function() {
                         window.location.href = 'adminhome.php';
@@ -45,7 +41,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                   </script>";
         }
     } else {
-        $error_flag = true; // Trigger error flag if credentials are wrong
+        $error_flag = true; 
     }
     $stmt->close();
 }
@@ -62,11 +58,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <link rel="icon" type="image/png" sizes="16x16" href="assets/images/favicon.png">
     <link href="dist/css/style.min.css" rel="stylesheet">
 
-    <!-- Include SweetAlert CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
 
     <style>
-        /* Custom styles for the login page */
         body {
             background-color: #1a1a1a;
         }
@@ -248,7 +242,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 timer: 2000,
                 showConfirmButton: false,
                 willClose: () => {
-                    // JavaScript redirect will already be handled in PHP, this just confirms the behavior
                 }
             });
         <?php endif; ?>

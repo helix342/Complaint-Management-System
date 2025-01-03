@@ -25,12 +25,12 @@ $row_count1 = mysqli_num_rows($result1);
 //manager table
 $sql2 = "SELECT * FROM worker_details";
 $result2 = mysqli_query($conn, $sql2);
-//worker details fetch panna
+//worker details fetch
 $sql3 = "SELECT * FROM complaints_detail WHERE status IN ('7','10','11','13')";
 $result3 = mysqli_query($conn, $sql3);
 $row_count3 = mysqli_num_rows($result3);
 
-//worker details fetch panna
+//worker details fetch
 $sql4 = "SELECT 
 cd.id,
 cd.faculty_id,
@@ -111,25 +111,21 @@ $c6 = mysqli_num_rows($r6);
 //count for side bar ends
 
 if (isset($_POST['work'])) {
-    $work = $_POST['worker_dept'];  // The department value
-    // Modify the query to select both worker_id and worker_first_name
+    $work = $_POST['worker_dept'];
     $sql8 = "SELECT worker_id, worker_first_name FROM worker_details WHERE worker_dept = '$work' AND usertype = 'worker'";
     $result8 = mysqli_query($conn, $sql8);
 
-    // Prepare to output options directly
     $options = '';
 
 
     while ($row = mysqli_fetch_assoc($result8)) {
-        // Echo each worker's ID and name as an option element (worker_id - worker_first_name)
         $options .= '<option value="' . $row['worker_id'] . '">' . $row['worker_id'] . ' - ' . $row['worker_first_name'] . '</option>';
 
     }
 
 
-    // Return the options to the AJAX request
     echo $options;
-    exit();  // Stop script execution after output
+    exit();  
 }
 
 if (isset($_POST['form'])) {
@@ -156,10 +152,7 @@ if (isset($_POST['form1'])) {
     $contact = $_POST['w_phone'];
     $gender = $_POST['w_gender'];
 
-    // Step 1: Get the first 3 letters of the department
-    $dept_prefix = strtoupper(substr($dept, 0, 3));  // Extract first 3 letters and convert to uppercase
-
-    // Step 2: Check the highest worker_id for this department using SUBSTRING to extract the numeric part
+    $dept_prefix = strtoupper(substr($dept, 0, 3));  
     $checkQuery = "SELECT SUBSTRING(worker_id, 4) AS id_number FROM worker_details 
                    WHERE worker_id LIKE '$dept_prefix%' 
                    ORDER BY CAST(SUBSTRING(worker_id, 4) AS UNSIGNED) DESC LIMIT 1";
@@ -167,18 +160,14 @@ if (isset($_POST['form1'])) {
     $result = mysqli_query($conn, $checkQuery);
 
     if (mysqli_num_rows($result) > 0) {
-        // Fetch the last used worker_id and extract the number part
         $row = mysqli_fetch_assoc($result);
-        $number = intval($row['id_number']) + 1; // Increment the number
-    } else {
-        // If no previous worker_id exists for this department, start with 01
+        $number = intval($row['id_number']) + 1;
+        } else {
         $number = 1;
     }
 
-    // Step 3: Format the number to always be 2 digits (e.g., 01, 02, 03, 04)
     $worker_id = $dept_prefix . str_pad($number, 2, '0', STR_PAD_LEFT);
 
-    // Step 4: Insert the new worker with the generated worker_id
     $insertQuery = "INSERT INTO worker_details (worker_id, worker_first_name, worker_dept, worker_mobile, worker_gender,usertype) 
                     VALUES ('$worker_id', '$name', '$dept', '$contact', '$gender','worker')";
 
@@ -893,10 +882,8 @@ if (isset($_POST['form1'])) {
     <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
     <script>
          $(function() {
-            // Initialize the tooltip
             $('[data-toggle="tooltip"]').tooltip();
 
-            // You can also set options manually if needed
             $('.viewcomplaint').tooltip({
                 placement: 'top',
                 title: 'View Complaint'
@@ -905,10 +892,8 @@ if (isset($_POST['form1'])) {
 
 
         $(function() {
-            // Initialize the tooltip
             $('[data-toggle="tooltip"]').tooltip();
 
-            // You can also set options manually if needed
             $('.showImage').tooltip({
                 placement: 'top',
                 title: 'Before'
@@ -924,10 +909,8 @@ if (isset($_POST['form1'])) {
         });
 
         $(function() {
-            // Initialize the tooltip
             $('[data-toggle="tooltip"]').tooltip();
 
-            // You can also set options manually if needed
             $('.acceptcomplaint').tooltip({
                 placement: 'top',
                 title: 'Accept'
@@ -947,7 +930,6 @@ if (isset($_POST['form1'])) {
                     "worker_dept": worker_dept
                 },
                 success: function(response) {
-                    // Inject the received HTML options into the <select> element
                     $('#worker').html(response);
                 }
             });
@@ -965,7 +947,6 @@ if (isset($_POST['form1'])) {
             'user_id': user_id
           },
                 success: function(response) {
-                    // Directly check if response contains "Success" or "Error"
                     if (response.includes("Success")) {
                         alertify.success("asigned successfully!");
                         $('#principal_table').DataTable().destroy();
@@ -1020,7 +1001,6 @@ if (isset($_POST['form1'])) {
                     if (res.status == 500) {
                         alert(res.message);
                     } else {
-                        //$('#student_id2').val(res.data.uid);
                         $("#id").val(res.data.id);
                         $("#type_of_problem").text(res.data.type_of_problem);
                         $("#problem_description").text(res.data.problem_description);
@@ -1035,32 +1015,28 @@ if (isset($_POST['form1'])) {
             });
         });
         $(document).on("click", ".showImage", function() {
-            var problem_id = $(this).val(); // Get the problem_id from button value
-            console.log(problem_id); // Ensure this logs correctly
+            var problem_id = $(this).val(); 
+            console.log(problem_id);
             $.ajax({
                 type: "POST",
                 url: "testbackend.php",
                 data: {
                     get_image: true,
-                    problem_id: problem_id, // Correct POST key
+                    problem_id: problem_id, 
                 },
-                dataType: "json", // Automatically parses JSON responses
+                dataType: "json", 
                 success: function(response) {
-                    console.log(response); // Log the parsed JSON response
+                    console.log(response);
                     if (response.status == 200) {
-                        // Dynamically set the image source
                         $("#modalImage").attr("src", "uploads/" + response.data.images);
-                        // Show the modal
                         $("#imageModal").modal("show");
                     } else {
-                        // Handle case where no image is found
                         alert(
                             response.message || "An error occurred while retrieving the image."
                         );
                     }
                 },
                 error: function(xhr, status, error) {
-                    // Log the full error details for debugging
                     console.error("AJAX Error: ", xhr.responseText);
                     alert(
                         "An error occurred: " +
@@ -1076,25 +1052,21 @@ if (isset($_POST['form1'])) {
 
 
         $(document).on("click", ".imgafter", function() {
-            var problem_id = $(this).val(); // Get the problem_id from button value
-            console.log(problem_id); // Ensure this logs correctly
+            var problem_id = $(this).val(); 
             $.ajax({
                 type: "POST",
                 url: "testbackend.php",
                 data: {
                     get_aimage: true,
-                    problem2_id: problem_id, // Correct POST key
+                    problem2_id: problem_id,
                 },
-                dataType: "json", // Automatically parses JSON responses
+                dataType: "json", 
                 success: function(response) {
-                    console.log(response); // Log the parsed JSON response
-                    if (response.status == 200) { // Use 'response' instead of 'res'
-                        // Dynamically set the image source
+                    console.log(response); 
+                    if (response.status == 200) { 
                         $("#modalImage2").attr("src", response.data.after_photo);
-                        // Show the modal
                         $("#afterImageModal").modal("show");
                     } else {
-                        // Handle case where no image is found
                         alert(response.message || "An error occurred while retrieving the image.");
                     }
                 },

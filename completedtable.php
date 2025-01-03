@@ -246,8 +246,10 @@ $resultfac = mysqli_query($conn,$facquery);
                             <div class="dropdown-menu dropdown-menu-right user-dd animated">
                                 <a class="dropdown-item" href="javascript:void(0)"><i class="ti-user m-r-5 m-l-5"></i>
                                     My Profile</a>
-                                <a class="dropdown-item" href="javascript:void(0)"><i
+                                <a  class="dropdown-item" href="javascript:void(0)"><i
                                         class="fa fa-power-off m-r-5 m-l-5"></i> Logout</a>
+                                        <a class="dropdown-item" href="javascript:void(0)" data-toggle="modal" data-target="#passmodal"><i class="ti-user m-r-5 m-l-5"></i>
+                                        Change Password</a>
                                 <div class="dropdown-divider"></div>
                             </div>
                         </li>
@@ -277,6 +279,28 @@ $resultfac = mysqli_query($conn,$facquery);
             </div>
             <!-- End Sidebar scroll-->
         </aside>
+        <div class="modal fade" id="passmodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content" style="border-radius: 8px; border: 1px solid #ccc;">
+                        <div class="modal-header" style="background-color:rgb(5, 5, 5); border-bottom: 2px solid #e9ecef;">
+                            <h5 class="modal-title" id="exampleModalLabel">Change Password</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <form id="passwordform">
+                            <div class="modal-body" style="padding: 20px; background-color: #f5f5f5;">
+                               
+                                <input type="text" name="pass" placeholder="Enter new Password" style="width: 100%; padding: 10px; border-radius: 4px; border: 1px solid #ccc; margin-bottom: 15px;">
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" style="background-color: #6c757d; border: none; padding: 10px 20px;">Close</button>
+                                <button type="submit" class="btn btn-primary" style="background-color: #007bff; border: none; padding: 10px 20px;">Save</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
         <div class="page-wrapper">
             <div class="container-fluid">
                 <div class="card">
@@ -1393,6 +1417,32 @@ $resultfac = mysqli_query($conn,$facquery);
     // Set the reason in the modal's textarea
     $('#extendReasonTextarea').val(reason);
 });
+
+$(document).on("submit","#passwordform",function(e){
+    e.preventDefault();
+    var formdata = new FormData(this);
+    console.log(formdata);
+    formdata.append("changep",true);
+    console.log("hii");
+    $.ajax({
+        type:"POST",
+        url:"fbackend.php",
+        data:formdata,
+        processData:false,
+        contentType:false,
+        success:function(response){
+            console.log(response);
+            var res = jQuery.parseJSON(response);
+            if(res.status==200){
+                $('#passmodal').modal('hide');
+                swal("Done!", "Password Changed!", "success");
+                          }
+            else{
+                alert('error');
+            }
+        }
+    })
+})
 
 
 

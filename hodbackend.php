@@ -1,5 +1,8 @@
 <?php
 include("db.php");
+session_start();
+$_session['hod_id']= 12345;
+$hod_id =  $_session['hod_id'];
 
 //Approve Button
 if (isset($_POST['approvebtn'])) {
@@ -212,9 +215,29 @@ if (isset($_POST['after_image'])) {
     exit;
 }
 
-// Handle form submission
-if (isset($_POST['faculty_id'])) {
-    $faculty_id = mysqli_real_escape_string($conn, $_POST['faculty_id']);
+// Define the counter file path
+$counterFilePath = './uploads/counter.txt';
+
+// Function to get the next file number
+function getNextFileNumber($counterFilePath)
+{
+    if (file_exists($counterFilePath)) {
+        $file = fopen($counterFilePath, 'r');
+        $lastNumber = (int)fgets($file);
+        fclose($file);
+        $nextNumber = $lastNumber + 1;
+    } else {
+        $nextNumber = 1;
+    }
+    $file = fopen($counterFilePath, 'w');
+    fwrite($file, $nextNumber);
+    fclose($file);
+    return $nextNumber;
+}
+
+
+if (isset($_POST['hod'])) {
+    $hod = $hod_id;
     $block_venue = mysqli_real_escape_string($conn, $_POST['block_venue']);
     $venue_name = mysqli_real_escape_string($conn, $_POST['venue_name']);
     $type_of_problem = mysqli_real_escape_string($conn, $_POST['type_of_problem']);
@@ -255,9 +278,11 @@ if (isset($_POST['faculty_id'])) {
     }
 
 
+
+
     // Insert data into the database
-    $query = "INSERT INTO complaints_detail (faculty_id, block_venue, venue_name, type_of_problem, problem_description, images, date_of_reg, status) 
-              VALUES ('$faculty_id', '$block_venue', '$venue_name', '$type_of_problem', '$problem_description', '$images', '$date_of_reg', '$status')";
+    $query = "INSERT INTO complaints_detail (faculty_id,fac_id,block_venue, venue_name, type_of_problem, problem_description, images, date_of_reg, status) 
+              VALUES ('$hod','$hod', '$block_venue', '$venue_name', '$type_of_problem', '$problem_description', '$images', '$date_of_reg', 4)";
 
     if (mysqli_query($conn, $query)) {
         echo json_encode(['status' => 200, 'message' => 'Success']);
@@ -266,5 +291,4 @@ if (isset($_POST['faculty_id'])) {
     }
     exit;
 }
-
 ?>
