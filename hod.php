@@ -213,7 +213,7 @@ $result3 = mysqli_query($conn, $sql3);
                         <div class="ml-auto text-right">
                             <nav aria-label="breadcrumb">
                                 <ol class="breadcrumb">
-                                    <li class="breadcrumb-item"><a href="index.php">Home</a></li>
+                                    <li class="breadcrumb-item"><a href="hod.php">Home</a></li>
                                     <li class="breadcrumb-item active" aria-current="page">Feedback Corner</li>
                                 </ol>
                             </nav>
@@ -1041,19 +1041,15 @@ $result3 = mysqli_query($conn, $sql3);
         </div>
     </div>
 
-    
-
-    <!-----------After Image Modal------------>
-    <div id="aftercomp" class="modal fade" tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="document">
+    <!-- Raise Complaint Modal -->
+    <div class="modal fade" id="cmodal" tabindex="-1"
+        aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
             <div class="modal-content">
-                <div class="modal-header"
-                    style="background: linear-gradient(to bottom right, #cc66ff 1%, #0033cc 100%); color: white;">
-                    <h5 class="modal-title">View Image</h5>
-                    <button type="button" class="close" data-dismiss="modal"
+                <div class="modal-header" style="background:linear-gradient(to bottom right, #cc66ff 1%, #0033cc 100%);background-color:#7460ee;">
+                    <h5 class="modal-title" id="exampleModalLabel">Raise Complaint</h5>
+                    <button class="spbutton" type="button" class="btn-close" data-bs-dismiss="modal"
                         aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
                 </div>
                 <div class="modal-body">
                     <img id="afterimgcomp" src="" alt="Image Preview" style="max-width: 100%; display: none;" />
@@ -1101,10 +1097,10 @@ $result3 = mysqli_query($conn, $sql3);
                                                                 </select>
                                                             </div>
 
-                                                            <div id="othersInput" style="display: none;">
-                                                                <label class="form-label" for="otherValue">Please specify: <span style="color: red;">*</span></label>
-                                                                <input class="form-control" type="text" id="otherValue" name="otherValue"> <br>
-                                                            </div>
+                            <div id="othersInput" style="display: none;">
+                                <label class="form-label" for="otherValue">Please specify: <span style="color: red;">*</span></label>
+                                <input class="form-control" type="text" id="otherValue" name="otherValue"> <br>
+                            </div>
 
                                                             <div class="mb-3">
                                                                 <label for="type_of_problem" class="form-label">Type of Problem <span style="color: red;">*</span></label>
@@ -1207,6 +1203,37 @@ $result3 = mysqli_query($conn, $sql3);
                 swal("File is too large, Maximum 2 MB is allowed", "", "error");
                 $(input).val('');
             }
+        }
+
+        //raise complaint others field
+        function checkIfOthers() {
+            const dropdown = document.getElementById('dropdown');
+            const othersInput = document.getElementById('othersInput');
+
+            // Show the input field if "Others" is selected
+            if (dropdown.value === 'Other') {
+                othersInput.style.display = 'block';
+            } else {
+                othersInput.style.display = 'none';
+            }
+        }
+
+        function handleSubmit(event) {
+            event.preventDefault(); // Prevent form submission for demo purposes
+            const dropdown = document.getElementById('dropdown');
+            const selectedValue = dropdown.value;
+            let finalValue;
+
+            // Get the appropriate value based on the dropdown selection
+            if (selectedValue === 'Other') {
+                finalValue = document.getElementById('otherValue').value;
+            } else {
+                finalValue = selectedValue;
+            }
+
+            console.log("Selected Category:", finalValue);
+            // You can then send this data to the backend or process it further
+            $("#oth").val(finalValue);
         }
     </script>
 
@@ -1463,7 +1490,7 @@ $result3 = mysqli_query($conn, $sql3);
         $(document).on('click', '#facultyinfo', function(e) {
             e.preventDefault();
             var user_id = $(this).val();
-            var fac_id = $("#facultyinfo").data("value"); 
+            var fac_id = $("#facultyinfo").data("value");
 
             console.log(user_id);
             console.log(fac_id);
@@ -1473,7 +1500,7 @@ $result3 = mysqli_query($conn, $sql3);
                 data: {
                     'facultydetails': true,
                     'user_id': user_id,
-                    'fac_id':fac_id
+                    'fac_id': fac_id
                 },
                 success: function(response) {
                     var res = jQuery.parseJSON(response);

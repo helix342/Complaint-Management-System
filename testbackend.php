@@ -484,6 +484,31 @@ if (isset($_POST["manager_feedbacks"])) {
     }
 }
 
+//Add user to raise complaints
+if(isset($_POST["add_user"])){
+    $name = mysqli_real_escape_string($conn,$_POST["name"]);
+    $id = mysqli_real_escape_string($conn,$_POST["userid"]);
+    $phone = mysqli_real_escape_string($conn,$_POST["phone"]);
+    $email = mysqli_real_escape_string($conn,$_POST["email"]);
+    $dept = mysqli_real_escape_string($conn,$_POST["u_dept"]);
+    $role = mysqli_real_escape_string($conn,$_POST["u_role"]);
+
+    $query = "INSERT INTO faculty_details (	faculty_id,faculty_name,department,faculty_contact,faculty_mail,role,password)
+     VALUES ('$id','$name','$dept','$phone','$email','$role','$id')";
+
+     $query_obj = mysqli_query($conn,$query);
+
+     if($query_obj){
+        $res=[
+            'status'=>200,
+            'msg'=>"Sucessfully stored",
+        ];
+        echo json_encode($res);
+     }
+
+
+    
+}
 
 //backend for worker details
 /* if (isset($_POST['fac_feed_rate'])) {

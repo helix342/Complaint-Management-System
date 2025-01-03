@@ -483,14 +483,26 @@ $resultfac = mysqli_query($conn,$facquery);
                                                                 <input type="hidden" class="form-control" name="faculty_id" id="faculty_id" value="<?php echo $_SESSION['faculty_id']; ?>" readonly>
                                                             </div>
                                                             <div class="form-group" style="margin-bottom: 15px;">
-                                                            <label for="faculty" class="font-weight-bold" style="display: block; margin-bottom: 5px;">Choose Faculty</label>
+                                                            <label for="faculty" class="font-weight-bold" style="display: block; margin-bottom: 5px;">Choose Faculty <span style="color: red;">*</span></label>
                                                             <select class="form-control"  name="cfaculty" id="cfaculty" style="width: 100%; height: 40px; border-radius: 4px; border: 1px solid #ccc;">
                                                             </select>
                                                         </div>
 
+                                                        <div class="mb-3">
+                                                                <label for="type_of_problem" class="form-label">Type of Problem <span style="color: red;">*</span></label>
+                                                                <select class="form-control" name="type_of_problem" style="width: 100%; height:36px;">
+                                                                    <option>Select</option>
+                                                                    <option value="elecrtical">ELECTRICAL</option>
+                                                                    <option value="civil">CIVIL</option>
+                                                                    <option value="itkm">IT INFRA </option>
+                                                                    <option value="transport">TRANSPORT</option>
+                                                                    <option value="house">HOUSE KEEPING </option>
+                                                                </select>
+                                                            </div>
+
                                                             <div class="mb-3">
                                                                 <label for="block" class="form-label">Block <span style="color: red;">*</span></label>
-                                                                <input type="text" class="form-control" name="block_venue" placeholder="Eg:RK-206" required>
+                                                                <input type="text" class="form-control" name="block_venue" placeholder="Eg:RK-206 / Transport:Bus No" required>
                                                             </div>
                                                             <div class="mb-3">
                                                                 <label for="venue" class="form-label">Venue <span style="color: red;">*</span></label>
@@ -510,17 +522,7 @@ $resultfac = mysqli_query($conn,$facquery);
                                                                 <input class="form-control" type="text" id="otherValue" name="otherValue"> <br>
                                                             </div>
 
-                                                            <div class="mb-3">
-                                                                <label for="type_of_problem" class="form-label">Type of Problem <span style="color: red;">*</span></label>
-                                                                <select class="form-control" name="type_of_problem" style="width: 100%; height:36px;">
-                                                                    <option>Select</option>
-                                                                    <option value="elecrtical">ELECTRICAL</option>
-                                                                    <option value="civil">CIVIL</option>
-                                                                    <option value="itkm">IT INFRA </option>
-                                                                    <option value="transport">TRANSPORT</option>
-                                                                    <option value="house">HOUSE KEEPING </option>
-                                                                </select>
-                                                            </div>
+                                                            
                                                             <div class="mb-3">
                                                                 <label for="description" class="form-label">Problem Description <span style="color: red;">*</span></label>
                                                                 <input type="text" class="form-control" name="problem_description" placeholder="Enter Description" required>
@@ -544,13 +546,6 @@ $resultfac = mysqli_query($conn,$facquery);
                                         </div>
                                     </div>
                                     <!--pending work modal end -->
-
-
-
-
-
-                                    
-
 
                                     <!-- Pending table Start-->
                                     <div class="row">
