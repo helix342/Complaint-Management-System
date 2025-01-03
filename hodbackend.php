@@ -271,30 +271,7 @@ if (isset($_POST['hod'])) {
                 echo json_encode(['status' => 500, 'message' => 'Error moving the uploaded file.']);
                 exit;
             }
-//Rejected Feedback for Faculty Infra
-if (isset($_POST['rejfeedfac'])) {
-    try {
-        $id = mysqli_real_escape_string($conn, $_POST['reject_idfac']);
-        $feedback = mysqli_real_escape_string($conn, $_POST['rejfeedfac']);
-
-        $query = "UPDATE complaints_detail SET feedback = '$feedback', status = '23' WHERE id = '$id'";
-
-        if (mysqli_query($conn, $query)) {
-            $res = [
-                'status' => 200,
-                'message' => 'Details Updated Successfully'
-            ];
-            echo json_encode($res);
-        } else {
-            echo json_encode(['status' => 500, 'message' => 'Upload failed. Allowed types: jpg, jpeg, png.']);
-            exit;
-        }
-    }
-
-
-
-
-    // Insert data into the database
+// Insert data into the database
     $query = "INSERT INTO complaints_detail (faculty_id,fac_id,block_venue, venue_name, type_of_problem, problem_description, images, date_of_reg, status) 
               VALUES ('$hod','$hod', '$block_venue', '$venue_name', '$type_of_problem', '$problem_description', '$images', '$date_of_reg', 4)";
 
@@ -305,13 +282,8 @@ if (isset($_POST['rejfeedfac'])) {
             throw new Exception('Query Failed: ' . mysqli_error($conn));
             echo "print";
         }
-    } catch (Exception $e) {
-        $res = [
-            'status' => 500,
-            'message' => 'Error: ' . $e->getMessage()
-        ];
-        echo json_encode($res);
     }
+    
 }
 
 //Approve Button for Faculty Infra
@@ -337,5 +309,6 @@ if (isset($_POST['approvefacbtn'])) {
         ];
         echo json_encode($res);
     }
+}
 }
 ?>
