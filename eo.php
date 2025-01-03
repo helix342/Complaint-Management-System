@@ -188,7 +188,7 @@ $result3 = mysqli_query($conn, $sql3);
                 <nav class="sidebar-nav">
                     <ul id="sidebarnav" class="p-t-30 in">
                         <li class="sidebar-item">
-                            <a class="sidebar-link waves-effect waves-dark sidebar-link" href="hod.php" aria-expanded="false"><i class="mdi mdi-view-dashboard"></i><span
+                            <a class="sidebar-link waves-effect waves-dark sidebar-link active" href="eo.php" aria-expanded="false"><i class="mdi mdi-view-dashboard"></i><span
                                     class="hide-menu">Complaints</span></a>
                         </li>
                     </ul>
@@ -211,7 +211,7 @@ $result3 = mysqli_query($conn, $sql3);
                         <div class="ml-auto text-right">
                             <nav aria-label="breadcrumb">
                                 <ol class="breadcrumb">
-                                    <li class="breadcrumb-item"><a href="index.php">Home</a></li>
+                                    <li class="breadcrumb-item"><a href="eo.php">Home</a></li>
                                     <li class="breadcrumb-item active" aria-current="page">Feedback Corner</li>
                                 </ol>
                             </nav>

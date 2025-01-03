@@ -210,7 +210,7 @@ $result3 = mysqli_query($conn, $sql3);
                         <div class="ml-auto text-right">
                             <nav aria-label="breadcrumb">
                                 <ol class="breadcrumb">
-                                    <li class="breadcrumb-item"><a href="index.php">Home</a></li>
+                                    <li class="breadcrumb-item"><a href="hod.php">Home</a></li>
                                     <li class="breadcrumb-item active" aria-current="page">Feedback Corner</li>
                                 </ol>
                             </nav>
