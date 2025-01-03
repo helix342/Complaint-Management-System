@@ -3,7 +3,6 @@ include("db.php");
 session_start();
 $_session['eo_id'] = 12345;
 $eo_id = $_session['eo_id'];
-
 $sql = "
 SELECT cd.*, faculty_details.faculty_name, faculty_details.department, faculty_details.faculty_contact, faculty_details.faculty_mail
 FROM complaints_detail cd
