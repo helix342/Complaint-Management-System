@@ -450,8 +450,6 @@ $row_count7 = mysqli_num_rows($result7);
                                     My Profile</a>
                                 <a class="dropdown-item" href="javascript:void(0)" data-toggle="modal" data-target="#addworker"><i class="ti-user m-r-5 m-l-5"></i>
                                     Add Worker</a>
-                                <a class="dropdown-item" href="javascript:void(0)" data-toggle="modal" data-target="#adduser"><i class="ti-user m-r-5 m-l-5"></i>
-                                    Add User</a>
                                 <a class="dropdown-item" href="javascript:void(0)"><i
                                         class="fa fa-power-off m-r-5 m-l-5"></i> Logout</a>
                                 <div class="dropdown-divider"></div>
@@ -501,59 +499,6 @@ $row_count7 = mysqli_num_rows($result7);
                     </div>
                 </div>
             </div>
-
-            
-    <!--Add User option-->
-    <div class="modal fade" id="adduser" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content" style="border-radius: 8px; border: 1px solid #ccc;">
-                        <div class="modal-header" style="background-color: #f8f9fa; border-bottom: 2px solid #e9ecef;">
-                            <h5 class="modal-title" id="exampleModalLabel">Add Worker</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <form id="user_data">
-                            <div class="modal-body" style="padding: 20px; background-color: #f5f5f5;">
-                                <input type="text" name="name" placeholder="Enter User Name" style="width: 100%; padding: 10px; border-radius: 4px; border: 1px solid #ccc; margin-bottom: 15px;">
-                                <input type="text" name="userid" placeholder="Enter User Id" style="width: 100%; padding: 10px; border-radius: 4px; border: 1px solid #ccc; margin-bottom: 15px;">
-                                 <input type="tel" name="phone" placeholder="Enter Phone number" style="width: 100%; padding: 10px; border-radius: 4px; border: 1px solid #ccc; margin-bottom: 15px;">
-                                  <input type="email" name="email" placeholder="Enter User Id" style="width: 100%; padding: 10px; border-radius: 4px; border: 1px solid #ccc; margin-bottom: 15px;">
-                                <select id="department" name="u_dept" style="width: 100%; padding: 10px; border-radius: 4px; border: 1px solid #ccc; margin-bottom: 15px;">
-                                    <option value="all">Select department</option>
-                                    <option value="Freshman Engineering">Freshman Engineering</option>
-                                    <option value="Artificial Intelligence and Data Science">Artificial Intelligence and Data Science</option>
-                                    <option value="Artificial Intelligence and Machine Learning">Artificial Intelligence and Machine Learning</option>
-                                    <option value="Civil Engineering">Civil Engineering</option>
-                                    <option value="Computer Science and Business Systems">Computer Science and Business Systems</option>
-                                    <option value="Computer Science and Engineering">Computer Science and Engineering</option>
-                                    <option value="Electrical and Electronics Engineering">Electrical and Electronics Engineering</option>
-                                    <option value="Electronics and Communication Engineering">Electronics and Communication Engineering</option>
-                                    <option value="Information Technology">Information Technology</option>
-                                    <option value="Master of Business Administration">Master of Business Administration</option>
-                                    <option value="Master of Computer Applications">Master of Computer Applications </option>
-                                    <option value="Mechanical Engineering">Mechanical Engineering</option>
-                                                                </select>
-                                <select id="role" name="u_role" style="width: 100%; padding: 10px; border-radius: 4px; border: 1px solid #ccc; margin-bottom: 15px;">
-                                    <option value="all">Select Role</option>
-                                    <option value="hod">Hod</option>
-                                    <option value="infra">Infra</option>
-                                    <option value="student">Student</option>
-                                    <option value="eo">Estate Officer</option>
-                                    <option value="manager">Manager</option>
-                                </select>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" style="background-color: #6c757d; border: none; padding: 10px 20px;">Close</button>
-                                <button type="submit" class="btn btn-primary" style="background-color: #007bff; border: none; padding: 10px 20px;">Add</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-
-
-    <!--Add worker option-->
             <div class="modal fade" id="addworker" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content" style="border-radius: 8px; border: 1px solid #ccc;">
@@ -3144,38 +3089,12 @@ $row_count7 = mysqli_num_rows($result7);
                     });
                 });
 */
- 
 
 
-                $(document).on("submit","#user_data",function(e){
-                    e.preventDefault();
-                    var form = new FormData(this);
-                    form.append("add_user",true);
-                    console.log(form);
-                    $.ajax({
-                        type:"POST",
-                        url:"testbackend.php",
-                        data:form,
-                        contentType:false,
-                        processData:false,
-                        success: function(response){
-                            console.log(response);
-                            var res = jQuery.parseJSON(response);
 
-                            if(res.status == 200){
-                                alert("user added sucessfully");
 
-                                $("#adduser").modal("hide");
-                                $("#user_data")[0].reset();
-                            }
-                            else{
-                                alert("user not added");
-                            }
-                        }
-                    })
-                })     
 
-               /*  $(document), on("click", "#datesubmit", function(e) {
+                $(document), on("click", "#datesubmit", function(e) {
                     e.preventDefault();
                     var form = new FormData(this);
                     form.append("date", true);
@@ -3193,7 +3112,7 @@ $row_count7 = mysqli_num_rows($result7);
                         }
 
                     })
-                }) */
+                })
             </script>
 
 
