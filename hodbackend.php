@@ -138,10 +138,9 @@ if (isset($_POST['seefeedback'])) {
 
 // Get Image
 if (isset($_POST['get_image'])) {
-    $task_id = isset($_POST['task_id']) ? intval($_POST['task_id']) : '';
+    $task_id = $_POST['task_id'];
 
-    if ($task_id == 0
-    ) {
+    if ($task_id == 0) {
         echo json_encode(['status' => 400, 'message' => 'Task ID not provided or invalid']);
         exit;
     }
@@ -149,10 +148,7 @@ if (isset($_POST['get_image'])) {
     $query = "SELECT images FROM complaints_detail WHERE id = ?";
     $stmt = $conn->prepare($query);
 
-    if (!$stmt) {
-        echo json_encode(['status' => 500, 'message' => 'Prepare statement failed: ' . $conn->error]);
-        exit;
-    }
+    
 
     $stmt->bind_param('i', $task_id);
     $stmt->execute();
@@ -160,19 +156,20 @@ if (isset($_POST['get_image'])) {
 
     if ($result->num_rows > 0) {
         $row = $result->fetch_assoc();
-        $image_path = 'uploads/' . $row['images'];
+        $image_path = $row['images'];
+        $res=[
+            "status"=>200,
+            "message"=>"success",
+            "data"=>$image_path
+        ];
+        echo json_encode($res);
 
-        if (file_exists($image_path)) {
-            echo json_encode(['status' => 200, 'data' => ['images' => $image_path]]);
-        } else {
-            echo json_encode(['status' => 404, 'message' => 'Image file not found on the server']);
-        }
+        
     } else {
         echo json_encode(['status' => 404, 'message' => 'No image found']);
     }
 
     $stmt->close();
-    $conn->close();
     exit;
 }
 

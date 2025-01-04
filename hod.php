@@ -1049,6 +1049,25 @@ $rejected = mysqli_num_rows($result3);
         </div>
     </div>
 
+    <div class="modal fade" id="bmodalImage" tabindex="-1"
+        aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header" style="background:linear-gradient(to bottom right, #cc66ff 1%, #0033cc 100%);background-color:#7460ee;">
+                    <h5 class="modal-title" id="exampleModalLabel">Raise Complaint</h5>
+                    <button class="spbutton" type="button" class="btn-close" data-bs-dismiss="modal"
+                        aria-label="Close">
+                </div>
+                <div class="modal-body">
+                    <img id="bimg" src="" alt="Image Preview" style="max-width: 100%;" />
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="tab-pane p-20" id="home" role="tabpanel">
                                     <div class="modal fade" id="raisemodal" tabindex="-1"
                                         aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -1509,8 +1528,8 @@ $rejected = mysqli_num_rows($result3);
 
         //Image Modal Ajax
         $(document).on('click', '.showImage', function() {
-            var task_id = $(this).data('task-id');
-            $('#task_id').val(task_id);
+            var task_id = $(this).val();
+            console.log(task_id);
 
             $.ajax({
                 type: "POST",
@@ -1519,15 +1538,16 @@ $rejected = mysqli_num_rows($result3);
                     'get_image': true,
                     'task_id': task_id
                 },
-                dataType: "json",
                 success: function(response) {
-                    if (response.status == 200) {
-                        $('#modalImage').attr('src', response.data.images).show();
+                    console.log(response);
+                    var res = jQuery.parseJSON(response);
+                    if (res.status == 200) {
+                        $('#bimg').attr('src',"uploads/"+res.data);
+                        $('#bmodalImage').modal('show');
                     } else {
                         $('#modalImage').hide();
                         alert(response.message);
                     }
-                    $('#imageModal1').modal('show');
                 },
                 error: function(xhr, status, error) {
                     alert('An error occurred while retrieving the image.');

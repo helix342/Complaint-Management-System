@@ -194,7 +194,7 @@ $rejected = mysqli_num_rows($result3);
                 <nav class="sidebar-nav">
                     <ul id="sidebarnav" class="p-t-30 in">
                         <li class="sidebar-item">
-                            <a class="sidebar-link waves-effect waves-dark sidebar-link active" href="eo.php" aria-expanded="false"><i class="mdi mdi-view-dashboard"></i><span
+                            <a class="sidebar-link waves-effect waves-dark sidebar-link" href="hod.php" aria-expanded="false"><i class="mdi mdi-view-dashboard"></i><span
                                     class="hide-menu">Complaints</span></a>
                         </li>
                     </ul>
@@ -217,7 +217,7 @@ $rejected = mysqli_num_rows($result3);
                         <div class="ml-auto text-right">
                             <nav aria-label="breadcrumb">
                                 <ol class="breadcrumb">
-                                    <li class="breadcrumb-item"><a href="eo.php">Home</a></li>
+                                    <li class="breadcrumb-item"><a href="hod.php">Home</a></li>
                                     <li class="breadcrumb-item active" aria-current="page">Feedback Corner</li>
                                 </ol>
                             </nav>
@@ -242,7 +242,7 @@ $rejected = mysqli_num_rows($result3);
                                 <div class="card-body">
                                     <h4 class="card-title">Complaint Details</h4>
                                     <div class="card">
-                                    <ul class="nav nav-tabs mb-3" role="tablist">
+                                        <ul class="nav nav-tabs mb-3" role="tablist">
                                             <li class="nav-item">
                                                 <a class="nav-link active show" data-toggle="tab" href="#dashboard"
                                                     role="tab" aria-selected="true"><span class="hidden-sm-up"></span>
@@ -312,7 +312,7 @@ $rejected = mysqli_num_rows($result3);
                                                                             <div class="stats-box text-center p-3" style="background-color:orange;">
                                                                                 <i class="fas fa-clock"></i>
                                                                                 <h1 class="font-light text-white">
-                                                                                    <?php $query2 = "SELECT COUNT(*) as pending FROM complaints_detail WHERE  status ='4'";
+                                                                                    <?php $query2 = "SELECT COUNT(*) as pending FROM complaints_detail WHERE  status ='2'";
                                                                                     $output2 = mysqli_query($conn, $query2);
                                                                                     $row2 = mysqli_fetch_assoc($output2);
                                                                                     $pendingCount = $row2['pending'];
@@ -334,14 +334,14 @@ $rejected = mysqli_num_rows($result3);
                                                                             <div class="stats-box text-center p-3" style="background-color:red;">
                                                                                 <i class="fas fa-exclamation"></i>
                                                                                 <h1 class="font-light text-white">
-                                                                                    <?php $query2 = "SELECT COUNT(*) as pending FROM complaints_detail WHERE  status ='2'";
+                                                                                    <?php $query2 = "SELECT COUNT(*) as pending FROM complaints_detail WHERE  status ='1'";
                                                                                     $output2 = mysqli_query($conn, $query2);
                                                                                     $row2 = mysqli_fetch_assoc($output2);
                                                                                     $pendingCount = $row2['pending'];
                                                                                     echo $pendingCount;
                                                                                     ?>
                                                                                 </h1>
-                                                                                <small class="font-light">HOD Pending</small>
+                                                                                <small class="font-light">Faculty Incharge Pending</small>
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -356,7 +356,7 @@ $rejected = mysqli_num_rows($result3);
                                                                             <div class="stats-box text-center p-3" style="background-color:rgb(14, 86, 239);">
                                                                                 <i class="fas fa-check"></i>
                                                                                 <h1 class="font-light text-white">
-                                                                                    <?php $query2 = "SELECT COUNT(*) as approved FROM complaints_detail WHERE (status ='20' or status ='6' or status='7' or status='10' or status='11' or status='13' or status='14' or status='15' or status='17' or status='18')";
+                                                                                    <?php $query2 = "SELECT COUNT(*) as approved FROM complaints_detail WHERE (status ='4' or status ='6' or status='7' or status='10' or status='11' or status='13' or status='14' or status='15' or status='17' or status='18')";
                                                                                     $output2 = mysqli_query($conn, $query2);
                                                                                     $row2 = mysqli_fetch_assoc($output2);
                                                                                     $pendingCount = $row2['approved'];
@@ -395,6 +395,7 @@ $rejected = mysqli_num_rows($result3);
                                                     </div>
                                                 </div>
                                             </div>
+
                                             
                                             <!-------------------------pending tab---------------------------->
                                             <div class="tab-pane p-20" id="pending" role="tabpanel">
@@ -404,10 +405,12 @@ $rejected = mysqli_num_rows($result3);
                                                             <div class="card-header">
                                                                 <h4>
                                                                     Raise Complaint
-                                                                    <button type="button" style="float:right; font-size:20px;"
-                                                                        class="btn btn-info mdi mdi-plus-box-outline" data-toggle="modal" data-target="#cmodal"></button><br>
+                                                                    <button type="button" class="btn btn-info float-right fac" data-toggle="modal" data-target="#raisemodal">Raise Compliant</button>
+                                                                    <br>
                                                                 </h4>
                                                             </div>
+
+                                                            
 
                                                             <div class="card-body">
                                                                 <div class="table-container">
@@ -494,12 +497,12 @@ $rejected = mysqli_num_rows($result3);
                                                                                             <button type="button"
                                                                                                 value="<?php echo $row['id']; ?>"
                                                                                                 id="detail_id"
-                                                                                                class="btn btn-success btnapprovefac">
+                                                                                                class="btn btn-success btnapprove">
                                                                                                 <i class="fas fa-check"></i>
                                                                                             </button>
                                                                                             <button type="button"
                                                                                                 value="<?php echo $row['id']; ?>"
-                                                                                                class="btn btn-danger btnrejectfac"
+                                                                                                class="btn btn-danger btnreject"
                                                                                                 data-toggle="modal"
                                                                                                 data-target="#rejectmodal">
                                                                                                 <i class="fas fa-times"></i>
@@ -611,7 +614,7 @@ $rejected = mysqli_num_rows($result3);
                                                                                                 1 => 'Pending',
                                                                                                 2 => 'Approved by infra',
                                                                                                 3 => 'Rejected by infra',
-                                                                                                4 => 'Forwaded to Estate Officer',
+                                                                                                4 => 'Forwaded to Manager',
                                                                                                 6 => 'Sent to principal for approval',
                                                                                                 7 => 'Assigned to worker',
                                                                                                 10 => 'Work in progress',
@@ -621,8 +624,6 @@ $rejected = mysqli_num_rows($result3);
                                                                                                 15 => 'Work is Reassigned',
                                                                                                 17 => 'Work in Progress',
                                                                                                 18 => 'Waiting for Approval',
-                                                                                                22 => 'Accepted by EO',
-                                                                                                23 => 'Rejected by EO',
                                                                                             ];
 
                                                                                             $status = $row['status'];
@@ -842,7 +843,7 @@ $rejected = mysqli_num_rows($result3);
                                                                                     </td>
                                                                                     <td>
                                                                                         <center>
-                                                                                            <button type="button" value="<?php echo $row['id']; ?>" class="btn btn-danger btnrejfeedfac" data-toggle="modal"
+                                                                                            <button type="button" value="<?php echo $row['id']; ?>" class="btn btn-danger btnrejfeed" data-toggle="modal"
                                                                                                 data-target="#problemrejected" id="rejectedfeedback">
                                                                                                 <i class="fas fa-solid fa-comment" style="font-size: 20px; width:40px;"></i>
                                                                                             </button>
@@ -896,7 +897,7 @@ $rejected = mysqli_num_rows($result3);
                     <div class="modal-body" style="font-size:larger;">
                         <textarea class="form-control"
                             placeholder="Enter Reason"
-                            name="rejfeedfac"
+                            name="rejfeed"
                             style="width:460px;height: 180px; resize:none" required></textarea>
                     </div>
                     <div class="modal-footer">
@@ -1028,110 +1029,14 @@ $rejected = mysqli_num_rows($result3);
     </div>
 
     <!-- Raise Complaint Modal -->
-    <div id="cmodal" class="modal fade" tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="document">
+    <div class="modal fade" id="cmodal" tabindex="-1"
+        aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
             <div class="modal-content">
-                <div class="modal-header"
-                    style="background: linear-gradient(to bottom right, #cc66ff 1%, #0033cc 100%); color: white;">
-                    <h5 class="modal-title">Raise Complaint</h5>
-                    <button type="button" class="close" data-dismiss="modal"
+                <div class="modal-header" style="background:linear-gradient(to bottom right, #cc66ff 1%, #0033cc 100%);background-color:#7460ee;">
+                    <h5 class="modal-title" id="exampleModalLabel">Raise Complaint</h5>
+                    <button class="spbutton" type="button" class="btn-close" data-bs-dismiss="modal"
                         aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <form id="addcomp" enctype="multipart/form-data" onsubmit="handleSubmit(event)">
-                    <div class="modal-body">
-                       
-
-                      
-
-                        <div class="mb-3">
-                            <label for="block" class="form-label">Block <span style="color: red;">*</span></label>
-                            <input type="text" class="form-control" name="block_venue" placeholder="Eg:RK-206" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="venue" class="form-label">Venue <span style="color: red;">*</span></label>
-                            <select id="dropdown" class="form-control" name="venue_name" onchange="checkIfOthers()">
-                                <option>Select</option>
-                                <option value="class">Class Room</option>
-                                <option value="department">Department</option>
-                                <option value="lab">Lab</option>
-                                <option value="staff_room">Staff Room</option>
-                                <option id="oth" value="Other">Others</option>
-                            </select>
-                        </div>
-
-                        <div id="othersInput" style="display: none;">
-                            <label class="form-label" for="otherValue">Please specify: <span style="color: red;">*</span></label>
-                            <input class="form-control" type="text" id="otherValue" name="otherValue">
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="type_of_problem" class="form-label">Type of Problem <span style="color: red;">*</span></label>
-                            <select class="form-control" name="type_of_problem">
-                                <option>Select</option>
-                                <option value="elecrtical">ELECTRICAL</option>
-                                <option value="civil">CIVIL</option>
-                                <option value="itkm">IT INFRA</option>
-                                <option value="transport">TRANSPORT</option>
-                                <option value="house">HOUSE KEEPING</option>
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label for="description" class="form-label">Problem Description <span style="color: red;">*</span></label>
-                            <input type="text" class="form-control" name="problem_description" placeholder="Enter Description" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="images" class="form-label">Image <span style="color: red;">*</span> </label>
-                            <input type="file" class="form-control" name="images" id="images" onchange="validateSize(this)" required>
-                        </div>
-                        <div class="mb-3">
-                            <input type="hidden" class="form-control" name="date_of_reg" id="date_of_reg" required>
-                        </div>
-                    </div>
-                    <input type="hidden" name="status" value="2">
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Submit</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <!-- Image Modal-->
-    <div id="imageModal1" class="modal fade" tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header"
-                    style="background: linear-gradient(to bottom right, #cc66ff 1%, #0033cc 100%); color: white;">
-                    <h5 class="modal-title">View Image</h5>
-                    <button type="button" class="close" data-dismiss="modal"
-                        aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <img id="modalImage" src="" alt="Image Preview" style="max-width: 100%; display: none;" />
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-----------After Image Modal------------>
-    <div id="aftercomp" class="modal fade" tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header"
-                    style="background: linear-gradient(to bottom right, #cc66ff 1%, #0033cc 100%); color: white;">
-                    <h5 class="modal-title">View Image</h5>
-                    <button type="button" class="close" data-dismiss="modal"
-                        aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
                 </div>
                 <div class="modal-body">
                     <img id="afterimgcomp" src="" alt="Image Preview" style="max-width: 100%; display: none;" />
@@ -1142,7 +1047,28 @@ $rejected = mysqli_num_rows($result3);
             </div>
         </div>
     </div>
-    <div class="modal fade" id="raisemodal" tabindex="-1"
+
+    <div class="modal fade" id="bmodalImage" tabindex="-1"
+        aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header" style="background:linear-gradient(to bottom right, #cc66ff 1%, #0033cc 100%);background-color:#7460ee;">
+                    <h5 class="modal-title" id="exampleModalLabel">Raise Complaint</h5>
+                    <button class="spbutton" type="button" class="btn-close" data-bs-dismiss="modal"
+                        aria-label="Close">
+                </div>
+                <div class="modal-body">
+                    <img id="bimg" src="" alt="Image Preview" style="max-width: 100%;" />
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="tab-pane p-20" id="home" role="tabpanel">
+                                    <div class="modal fade" id="raisemodal" tabindex="-1"
                                         aria-labelledby="exampleModalLabel" aria-hidden="true">
                                         <div class="modal-dialog">
                                             <div class="modal-content">
@@ -1154,10 +1080,7 @@ $rejected = mysqli_num_rows($result3);
                                                 <div>
                                                     <form id="addnewuser" enctype="multipart/form-data" onsubmit="handleSubmit(event)">
                                                         <div class="modal-body">
-                                                            <div class="mb-3">
-                                                                <input type="hidden" id="hidden_faculty_id" value="<?php echo $_SESSION['faculty_id']; ?>">
-                                                                <input type="hidden" class="form-control" name="faculty_id" id="faculty_id" value="<?php echo $_SESSION['faculty_id']; ?>" readonly>
-                                                            </div>
+                                                            
                                                             
 
                                                             <div class="mb-3">
@@ -1182,6 +1105,39 @@ $rejected = mysqli_num_rows($result3);
                                 <input class="form-control" type="text" id="otherValue" name="otherValue"> <br>
                             </div>
 
+                                                            <div class="mb-3">
+                                                                <label for="type_of_problem" class="form-label">Type of Problem <span style="color: red;">*</span></label>
+                                                                <select class="form-control" name="type_of_problem" style="width: 100%; height:36px;">
+                                                                    <option>Select</option>
+                                                                    <option value="elecrtical">ELECTRICAL</option>
+                                                                    <option value="civil">CIVIL</option>
+                                                                    <option value="itkm">IT INFRA </option>
+                                                                    <option value="transport">TRANSPORT</option>
+                                                                    <option value="house">HOUSE KEEPING </option>
+                                                                </select>
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label for="description" class="form-label">Problem Description <span style="color: red;">*</span></label>
+                                                                <input type="text" class="form-control" name="problem_description" placeholder="Enter Description" required>
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label for="images" class="form-label">Image <span style="color: red;">*</span> </label>
+                                                                <input type="file" class="form-control" name="images" id="images" onchange="validateSize(this)" required>
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <input type="hidden" class="form-control" name="date_of_reg" id="date_of_reg" required>
+                                                            </div>
+                                                        </div>
+                                                        <input type="hidden" name="status" value="2">
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                            <button type="submit" class="btn btn-primary">Submit</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
 
     <!------------Rejected Reason modal-------------->
     <div class="modal fade" id="problemrejected" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -1226,6 +1182,7 @@ $rejected = mysqli_num_rows($result3);
     <script src="https://cdn.jsdelivr.net/npm/alertifyjs/build/alertify.min.js"></script>
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
+
     <!-- Set Today date in Raise Complaint-->
     <script>
         var today = new Date().toISOString().split('T')[0];
@@ -1250,17 +1207,47 @@ $rejected = mysqli_num_rows($result3);
                 $(input).val('');
             }
         }
+
+        //raise complaint others field
+        function checkIfOthers() {
+            const dropdown = document.getElementById('dropdown');
+            const othersInput = document.getElementById('othersInput');
+
+            // Show the input field if "Others" is selected
+            if (dropdown.value === 'Other') {
+                othersInput.style.display = 'block';
+            } else {
+                othersInput.style.display = 'none';
+            }
+        }
+
+        function handleSubmit(event) {
+            event.preventDefault(); // Prevent form submission for demo purposes
+            const dropdown = document.getElementById('dropdown');
+            const selectedValue = dropdown.value;
+            let finalValue;
+
+            // Get the appropriate value based on the dropdown selection
+            if (selectedValue === 'Other') {
+                finalValue = document.getElementById('otherValue').value;
+            } else {
+                finalValue = selectedValue;
+            }
+
+            console.log("Selected Category:", finalValue);
+            // You can then send this data to the backend or process it further
+            $("#oth").val(finalValue);
+        }
     </script>
 
     <script>
-
         //Tool Tip
         $(function() {
             // Initialize the tooltip
             $('[data-toggle="tooltip"]').tooltip();
 
             // You can also set options manually if needed
-            $('.btnrejectfac').tooltip({
+            $('.btnreject').tooltip({
                 placement: 'top',
                 title: 'Reject'
             });
@@ -1271,7 +1258,7 @@ $rejected = mysqli_num_rows($result3);
             $('[data-toggle="tooltip"]').tooltip();
 
             // You can also set options manually if needed
-            $('.btnrejfeedfac').tooltip({
+            $('.btnrejfeed').tooltip({
                 placement: 'top',
                 title: 'Rejected Reason'
             });
@@ -1315,7 +1302,7 @@ $rejected = mysqli_num_rows($result3);
             $('[data-toggle="tooltip"]').tooltip();
 
             // You can also set options manually if needed
-            $('.btnapprovefac').tooltip({
+            $('.btnapprove').tooltip({
                 placement: 'top',
                 title: 'Accept'
             });
@@ -1346,11 +1333,12 @@ $rejected = mysqli_num_rows($result3);
 
             if (confirm('Are you sure you want to reject this complaint?')) {
                 var formdata1 = new FormData(this);
-                var reject_idfac = $('.btnrejectfac').val();
-                formdata1.append("reject_idfac", reject_idfac);
+                var reject_id = $('.btnreject').val();
+
+                formdata1.append("reject_id", reject_id);
                 $.ajax({
                     type: "POST",
-                    url: "hodbackend.php",
+                    url: "eobackend.php",
                     data: formdata1,
                     processData: false,
                     contentType: false,
@@ -1390,11 +1378,10 @@ $rejected = mysqli_num_rows($result3);
         });
 
         //approve button
-        $(document).on('click', '.btnapprovefac', function(e) {
+        $(document).on('click', '.btnapprove', function(e) {
             e.preventDefault();
 
-            var approveidfac = $(this).val();
-            console.log(approveidfac);
+            var approveid = $(this).val();
 
             alertify.confirm('Confirmation', 'Are you sure you want to approve this complaint?',
                 function() {
@@ -1402,11 +1389,10 @@ $rejected = mysqli_num_rows($result3);
                         type: "POST",
                         url: "eobackend.php",
                         data: {
-                            'approvefacbtn': true,
-                            'approvefac': approveidfac
+                            'approvebtn': true,
+                            'approve': approveid
                         },
                         success: function(response) {
-                            console.log(response);
                             var res = jQuery.parseJSON(response);
                             if (res.status == 500) {
                                 alertify.error(res.message);
@@ -1437,6 +1423,43 @@ $rejected = mysqli_num_rows($result3);
                 });
         });
 
+        // Add Faculty complaints to database
+        $(document).on('submit', '#addnewuser', function(e) {
+            e.preventDefault(); // Prevent form from submitting normally
+            var formData = new FormData(this);
+            formData.append("hod",true);
+            $.ajax({
+                type: "POST",
+                url: "eobackend.php",
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                    var res = typeof response === 'string' ? JSON.parse(response) : response;
+                    if (res.status === 200) {
+                        swal("Complaint Submitted!", "", "success");
+                        $('#raisemodal').modal('hide');
+                        $('#addnewuser')[0].reset(); // Reset the form
+                        $('#navref1').load(location.href + " #navref1");
+                        $('#navref2').load(location.href + " #navref2");
+                        $('#navref3').load(location.href + " #navref3");
+                        $('#dashref').load(location.href + " #dashref");
+
+                        $('#user').DataTable().destroy();
+                        $("#user").load(location.href + " #user > *", function() {
+                            $('#user').DataTable();
+                        });
+                    } else {
+                        console.error("Error:", res.message);
+                        alert("Something went wrong! Try again.");
+                    }
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.error("AJAX Error:", textStatus, errorThrown);
+                    alert("Failed to process response. Please try again.");
+                }
+            });
+        });
         // problem description
         $(document).on('click', '#seeproblem', function(e) {
             e.preventDefault();
@@ -1444,7 +1467,7 @@ $rejected = mysqli_num_rows($result3);
             console.log(user_id)
             $.ajax({
                 type: "POST",
-                url: "hodbackend.php",
+                url: "eobackend.php",
                 data: {
                     'seedetails': true,
                     'user_id': user_id
@@ -1466,63 +1489,6 @@ $rejected = mysqli_num_rows($result3);
             });
         });
 
-        //Image Modal Ajax
-        $(document).on('click', '.showImage', function() {
-            var task_id = $(this).data('task-id');
-            $('#task_id').val(task_id);
-
-            $.ajax({
-                type: "POST",
-                url: "hodbackend.php",
-                data: {
-                    'get_image': true,
-                    'task_id': task_id
-                },
-                dataType: "json",
-                success: function(response) {
-                    if (response.status == 200) {
-                        $('#modalImage').attr('src', response.data.images).show();
-                    } else {
-                        $('#modalImage').hide();
-                        alert(response.message);
-                    }
-                    $('#imageModal1').modal('show');
-                },
-                error: function(xhr, status, error) {
-                    alert('An error occurred while retrieving the image.');
-                }
-            });
-        });
-
-        //After Image Modal
-        $(document).on('click', '.viewafterimgcomp', function() {
-            var task_id = $(this).data('imgs-id');
-            $('#task_id').val(task_id);
-
-            // Fetch the image from the server
-            $.ajax({
-                type: "POST",
-                url: "hodbackend.php",
-                data: {
-                    'after_image': true,
-                    'task_id': task_id
-                },
-                dataType: "json",
-                success: function(response) {
-                    if (response.status == 200) {
-                        $('#afterimgcomp').attr('src', response.data.after_photo).show();
-                    } else {
-                        $('afterimgcomp').hide();
-                        alert(response.message);
-                    }
-                    $('#viewimgaftercomp').modal('show');
-                },
-                error: function(xhr, status, error) {
-                    alert('An error occurred while retrieving the image.');
-                }
-            });
-        });
-
         // faculty info
         $(document).on('click', '#facultyinfo', function(e) {
             e.preventDefault();
@@ -1533,7 +1499,7 @@ $rejected = mysqli_num_rows($result3);
             console.log(fac_id);
             $.ajax({
                 type: "POST",
-                url: "hodbackend.php",
+                url: "eobackend.php",
                 data: {
                     'facultydetails': true,
                     'user_id': user_id,
@@ -1559,69 +1525,63 @@ $rejected = mysqli_num_rows($result3);
             });
         });
 
-        //Rejected Tab Feedback
-        $(document).on('click', '#rejectedfeedback', function(e) {
-            e.preventDefault();
-            var user_idrej = $(this).val();
-            console.log(user_idrej)
+        //Image Modal Ajax
+        $(document).on('click', '.showImage', function() {
+            var task_id = $(this).val();
+            console.log(task_id);
+
             $.ajax({
                 type: "POST",
-                url: "hodbackend.php",
+                url: "eobackend.php",
                 data: {
-                    'seefeedback': true,
-                    'user_idrej': user_idrej
-
+                    'get_image': true,
+                    'task_id': task_id
                 },
                 success: function(response) {
+                    console.log(response);
                     var res = jQuery.parseJSON(response);
-                    console.log(res)
-                    if (res.status == 500) {
-                        alert(res.message);
+                    if (res.status == 200) {
+                        $('#bimg').attr('src',"uploads/"+res.data);
+                        $('#bmodalImage').modal('show');
                     } else {
-                        $('#pdrej2').val(res.data.feedback);
-                        $('#problemrejected').modal('show');
+                        $('#modalImage').hide();
+                        alert(response.message);
                     }
+                },
+                error: function(xhr, status, error) {
+                    alert('An error occurred while retrieving the image.');
                 }
             });
         });
 
-        $(document).on('submit', '#addcomp', function(e) {
-            e.preventDefault(); // Prevent form from submitting normally
-            var formData = new FormData(this);
-            formData.append("eo",true);
+        //After Image Modal
+        $(document).on('click', '.viewafterimgcomp', function() {
+            var task_id = $(this).data('imgs-id');
+            $('#task_id').val(task_id);
+
+            // Fetch the image from the server
             $.ajax({
                 type: "POST",
-                url: "eo_backend.php",
-                data: formData,
-                processData: false,
-                contentType: false,
-                success: function(response) {
-                    var res = typeof response === 'string' ? JSON.parse(response) : response;
-                    if (res.status === 200) {
-                        swal("Complaint Submitted!", "", "success");
-                        $('#cmodal').modal('hide');
-                        $('#addcomp')[0].reset(); // Reset the form
-                        $('#navref1').load(location.href + " #navref1");
-                        $('#navref2').load(location.href + " #navref2");
-                        $('#navref3').load(location.href + " #navref3");
-                        $('#dashref').load(location.href + " #dashref");
-
-                        $('#user').DataTable().destroy();
-                        $("#user").load(location.href + " #user > *", function() {
-                            $('#user').DataTable();
-                        });
-                    } else {
-                        console.error("Error:", res.message);
-                        alert("Something went wrong! Try again.");
-                    }
+                url: "eobackend.php",
+                data: {
+                    'after_image': true,
+                    'task_id': task_id
                 },
-                error: function(jqXHR, textStatus, errorThrown) {
-                    console.error("AJAX Error:", textStatus, errorThrown);
-                    alert("Failed to process response. Please try again.");
+                dataType: "json",
+                success: function(response) {
+                    if (response.status == 200) {
+                        $('#afterimgcomp').attr('src', response.data.after_photo).show();
+                    } else {
+                        $('afterimgcomp').hide();
+                        alert(response.message);
+                    }
+                    $('#viewimgaftercomp').modal('show');
+                },
+                error: function(xhr, status, error) {
+                    alert('An error occurred while retrieving the image.');
                 }
             });
         });
-
 
         function checkIfOthers() {
             const dropdown = document.getElementById('dropdown');
@@ -1652,7 +1612,32 @@ $rejected = mysqli_num_rows($result3);
             // You can then send this data to the backend or process it further
             $("#oth").val(finalValue);
         }
-        
+
+        //Rejected Tab Feedback
+        $(document).on('click', '#rejectedfeedback', function(e) {
+            e.preventDefault();
+            var user_idrej = $(this).val();
+            console.log(user_idrej)
+            $.ajax({
+                type: "POST",
+                url: "eobackend.php",
+                data: {
+                    'seefeedback': true,
+                    'user_idrej': user_idrej
+
+                },
+                success: function(response) {
+                    var res = jQuery.parseJSON(response);
+                    console.log(res)
+                    if (res.status == 500) {
+                        alert(res.message);
+                    } else {
+                        $('#pdrej2').val(res.data.feedback);
+                        $('#problemrejected').modal('show');
+                    }
+                }
+            });
+        });
     </script>
 </body>
 
