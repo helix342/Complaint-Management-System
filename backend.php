@@ -10,8 +10,12 @@ include('db.php');
 if (isset($_POST['work'])) {
     $work = $_POST['worker_dept'];  // The department value
     // Modify the query to select both worker_id and worker_first_name
-    $sql8 = "SELECT worker_id, worker_first_name FROM worker_details WHERE worker_dept = '$work' AND usertype = 'worker'";
-    $result8 = mysqli_query($conn, $sql8);
+    $sql8 = "SELECT worker_id, worker_first_name FROM worker_details WHERE worker_dept = ? AND usertype = 'worker'";
+    $stmt = $conn->prepare($sql8);
+    $stmt->bind_param("s",$work);
+    $stmt->execute();
+    $result8 = $stmt->get_result();
+
 
     // Prepare to output options directly
     $options = '';
@@ -87,9 +91,14 @@ if (isset($_POST['start_work'])) {
 
     $sql = "UPDATE complaints_detail 
             SET status = 10 
-            WHERE id = (SELECT problem_id FROM manager WHERE task_id = '$id')";
+            WHERE id = (SELECT problem_id FROM manager WHERE task_id = ?)";
 
-$query_run = mysqli_query($conn, $sql);
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("i", $id);
+$stmt->execute();
+$query_run = $stmt->get_result();
+
+
 if($query_run){
     $res =[
         "status" => 200,
@@ -269,27 +278,4 @@ if (isset($_POST['get_image'])) {
 
 
 
-
-
-if (isset($_GET['department'])) {
-// Fetch data from the worker_details table
-$sql = "SELECT worker_first_name, worker_last_name, worker_emp_type, worker_dept FROM worker_details WHERE id = id"; // Adjust WHERE clause as necessary
-$result = $conn->query($sql);
-
-if ($result->num_rows > 0) {
-    // Output data of each row
-    $row = $result->fetch_assoc();
-    echo json_encode([
-        'name' => $row['worker_first_name'] . ' ' . $row['worker_last_name'],
-        'employment_type' => $row['worker_emp_type'],
-        'department' => $row['worker_dept'],
-    ]);
-} else {
-    echo json_encode([
-        'name' => '',
-        'employment_type' => '',
-        'department' => '',
-    ]);
-}
-}
 ?>
