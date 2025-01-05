@@ -11,50 +11,11 @@ if (isset($_SESSION['worker_id'])) {
 } else {
     die("Couldn't find department in session.");
 }
-
+// fetching worker details using department in session
 $qry = "SELECT * FROM worker_details WHERE worker_id='$worker_id'";
 $qry_run = mysqli_query($conn,$qry);
 $srow  = mysqli_fetch_array($qry_run);
 $dept = $srow['worker_dept'];
-
-
-$q1 = "SELECT * FROM complaints_detail as cd JOIN manager as m on cd.id = m.problem_id WHERE cd.status = '7' AND m.worker_id LIKE 'CIV%'";
-$q2 = "SELECT * FROM complaints_detail as cd JOIN manager as m on cd.id = m.problem_id WHERE cd.status = '7' AND m.worker_id LIKE 'CAR%'";
-$q3 = "SELECT * FROM complaints_detail as cd JOIN manager as m on cd.id = m.problem_id WHERE cd.status = '7' AND m.worker_id LIKE 'ELE%'";
-$q4 = "SELECT * FROM complaints_detail as cd JOIN manager as m on cd.id = m.problem_id WHERE cd.status = '7' AND m.worker_id LIKE 'INF%'";
-$q5 = "SELECT * FROM complaints_detail as cd JOIN manager as m on cd.id = m.problem_id WHERE cd.status = '7' AND m.worker_id LIKE 'PAR%'";
-$q6 = "SELECT * FROM complaints_detail as cd JOIN manager as m on cd.id = m.problem_id WHERE cd.status = '7' AND m.worker_id LIKE 'PLU%'";
-
-$r1 = mysqli_query($conn, $q1);
-
-$r2 = mysqli_query($conn, $q2);
-
-$r3 = mysqli_query($conn, $q3);
-
-$r4 = mysqli_query($conn, $q4);
-
-$r5 = mysqli_query($conn, $q5);
-
-$r6 = mysqli_query($conn, $q6);
-
-$c1 = mysqli_num_rows($r1);
-
-$c2 = mysqli_num_rows($r2);
-
-$c3 = mysqli_num_rows($r3);
-
-$c4 = mysqli_num_rows($r4);
-
-$c5 = mysqli_num_rows($r5);
-
-$c6 = mysqli_num_rows($r6);
-
-
-
-
-
-
-
 if (isset($_SESSION['worker_id'])) {
     $worker_id = $_SESSION['worker_id'];
    

@@ -12,25 +12,13 @@ if (isset($_SESSION['worker_id'])) {
 } else {
     die("Couldn't find department in session.");
 }
-
+//fetching worker details using department in session
 $qry = "SELECT * FROM worker_details WHERE worker_id='$worker_id'";
 $qry_run = mysqli_query($conn,$qry);
 $srow  = mysqli_fetch_array($qry_run);
 $dept = $srow['worker_dept'];
-//query for 1st table input 
-//Faculty complaint table
-$sql1 = "SELECT * FROM complaints_detail WHERE status='4'";
-$result1 = mysqli_query($conn, $sql1);
-$row_count1 = mysqli_num_rows($result1);
-//manager table
-$sql2 = "SELECT * FROM worker_details";
-$result2 = mysqli_query($conn, $sql2);
-//worker details fetch
-$sql3 = "SELECT * FROM complaints_detail WHERE status IN ('7','10','11','13')";
-$result3 = mysqli_query($conn, $sql3);
-$row_count3 = mysqli_num_rows($result3);
 
-//worker details fetch
+//table 1 query
 $sql4 = "SELECT 
 cd.id,
 cd.faculty_id,
@@ -62,123 +50,67 @@ AND
 cd.status = '9'
 ";
 $result4 = mysqli_query($conn, $sql4);
-//work finished table
-$sql5 = "SELECT * FROM complaints_detail WHERE status = '14'";
-$result5 = mysqli_query($conn, $sql5);
-$row_count5 = mysqli_num_rows($result5);
-//work completed table
-$sql6 = "SELECT * FROM complaints_detail WHERE status='16'";
-$result6 = mysqli_query($conn, $sql6);
-//work reassigned table
-$sql7 = "SELECT * FROM complaints_detail WHERE status IN ('15','17','18')";
-$result7 = mysqli_query($conn, $sql7);
-$row_count7 = mysqli_num_rows($result7);
 
 
-//count for side bar starts
 
-$q1 = "SELECT * FROM complaints_detail as cd JOIN manager as m on cd.id = m.problem_id WHERE cd.status = '7' AND m.worker_id LIKE 'CIV%'";
-$q2 = "SELECT * FROM complaints_detail as cd JOIN manager as m on cd.id = m.problem_id WHERE cd.status = '7' AND m.worker_id LIKE 'CAR%'";
-$q3 = "SELECT * FROM complaints_detail as cd JOIN manager as m on cd.id = m.problem_id WHERE cd.status = '7' AND m.worker_id LIKE 'ELE%'";
-$q4 = "SELECT * FROM complaints_detail as cd JOIN manager as m on cd.id = m.problem_id WHERE cd.status = '7' AND m.worker_id LIKE 'INF%'";
-$q5 = "SELECT * FROM complaints_detail as cd JOIN manager as m on cd.id = m.problem_id WHERE cd.status = '7' AND m.worker_id LIKE 'PAR%'";
-$q6 = "SELECT * FROM complaints_detail as cd JOIN manager as m on cd.id = m.problem_id WHERE cd.status = '7' AND m.worker_id LIKE 'PLU%'";
-
-$r1 = mysqli_query($conn, $q1);
-
-$r2 = mysqli_query($conn, $q2);
-
-$r3 = mysqli_query($conn, $q3);
-
-$r4 = mysqli_query($conn, $q4);
-
-$r5 = mysqli_query($conn, $q5);
-
-$r6 = mysqli_query($conn, $q6);
-
-$c1 = mysqli_num_rows($r1);
-
-$c2 = mysqli_num_rows($r2);
-
-$c3 = mysqli_num_rows($r3);
-
-$c4 = mysqli_num_rows($r4);
-
-$c5 = mysqli_num_rows($r5);
-
-$c6 = mysqli_num_rows($r6);
-
-//count for side bar ends
-
+//dynamically fetching workers available for asigning
 if (isset($_POST['work'])) {
     $work = $_POST['worker_dept'];
-    $sql8 = "SELECT worker_id, worker_first_name FROM worker_details WHERE worker_dept = '$work' AND usertype = 'worker'";
-    $result8 = mysqli_query($conn, $sql8);
+
+    $sql8 = "SELECT worker_id, worker_first_name FROM worker_details WHERE worker_dept = ? AND usertype = 'worker'";
+    $stmt = mysqli_prepare($conn, $sql8);
+
+    mysqli_stmt_bind_param($stmt, "s", $work);
+
+    mysqli_stmt_execute($stmt);
+
+    $result8 = mysqli_stmt_get_result($stmt);
 
     $options = '';
 
-
     while ($row = mysqli_fetch_assoc($result8)) {
         $options .= '<option value="' . $row['worker_id'] . '">' . $row['worker_id'] . ' - ' . $row['worker_first_name'] . '</option>';
-
     }
-
 
     echo $options;
-    exit();  
+    exit();
 }
 
+//accepting the complaint in head
 if (isset($_POST['form'])) {
     $problem_id = $_POST['user_id'] ?? null;
-   
+
     if ($problem_id) {
-            $updateQuery = "UPDATE complaints_detail SET status='10' WHERE id='$problem_id'";
-            if (mysqli_query($conn, $updateQuery)) {
+        // Prepare the SQL query
+        $updateQuery = "UPDATE complaints_detail SET status = ? WHERE id = ?";
+        $stmt = mysqli_prepare($conn, $updateQuery);
+
+        if ($stmt) {
+            // Bind parameters to the prepared statement
+            $status = 10;
+            mysqli_stmt_bind_param($stmt, "ii", $status, $problem_id);
+
+            // Execute the prepared statement
+            if (mysqli_stmt_execute($stmt)) {
                 echo "Success: Complaint accepted and status updated successfully!";
-                exit;
             } else {
                 echo "Error: Failed to update complaint status.";
-                exit;
             }
+
+            // Close the statement
+            mysqli_stmt_close($stmt);
         } else {
-            echo "Error: Failed to insert data into manager table.";
-            exit;
+            echo "Error: Failed to prepare the update query.";
         }
-}
-
-
-if (isset($_POST['form1'])) {
-    $name = $_POST['w_name'];
-    $contact = $_POST['w_phone'];
-    $gender = $_POST['w_gender'];
-
-    $dept_prefix = strtoupper(substr($dept, 0, 3));  
-    $checkQuery = "SELECT SUBSTRING(worker_id, 4) AS id_number FROM worker_details 
-                   WHERE worker_id LIKE '$dept_prefix%' 
-                   ORDER BY CAST(SUBSTRING(worker_id, 4) AS UNSIGNED) DESC LIMIT 1";
-
-    $result = mysqli_query($conn, $checkQuery);
-
-    if (mysqli_num_rows($result) > 0) {
-        $row = mysqli_fetch_assoc($result);
-        $number = intval($row['id_number']) + 1;
-        } else {
-        $number = 1;
-    }
-
-    $worker_id = $dept_prefix . str_pad($number, 2, '0', STR_PAD_LEFT);
-
-    $insertQuery = "INSERT INTO worker_details (worker_id, worker_first_name, worker_dept, worker_mobile, worker_gender,usertype) 
-                    VALUES ('$worker_id', '$name', '$dept', '$contact', '$gender','worker')";
-
-    if (mysqli_query($conn, $insertQuery)) {
-        echo "Success: Worker added with ID $worker_id!";
-        exit;
     } else {
-        echo "Error: Could not insert worker details.";
-        exit;
+        echo "Error: Problem ID is missing.";
     }
+
+    exit;
 }
+
+
+
 
 
 
@@ -406,7 +338,7 @@ if (isset($_POST['form1'])) {
                                     <!-- Tab panes -->
                                     <div class="tab-content tabcontent-border">
                                         <!--completed start-->
-                                        <div class="tab-pane active p-20" id="pri ncipal" role="tabpanel">
+                                        <div class="tab-pane active p-20" id="principal" role="tabpanel">
                                             <div class="p-20">
                                                 <div class="table-responsive">
                                                     <h5 class="card-title">Work Assign</h5>
@@ -944,6 +876,8 @@ if (isset($_POST['form1'])) {
         <!--Custom JavaScript -->
         <script src="dist/js/custom.min.js"></script>
         <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+        <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/alertify.min.js"></script>
+
         <script>
         $(function() {
             $('[data-toggle="tooltip"]').tooltip();
@@ -981,24 +915,8 @@ if (isset($_POST['form1'])) {
             });
         });
 
-        $(document).on("click", ".worker", function(e) {
-            e.preventDefault();
-            var worker_dept = $(this).data("value");
-            console.log(worker_dept);
 
-            $.ajax({
-                url: "work.php",
-                type: "POST",
-                data: {
-                    "work": true,
-                    "worker_dept": worker_dept
-                },
-                success: function(response) {
-                    $('#worker').html(response);
-                }
-            });
-        });
-
+//Accepting the complaint tick button
         $(document).on("click", ".acceptcomplaint", function(e) {
             e.preventDefault();
             var user_id = $(this).val();
@@ -1029,6 +947,7 @@ if (isset($_POST['form1'])) {
                     alert("An error occurred: " + error);
                 }
             });
+            //for sending mail as accepted
             $.ajax({
                 type: "POST",
                 url: "mail.php",
@@ -1046,6 +965,7 @@ if (isset($_POST['form1'])) {
                 }
             })
         });
+        //view complaint details in modal
 
         $(document).on("click", ".viewcomplaint", function(e) {
             e.preventDefault();
@@ -1078,6 +998,7 @@ if (isset($_POST['form1'])) {
                 },
             });
         });
+        //viewing before image
         $(document).on("click", ".showImage", function() {
             var problem_id = $(this).val();
             console.log(problem_id);
@@ -1114,7 +1035,7 @@ if (isset($_POST['form1'])) {
             });
         });
 
-
+//viewing after image
         $(document).on("click", ".imgafter", function() {
             var problem_id = $(this).val();
             $.ajax({
@@ -1141,34 +1062,7 @@ if (isset($_POST['form1'])) {
         });
 
 
-        $(document).on("submit", "#workers", function(e) {
-            e.preventDefault();
-            var dt = new FormData(this);
-            console.log(dt);
-            dt.append("form1", true);
-            $.ajax({
-                url: "work.php",
-                type: "POST",
-                data: dt,
-                processData: false,
-                contentType: false,
-                success: function(response) {
-                    if (response.includes("Success")) {
-                        $("#addworker").modal("hide");
-                        $('#workers')[0].reset();
-
-
-
-                    } else {
-                        alert("Error");
-                    }
-                },
-                error: function(xhr, status, error) {
-                    alert("An error occurred: " + error);
-                }
-            });
-        });
-
+       //download record as excel file
         document.getElementById('download').addEventListener('click', function() {
             var wb = XLSX.utils.book_new();
             var ws = XLSX.utils.table_to_sheet(document.getElementById('record_table'));
@@ -1179,7 +1073,6 @@ if (isset($_POST['form1'])) {
         });
         </script>
 
-        <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/alertify.min.js"></script>
 
 
 

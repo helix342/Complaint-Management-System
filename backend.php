@@ -6,10 +6,9 @@ ini_set('display_errors', 1);
 include('db.php');
 
 
-
+//fetchignavailable worker for task completion
 if (isset($_POST['work'])) {
-    $work = $_POST['worker_dept'];  // The department value
-    // Modify the query to select both worker_id and worker_first_name
+    $work = $_POST['worker_dept'];  
     $sql8 = "SELECT worker_id, worker_first_name FROM worker_details WHERE worker_dept = ? AND usertype = 'worker'";
     $stmt = $conn->prepare($sql8);
     $stmt->bind_param("s",$work);
@@ -17,21 +16,21 @@ if (isset($_POST['work'])) {
     $result8 = $stmt->get_result();
 
 
-    // Prepare to output options directly
+   
     $options = '';
 
 
     while ($row = mysqli_fetch_assoc($result8)) {
-        // Echo each worker's ID and name as an option element (worker_id - worker_first_name)
         $options .= '<option value="' . $row['worker_id'] . '">' . $row['worker_id'] . ' - ' . $row['worker_first_name'] . '</option>';
 
     }
 
 
-    // Return the options to the AJAX request
     echo $options;
-    exit();  // Stop script execution after output
+    exit(); 
 }
+
+//viewing complaint description in modal
 if (isset($_POST['fetch_details'])) {
     $task_id = isset($_POST['task_id']) ? intval($_POST['task_id']) : null;
 
@@ -84,6 +83,8 @@ if (isset($_POST['fetch_details'])) {
 
 }  
 
+
+//click start work in new table
 if (isset($_POST['start_work'])) {
     $id = $_POST['task_id'];
 
@@ -120,7 +121,7 @@ else{
 
 
 
-//work completion backend
+//work completion backend updating after image assigning worker etc.......
 if (isset($_POST['update'])) {
     $taskId = $_POST['task_id'];
     $completionStatus = $_POST['completion_status'];
@@ -134,7 +135,6 @@ if (isset($_POST['update'])) {
     if (mysqli_query($conn, $insertQuery)) {
           
         
-            // Update status and task_completion in the complaints_detail table
             $updateComplaintSql = "UPDATE complaints_detail 
                                    SET status = 11,worker_id='$name', task_completion = ?,reason = ?,date_of_completion = NOW()
                                    WHERE id = (SELECT problem_id FROM manager WHERE task_id = ?)";
@@ -150,21 +150,18 @@ if (isset($_POST['update'])) {
                 echo "Prepare failed: (" . $conn->errno . ") " . $conn->error;
             }
         
-            // Handle file upload
             $imgAfterName = null;
             if (isset($_FILES['img_after']) && $_FILES['img_after']['error'] === UPLOAD_ERR_OK) {
                 $uploadDir = 'imgafter/';
-                $imgAfterName = basename($_FILES['img_after']['name']); // This stores only the file name
-                $uploadFile = $uploadDir . $imgAfterName; // Full path to move the file
+                $imgAfterName = basename($_FILES['img_after']['name']); 
+                $uploadFile = $uploadDir . $imgAfterName; 
             
                 if (move_uploaded_file($_FILES['img_after']['tmp_name'], $uploadFile)) {
                     echo "File successfully uploaded: " . $imgAfterName;
             
-                    // Insert only the image name into worker_taskdet table
                     $insertTaskDetSql = "INSERT INTO worker_taskdet (task_id, task_completion, after_photo, work_completion_date) 
                                          VALUES (?, ?, ?, NOW())";
                     if ($stmt = $conn->prepare($insertTaskDetSql)) {
-                        // Pass the image name (not the path) to the database
                         $stmt->bind_param("sss", $taskId, $completionStatus, $imgAfterName);
                         if (!$stmt->execute()) {
                             echo "Insertion into worker_taskdet failed: (" . $stmt->errno . ") " . $stmt->error;
@@ -187,7 +184,6 @@ if (isset($_POST['update'])) {
    
 
 
-    // Database connection
   
     
 }
@@ -195,17 +191,15 @@ if (isset($_POST['update'])) {
 
 
 
-
+//viewing before image
 if (isset($_POST['get_bef'])) {
     $task_id = isset($_POST['task_id']) ? $_POST['task_id'] : ''; 
 
-    // Validate task_id
     if (empty($task_id)) {
         echo json_encode(['status' => 400, 'message' => 'Task ID not provided']);
         exit;
     }
 
-    // Query to fetch the image based on task_id
     $query = "SELECT images FROM complaints_detail WHERE id = (SELECT problem_id FROM manager WHERE task_id = ?)";
     $stmt = $conn->prepare($query);
 
@@ -221,9 +215,7 @@ if (isset($_POST['get_bef'])) {
     if ($result->num_rows > 0) {
         $row = $result->fetch_assoc();
         
-        // Extract only the filename
         $image_filename = basename($row['images']); 
-        // Ensure correct path construction
         $image_path = 'uploads/' . $image_filename; 
         
         echo json_encode(['status' => 200, 'data' => ['after_photo' => $image_path]]);
@@ -236,17 +228,15 @@ if (isset($_POST['get_bef'])) {
 }
 
 
-
+//viewing after image
 if (isset($_POST['get_image'])) {
     $task_id = isset($_POST['task_id']) ? $_POST['task_id'] : ''; 
 
-    // Validate task_id
     if (empty($task_id)) {
         echo json_encode(['status' => 400, 'message' => 'Task ID not provided']);
         exit;
     }
 
-    // Query to fetch the image based on task_id
     $query = "SELECT after_photo FROM worker_taskdet WHERE task_id = ?";
     $stmt = $conn->prepare($query);
 
@@ -262,9 +252,7 @@ if (isset($_POST['get_image'])) {
     if ($result->num_rows > 0) {
         $row = $result->fetch_assoc();
         
-        // Extract only the filename
         $image_filename = basename($row['after_photo']); 
-        // Ensure correct path construction
         $image_path = 'imgafter/' . $image_filename; 
         
         echo json_encode(['status' => 200, 'data' => ['after_photo' => $image_path]]);
