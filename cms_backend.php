@@ -59,7 +59,7 @@ switch ($action) {
             ]);
         }
         break;
-
+//before image
     case 'get_image':
         $problem_id = isset($_POST['problem_id']) ? $_POST['problem_id'] : ''; // Ensure problem_id is set
         // Validate problem_id
@@ -92,6 +92,7 @@ switch ($action) {
         exit;
         break;
 
+//After Image
     case 'get_aimage':
         $problem_id = isset($_POST['problem2_id']) ? $_POST['problem2_id'] : '';
 
@@ -155,6 +156,7 @@ switch ($action) {
         }
         break;
 
+//worker Phone number
     case 'get_worker_phone':
         $complain_id = mysqli_real_escape_string($conn, $_POST['prblm_id']);
         $query = "
@@ -208,7 +210,27 @@ switch ($action) {
         echo json_encode($response);
         break;
 
+         //when manager assign the complaint to wrong department -> Reassign department
+    case 'reassign_complaint':
+        try {
+            $id = $_POST['user_id'];
+            $worker_dept = $_POST['worker'];
+    
+            $query = "UPDATE manager SET worker_dept = ? WHERE problem_id = ?";
+            $stmt = $conn->prepare($query);
+            $stmt->bind_param('si', $worker_dept, $id);
+    
+            if ($stmt->execute()) {
+                echo json_encode(['status' => 200]);
+            } else {
+                throw new Exception('Query Failed: ' . $stmt->error);
+            }
+        } catch (Exception $e) {
+            echo json_encode(['status' => 500, 'message' => 'Error: ' . $e->getMessage()]);
+        }
+        break;
 
+//Reject Complaint
     case 'reject_complaint':
         try {
             $id = $_POST['id'];
@@ -272,22 +294,7 @@ switch ($action) {
         }
         break;
 
-        //to view feedback from faculty
-    case 'facfeedview':
-        $student_id = mysqli_real_escape_string($conn, $_POST['user_id']);
-        $query = "SELECT * FROM complaints_detail WHERE id = ? AND status IN ('13', '14')";
-        $stmt = $conn->prepare($query);
-        $stmt->bind_param('i', $student_id);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        $User_data = $result->fetch_assoc();
-        if ($User_data) {
-            echo json_encode(['status' => 200, 'message' => 'Details fetched successfully.', 'data' => $User_data]);
-        } else {
-            echo json_encode(['status' => 500, 'message' => 'Details not found.']);
-        }
-        break;
-
+       
         //add new workers
     case 'addworker':
         $name = $_POST['w_name'];
@@ -376,6 +383,7 @@ switch ($action) {
         ]);
         break;
 
+        //Answer for Principal Query
     case 'submit_comment_reply':
         $task_id = $_POST['task_id'];
         $comment_reply = $_POST['comment_reply'];
@@ -394,6 +402,45 @@ switch ($action) {
         echo json_encode($response);
         break;
 
+                //Extend Deadline for work inprogress
+    case 'extend_deadlinedate':
+        try {
+            $id = $_POST['id'];
+            $dead_date = $_POST['extend_deadline'];
+            $reason = $_POST['reason'];
+    
+            $query = "UPDATE complaints_detail SET days_to_complete = ?, extend_date = '1', extend_reason = ? WHERE id = ?";
+            $stmt = $conn->prepare($query);
+            $stmt->bind_param('ssi', $dead_date, $reason, $id);
+    
+            if ($stmt->execute()) {
+                echo json_encode(['status' => 200]);
+            } else {
+                throw new Exception('Query Failed: ' . $stmt->error);
+            }
+        } catch (Exception $e) {
+            echo json_encode(['status' => 500, 'message' => 'Error: ' . $e->getMessage()]);
+        }
+        break;
+
+         //to view feedback from faculty
+    case 'facfeedview':
+        $student_id = mysqli_real_escape_string($conn, $_POST['user_id']);
+        $query = "SELECT * FROM complaints_detail WHERE id = ? AND status IN ('13', '14')";
+        $stmt = $conn->prepare($query);
+        $stmt->bind_param('i', $student_id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $User_data = $result->fetch_assoc();
+        if ($User_data) {
+            echo json_encode(['status' => 200, 'message' => 'Details fetched successfully.', 'data' => $User_data]);
+        } else {
+            echo json_encode(['status' => 500, 'message' => 'Details not found.']);
+        }
+        break;
+
+
+        //Reassign Work after faculty feedback
     case 'reassign_work':
         $id = $_POST['complaintfeed_id'];
         $status = $_POST['status'];
@@ -425,46 +472,8 @@ switch ($action) {
         }
         $stmt->close();
         break;
-
-    case 'extend_deadlinedate':
-        try {
-            $id = $_POST['id'];
-            $dead_date = $_POST['extend_deadline'];
-            $reason = $_POST['reason'];
-    
-            $query = "UPDATE complaints_detail SET days_to_complete = ?, extend_date = '1', extend_reason = ? WHERE id = ?";
-            $stmt = $conn->prepare($query);
-            $stmt->bind_param('ssi', $dead_date, $reason, $id);
-    
-            if ($stmt->execute()) {
-                echo json_encode(['status' => 200]);
-            } else {
-                throw new Exception('Query Failed: ' . $stmt->error);
-            }
-        } catch (Exception $e) {
-            echo json_encode(['status' => 500, 'message' => 'Error: ' . $e->getMessage()]);
-        }
-        break;
-
-    case 'reassign_complaint':
-        try {
-            $id = $_POST['user_id'];
-            $worker_dept = $_POST['worker'];
-    
-            $query = "UPDATE manager SET worker_dept = ? WHERE problem_id = ?";
-            $stmt = $conn->prepare($query);
-            $stmt->bind_param('si', $worker_dept, $id);
-    
-            if ($stmt->execute()) {
-                echo json_encode(['status' => 200]);
-            } else {
-                throw new Exception('Query Failed: ' . $stmt->error);
-            }
-        } catch (Exception $e) {
-            echo json_encode(['status' => 500, 'message' => 'Error: ' . $e->getMessage()]);
-        }
-        break;
-
+       
+        //Manager feedback for complited work
     case 'manager_feedbacks':
         try {
             $id = $_POST['id'];
@@ -486,7 +495,6 @@ switch ($action) {
        break; 
        
        
-    
 
        //HOD backend
        //hod accept
