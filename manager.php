@@ -3385,6 +3385,7 @@ $result11 = mysqli_query($conn, $sql11);
                 $(document).on("submit", "#user_data", function(e) {
                     e.preventDefault();
                     var form = new FormData(this);
+                    form.append("add_user", true);
                     console.log(form);
                     $.ajax({
                         type: "POST",
