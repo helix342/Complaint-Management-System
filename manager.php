@@ -37,6 +37,14 @@ $result6 = mysqli_query($conn, $sql6);
 $sql7 = "SELECT * FROM complaints_detail WHERE status IN ('15','17','18')";
 $result7 = mysqli_query($conn, $sql7);
 $row_count7 = mysqli_num_rows($result7);
+
+//display all users
+$sql10 = "SELECT * FROM faculty_details";
+$result10 = mysqli_query($conn, $sql10);
+
+//display all workers
+$sql11 = "SELECT * FROM worker_details";
+$result11 = mysqli_query($conn, $sql11);
 ?>
 <!DOCTYPE html>
 <html dir="ltr" lang="en">
@@ -448,11 +456,12 @@ $row_count7 = mysqli_num_rows($result7);
                             <div class="dropdown-menu dropdown-menu-right user-dd animated">
                                 <a class="dropdown-item" href="javascript:void(0)"><i class="ti-user m-r-5 m-l-5"></i>
                                     My Profile</a>
-                                <a class="dropdown-item" href="javascript:void(0)" data-toggle="modal" data-target="#addworker"><i class="ti-user m-r-5 m-l-5"></i>
-                                    Add Worker</a>
+                                <a class="dropdown-item" href="javascript:void(0)" data-toggle="modal" data-target="#manageworkermodal"><i class="ti-user m-r-5 m-l-5"></i>
+                                    Manager Worker</a>
+                                <a class="dropdown-item" href="javascript:void(0)" data-toggle="modal" data-target="#manageusermodal"><i class="ti-user m-r-5 m-l-5"></i>
+                                    Manager User</a>
                                 <a class="dropdown-item" href="javascript:void(0)"><i
                                         class="fa fa-power-off m-r-5 m-l-5"></i> Logout</a>
-                                <div class="dropdown-divider"></div>
                             </div>
                         </li>
                     </ul>
@@ -499,54 +508,8 @@ $row_count7 = mysqli_num_rows($result7);
                     </div>
                 </div>
             </div>
-            <div class="modal fade" id="addworker" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content" style="border-radius: 8px; border: 1px solid #ccc;">
-                        <div class="modal-header" style="background-color: #f8f9fa; border-bottom: 2px solid #e9ecef;">
-                            <h5 class="modal-title" id="exampleModalLabel">Add Worker</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <form id="workers">
-                            <div class="modal-body" style="padding: 20px; background-color: #f5f5f5;">
-                                <input type="text" name="w_name" placeholder="Enter Worker Name" style="width: 100%; padding: 10px; border-radius: 4px; border: 1px solid #ccc; margin-bottom: 15px;">
-                                <select id="department" name="w_dept" style="width: 100%; padding: 10px; border-radius: 4px; border: 1px solid #ccc; margin-bottom: 15px;">
-                                    <option value="all">Select department</option>
-                                    <option value="civil">Civil</option>
-                                    <option value="electrical">Electrical</option>
-                                    <option value="itkm">itkm</option>
-                                    <option value="transport">Transport</option>
-                                    <option value="house">House Keeping</option>
-
-                                    </select>
-                                    <select id="role" name="w_role" style="width: 100%; padding: 10px; border-radius: 4px; border: 1px solid #ccc; margin-bottom: 15px;">
-                                        <option value="all">Select Role</option>
-                                        <option value="head">Head</option>
-                                        <option value="worker">Worker</option>
 
 
-                                    </select>
-
-
-                                    <select id="gender" name="w_gender" style="width: 100%; padding: 10px; border-radius: 4px; border: 1px solid #ccc; margin-bottom: 15px;">
-                                        <option value="all">Select Gender</option>
-                                        <option value="male">Male</option>
-                                        <option value="female">Female</option>
-                                    </select>
-
-
-
-                                    <input type="text" name="w_phone" placeholder="Enter Phone Number" style="width: 100%; padding: 10px; border-radius: 4px; border: 1px solid #ccc; margin-bottom: 15px;">
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" style="background-color: #6c757d; border: none; padding: 10px 20px;">Close</button>
-                                    <button type="submit" class="btn btn-primary" style="background-color: #007bff; border: none; padding: 10px 20px;">Add</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
             <!-- ============================================================== -->
             <!-- End Bread crumb and right sidebar toggle -->
             <!-- ============================================================== -->
@@ -1385,7 +1348,7 @@ $row_count7 = mysqli_num_rows($result7);
                                 <!-- Workers Record Table -->
 
                                 <?php
-  
+
                                 $from_date = isset($_POST['from_date']) ? $_POST['from_date'] : '';
                                 $to_date = isset($_POST['to_date']) ? $_POST['to_date'] : '';
 
@@ -1401,10 +1364,10 @@ $row_count7 = mysqli_num_rows($result7);
 
 
                                 $result9 = mysqli_query($conn, $sql9);
-                               
-                            
 
-                            
+
+
+
                                 ?>
 
                                 <div class="tab-pane p-20" id="workersr" role="tabpanel">
@@ -1494,6 +1457,273 @@ $row_count7 = mysqli_num_rows($result7);
                             </div>
 
                             <!--Modals-->
+
+                            <!-- manage user Modal -->
+                            <div class="modal fade" id="manageusermodal" tabindex="-1" role="dialog" aria-labelledby="manageusermodalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                                    <div class="modal-content" style="border-radius: 8px; box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15); background-color: #f9f9f9;">
+
+                                        <!-- Modal Header -->
+                                        <div class="modal-header" style="background-color: #007bff; color: white; border-radius: 8px 8px 0 0; padding: 15px;">
+                                            <h5 class="modal-title" id="manageusermodalLabel" style="font-weight: 700; font-size: 1.4em; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
+                                                📋Manage User's
+                                            </h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="color: white; font-size: 1.2em;">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+
+                                        <!-- Modal Body -->
+                                        <div class="modal-body" style="padding: 20px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
+
+
+                                            <button class="btn btn-primary" data-toggle="modal" data-target="#adduser"><i class="ti-user m-r-5 m-l-5"></i>
+                                                Add User</button>
+
+                                            <div class="tab-pane active p-20" id="complain" role="tabpanel">
+                                                <div class="p-20">
+                                                    <div class="table-responsive">
+                                                        <table id="user_display" class="table table-striped table-bordered">
+                                                            <thead style="background: linear-gradient(to bottom right, #cc66ff 1%, #0033cc 100%); color: white;">
+                                                                <tr>
+
+                                                                    <th class="text-center"><b>
+                                                                            <h5>S.No</h5>
+                                                                        </b></th>
+                                                                    <th class="col-md-2 text-center"><b>
+                                                                            <h5>Name</h5>
+                                                                        </b></th>
+                                                                    <th class="text-center"><b>
+                                                                            <h5>Department</h5>
+                                                                        </b></th>
+
+                                                                    <th class="col-md-2 text-center"><b>
+                                                                            <h5>Role</h5>
+                                                                        </b></th>
+                                                                    <th class=" col-md-2 text-center"><b>
+                                                                            <h5>Action</h5>
+                                                                        </b></th>
+
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <?php
+                                                                $s = 1;
+                                                                while ($row = mysqli_fetch_assoc($result10)) {
+                                                                ?>
+                                                                    <tr>
+                                                                        <td class="text-center"><?php echo $s ?></td>
+                                                                        <td class="text-center"><?php echo $row['faculty_name'] ?></td>
+                                                                        <td class="text-center"><?php echo $row['department'] ?></td>
+                                                                        <td class="text-center"><?php echo $row['role'] ?></td>
+                                                                        <td class="text-center"><button tupe="button" class="btn btn-danger deleteuser"
+                                                                                value="<?php echo $row["id"] ?>">Delete</button></td>
+                                                                    </tr>
+                                                                <?php
+                                                                    $s++;
+                                                                }
+                                                                ?>
+                                                            </tbody>
+
+                                                        </table>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+
+
+                                        </div>
+
+                                        <!-- Modal Footer with Save Button -->
+                                        <div class="modal-footer" style="background-color: #f1f1f1; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px; padding: 10px;">
+                                            <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- manage wo Modal -->
+                            <div class="modal fade" id="manageworkermodal" tabindex="-1" role="dialog" aria-labelledby="manageworkermodalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                                    <div class="modal-content" style="border-radius: 8px; box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15); background-color: #f9f9f9;">
+
+                                        <!-- Modal Header -->
+                                        <div class="modal-header" style="background-color: #007bff; color: white; border-radius: 8px 8px 0 0; padding: 15px;">
+                                            <h5 class="modal-title" id="manageworkermodalLabel" style="font-weight: 700; font-size: 1.4em; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
+                                                📋Manage Workers's
+                                            </h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="color: white; font-size: 1.2em;">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+
+                                        <!-- Modal Body -->
+                                        <div class="modal-body" style="padding: 20px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
+
+
+                                            <button class="btn btn-primary" data-toggle="modal" data-target="#addworker"><i class="ti-user m-r-5 m-l-5"></i>
+                                                Add Worker</button>
+
+                                            <div class="tab-pane active p-20" id="complain" role="tabpanel">
+                                                <div class="p-20">
+                                                    <div class="table-responsive">
+                                                        <table id="worker_display" class="table table-striped table-bordered">
+                                                            <thead style="background: linear-gradient(to bottom right, #cc66ff 1%, #0033cc 100%); color: white;">
+                                                                <tr>
+
+                                                                    <th class="text-center"><b>
+                                                                            <h5>S.No</h5>
+                                                                        </b></th>
+                                                                    <th class="col-md-2 text-center"><b>
+                                                                            <h5>Name</h5>
+                                                                        </b></th>
+                                                                    <th class="text-center"><b>
+                                                                            <h5>Department</h5>
+                                                                        </b></th>
+
+                                                                    <th class="col-md-2 text-center"><b>
+                                                                            <h5>Role</h5>
+                                                                        </b></th>
+                                                                    <th class=" col-md-2 text-center"><b>
+                                                                            <h5>Action</h5>
+                                                                        </b></th>
+
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <?php
+                                                                $s = 1;
+                                                                while ($row = mysqli_fetch_assoc($result11)) {
+                                                                ?>
+                                                                    <tr>
+                                                                        <td class="text-center"><?php echo $s ?></td>
+                                                                        <td class="text-center"><?php echo $row['worker_first_name'] ?></td>
+                                                                        <td class="text-center"><?php echo $row['worker_dept'] ?></td>
+                                                                        <td class="text-center"><?php echo $row['usertype'] ?></td>
+                                                                        <td class="text-center"><button tupe="button" class="btn btn-danger deleteworker"
+                                                                                value="<?php echo $row["id"] ?>">Delete</button></td>
+                                                                    </tr>
+                                                                <?php
+                                                                    $s++;
+                                                                }
+                                                                ?>
+                                                            </tbody>
+
+                                                        </table>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+
+
+                                        </div>
+
+                                        <!-- Modal Footer with Save Button -->
+                                        <div class="modal-footer" style="background-color: #f1f1f1; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px; padding: 10px;">
+                                            <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <!--Add User option-->
+                            <div class="modal fade" id="adduser" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content" style="border-radius: 8px; border: 1px solid #ccc;">
+                                        <div class="modal-header" style="background-color: #f8f9fa; border-bottom: 2px solid #e9ecef;">
+                                            <h5 class="modal-title" id="exampleModalLabel">Add User</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <form id="user_data">
+                                            <div class="modal-body" style="padding: 20px; background-color: #f5f5f5;">
+                                                <input type="text" name="name" placeholder="Enter User Name" style="width: 100%; padding: 10px; border-radius: 4px; border: 1px solid #ccc; margin-bottom: 15px;">
+                                                <input type="text" name="userid" placeholder="Enter User Id" style="width: 100%; padding: 10px; border-radius: 4px; border: 1px solid #ccc; margin-bottom: 15px;">
+                                                <input type="tel" name="phone" placeholder="Enter Phone number" style="width: 100%; padding: 10px; border-radius: 4px; border: 1px solid #ccc; margin-bottom: 15px;">
+                                                <input type="email" name="email" placeholder="Enter Mail Id" style="width: 100%; padding: 10px; border-radius: 4px; border: 1px solid #ccc; margin-bottom: 15px;">
+                                                <select id="department" name="u_dept" style="width: 100%; padding: 10px; border-radius: 4px; border: 1px solid #ccc; margin-bottom: 15px;">
+                                                    <option value="all">Select department</option>
+                                                    <option value="Freshman Engineering">Freshman Engineering</option>
+                                                    <option value="Artificial Intelligence and Data Science">Artificial Intelligence and Data Science</option>
+                                                    <option value="Artificial Intelligence and Machine Learning">Artificial Intelligence and Machine Learning</option>
+                                                    <option value="Civil Engineering">Civil Engineering</option>
+                                                    <option value="Computer Science and Business Systems">Computer Science and Business Systems</option>
+                                                    <option value="Computer Science and Engineering">Computer Science and Engineering</option>
+                                                    <option value="Electrical and Electronics Engineering">Electrical and Electronics Engineering</option>
+                                                    <option value="Electronics and Communication Engineering">Electronics and Communication Engineering</option>
+                                                    <option value="Information Technology">Information Technology</option>
+                                                    <option value="Master of Business Administration">Master of Business Administration</option>
+                                                    <option value="Master of Computer Applications">Master of Computer Applications </option>
+                                                    <option value="Mechanical Engineering">Mechanical Engineering</option>
+                                                </select>
+                                                <select id="role" name="u_role" style="width: 100%; padding: 10px; border-radius: 4px; border: 1px solid #ccc; margin-bottom: 15px;">
+                                                    <option value="all">Select Role</option>
+                                                    <option value="infra">Infra</option>
+                                                    <option value="student">Student</option>
+                                                </select>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" style="background-color: #6c757d; border: none; padding: 10px 20px;">Close</button>
+                                                <button type="submit" class="btn btn-primary" style="background-color: #007bff; border: none; padding: 10px 20px;">Add</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <!--Add worker option-->
+                            <div class="modal fade" id="addworker" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content" style="border-radius: 8px; border: 1px solid #ccc;">
+                                        <div class="modal-header" style="background-color: #f8f9fa; border-bottom: 2px solid #e9ecef;">
+                                            <h5 class="modal-title" id="exampleModalLabel">Add Worker</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <form id="workers">
+                                            <div class="modal-body" style="padding: 20px; background-color: #f5f5f5;">
+                                                <input type="text" name="w_name" placeholder="Enter Worker Name" style="width: 100%; padding: 10px; border-radius: 4px; border: 1px solid #ccc; margin-bottom: 15px;">
+                                                <select id="department" name="w_dept" style="width: 100%; padding: 10px; border-radius: 4px; border: 1px solid #ccc; margin-bottom: 15px;">
+                                                    <option value="all">Select department</option>
+                                                    <option value="civil">Civil</option>
+                                                    <option value="electrical">Electrical</option>
+                                                    <option value="itkm">itkm</option>
+                                                    <option value="transport">Transport</option>
+                                                    <option value="house">House Keeping</option>
+
+                                                </select>
+                                                <select id="role" name="w_role" style="width: 100%; padding: 10px; border-radius: 4px; border: 1px solid #ccc; margin-bottom: 15px;">
+                                                    <option value="all">Select Role</option>
+                                                    <option value="head">Head</option>
+                                                    <option value="worker">Worker</option>
+
+
+                                                </select>
+
+
+                                                <select id="gender" name="w_gender" style="width: 100%; padding: 10px; border-radius: 4px; border: 1px solid #ccc; margin-bottom: 15px;">
+                                                    <option value="all">Select Gender</option>
+                                                    <option value="male">Male</option>
+                                                    <option value="female">Female</option>
+                                                </select>
+
+
+
+                                                <input type="text" name="w_phone" placeholder="Enter Phone Number" style="width: 100%; padding: 10px; border-radius: 4px; border: 1px solid #ccc; margin-bottom: 15px;">
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" style="background-color: #6c757d; border: none; padding: 10px 20px;">Close</button>
+                                                <button type="submit" class="btn btn-primary" style="background-color: #007bff; border: none; padding: 10px 20px;">Add</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+
 
 
                             <!-- Reject Modal -->
@@ -2128,6 +2358,16 @@ $row_count7 = mysqli_num_rows($result7);
                 });
                 $(document).ready(function() {
                     $("#Rworkers").DataTable();
+                });
+                $(document).ready(function() {
+                    $("#user_display").DataTable({
+                        pageLength: 5,
+                    });
+                });
+                $(document).ready(function() {
+                    $("#worker_display").DataTable({
+                        pageLength: 5,
+                    });
                 });
             </script>
             <script>
@@ -2985,136 +3225,230 @@ $row_count7 = mysqli_num_rows($result7);
 
 
 
-/*
-                $(document).ready(function() {
-                    $('.totalworks').each(function() {
-                        var works = $(this);
-                        var id = works.data('value');
-                        $.ajax({
-                            type: "POST",
-                            url: "worker_count.php",
-                            data: {
-                                count: true,
-                                id: id
-                            },
-                            success: function(response) {
-                                var res = jQuery.parseJSON(response);
-                                if (res.status == 200) {
-                                    works.text(res.data);
-                                } else {
-                                    console.log("error");
-                                }
+                /*
+                                $(document).ready(function() {
+                                    $('.totalworks').each(function() {
+                                        var works = $(this);
+                                        var id = works.data('value');
+                                        $.ajax({
+                                            type: "POST",
+                                            url: "worker_count.php",
+                                            data: {
+                                                count: true,
+                                                id: id
+                                            },
+                                            success: function(response) {
+                                                var res = jQuery.parseJSON(response);
+                                                if (res.status == 200) {
+                                                    works.text(res.data);
+                                                } else {
+                                                    console.log("error");
+                                                }
+                                            }
+
+
+                                        })
+                                    });
+                                    $('.facultyr').each(function() {
+                                        var ratings = $(this);
+                                        var id = ratings.data('value');
+                                        $.ajax({
+                                            type: "POST",
+                                            url: "worker_count.php",
+                                            data: {
+                                                fratings: true,
+                                                id: id
+                                            },
+                                            success: function(response) {
+                                                console.log(response);
+                                                var res = jQuery.parseJSON(response);
+                                                if (res.status == 200) {
+                                                    ratings.text(res.data);
+                                                } else {
+                                                    console.log(error);
+                                                }
+                                            }
+                                        })
+
+                                    });
+                                    $('.managerr').each(function() {
+                                        var ratings = $(this);
+                                        var id = ratings.data('value');
+                                        $.ajax({
+                                            type: "POST",
+                                            url: "worker_count.php",
+                                            data: {
+                                                mratings: true,
+                                                id: id
+                                            },
+                                            success: function(response) {
+                                                console.log(response);
+                                                var res = jQuery.parseJSON(response);
+                                                if (res.status == 200) {
+                                                    ratings.text(res.data);
+                                                } else {
+                                                    console.log(error);
+                                                }
+                                            }
+                                        })
+
+                                    })
+                                    $('.average').each(function() {
+                                        var average = $(this);
+                                        var id = average.data('value');
+                                        $.ajax({
+                                            type: "POST",
+                                            url: "worker_count.php",
+                                            data: {
+                                                average: true,
+                                                id: id
+                                            },
+                                            success: function(response) {
+                                                console.log(response);
+                                                var res = jQuery.parseJSON(response);
+                                                if (res.status == 200) {
+                                                    average.text(res.data);
+                                                } else {
+                                                    console.log("error");
+                                                }
+                                            }
+                                        })
+                                    })
+                                });
+
+
+                                document.addEventListener("DOMContentLoaded", function() {
+                                    const tableRows = document.querySelectorAll("#Rworkers tbody tr");
+                                    tableRows.forEach(row => {
+                                        const works = parseInt(row.querySelector(".totalworks").textContent) || 0;
+                                        const ratings = parseInt(row.querySelector(".totalratings").textContent) || 0;
+                                        const avg = row.querySelector(".average");
+                                        console.log(avg);
+                                        const average = ratings / works;
+                                        avg.textContent = average;
+                                    });
+                                });
+                */
+
+                //delete user
+                $(document).on("click", ".deleteuser", function(e) {
+                    e.preventDefault();
+                    var id = $(this).val();
+                    console.log(id);
+                    $.ajax({
+                        type: "POST",
+                        url: "testbackend.php",
+                        data: {
+                            delete_user: true,
+                            id: id,
+                        },
+                        success: function(response) {
+                            var res = jQuery.parseJSON(response);
+                            console.log(res);
+                            if (res.status == 200) {
+                                alert("user deleted succesfully!");
+                                $('#user_display').DataTable().destroy();
+
+                                $("#user_display").load(location.href + " #user_display > *", function() {
+                                    $('#user_display').DataTable({
+                                        pageLength: 5
+                                    });
+                                });
+
                             }
-
-
-                        })
+                        },
                     });
-                    $('.facultyr').each(function() {
-                        var ratings = $(this);
-                        var id = ratings.data('value');
-                        $.ajax({
-                            type: "POST",
-                            url: "worker_count.php",
-                            data: {
-                                fratings: true,
-                                id: id
-                            },
-                            success: function(response) {
-                                console.log(response);
-                                var res = jQuery.parseJSON(response);
-                                if (res.status == 200) {
-                                    ratings.text(res.data);
-                                } else {
-                                    console.log(error);
-                                }
-                            }
-                        })
 
+                });
+
+                //delete worker
+                $(document).on("click", ".deleteworker", function(e) {
+                    e.preventDefault();
+                    var id = $(this).val();
+                    console.log(id);
+                    $.ajax({
+                        type: "POST",
+                        url: "testbackend.php",
+                        data: {
+                            delete_worker: true,
+                            id: id,
+                        },
+                        success: function(response) {
+                            var res = jQuery.parseJSON(response);
+                            console.log(res);
+                            if (res.status == 200) {
+                                alert("user deleted succesfully!");
+                                $('#worker_display').DataTable().destroy();
+
+                                $("#worker_display").load(location.href + " #worker_display > *", function() {
+                                    $('#worker_display').DataTable({
+                                        pageLength: 5
+                                    });
+                                });
+
+                            }
+                        },
                     });
-                    $('.managerr').each(function() {
-                        var ratings = $(this);
-                        var id = ratings.data('value');
-                        $.ajax({
-                            type: "POST",
-                            url: "worker_count.php",
-                            data: {
-                                mratings: true,
-                                id: id
-                            },
-                            success: function(response) {
-                                console.log(response);
-                                var res = jQuery.parseJSON(response);
-                                if (res.status == 200) {
-                                    ratings.text(res.data);
-                                } else {
-                                    console.log(error);
-                                }
-                            }
-                        })
 
-                    })
-                    $('.average').each(function() {
-                        var average = $(this);
-                        var id = average.data('value');
-                        $.ajax({
-                            type: "POST",
-                            url: "worker_count.php",
-                            data: {
-                                average: true,
-                                id: id
-                            },
-                            success: function(response) {
-                                console.log(response);
-                                var res = jQuery.parseJSON(response);
-                                if (res.status == 200) {
-                                    average.text(res.data);
-                                } else {
-                                    console.log("error");
-                                }
-                            }
-                        })
-                    })
                 });
 
 
-                document.addEventListener("DOMContentLoaded", function() {
-                    const tableRows = document.querySelectorAll("#Rworkers tbody tr");
-                    tableRows.forEach(row => {
-                        const works = parseInt(row.querySelector(".totalworks").textContent) || 0;
-                        const ratings = parseInt(row.querySelector(".totalratings").textContent) || 0;
-                        const avg = row.querySelector(".average");
-                        console.log(avg);
-                        const average = ratings / works;
-                        avg.textContent = average;
-                    });
-                });
-*/
 
-
-
-
-
-                $(document), on("click", "#datesubmit", function(e) {
+                $(document).on("submit", "#user_data", function(e) {
                     e.preventDefault();
                     var form = new FormData(this);
-                    form.append("date", true);
+                    form.append("add_user", true);
+                    console.log(form);
                     $.ajax({
                         type: "POST",
                         url: "testbackend.php",
                         data: form,
-                        processData:false,
-                        contentType:false,
+                        contentType: false,
+                        processData: false,
                         success: function(response) {
+                            console.log(response);
                             var res = jQuery.parseJSON(response);
+
                             if (res.status == 200) {
-                                console.log("success");
+                                alert("user added sucessfully");
+
+                                $("#adduser").modal("hide");
+                                $("#user_data")[0].reset();
+                                $('#user_display').DataTable().destroy();
+
+                                $("#user_display").load(location.href + " #user_display > *", function() {
+                                    $('#user_display').DataTable({
+                                        pageLength: 5
+                                    });
+                                });
                             } else {
-                                console.log("failed");
+                                alert("user not added");
                             }
                         }
-
                     })
                 })
+
+                /*  $(document), on("click", "#datesubmit", function(e) {
+                     e.preventDefault();
+                     var form = new FormData(this);
+                     form.append("date", true);
+                     $.ajax({
+                         type: "POST",
+                         url: "testbackend.php",
+                         data: form,
+                         processData:false,
+                         contentType:false,
+                         success: function(response) {
+                             var res = jQuery.parseJSON(response);
+                             if (res.status == 200) {
+                                 console.log("success");
+                             } else {
+                                 console.log("failed");
+                             }
+                         }
+
+                     })
+                 }) */
             </script>
 
 

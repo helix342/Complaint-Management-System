@@ -28,9 +28,14 @@ JOIN faculty_details ON cd.faculty_id = faculty_details.faculty_id
 WHERE cd.status IN (5, 19, 20)
 ";
 $result = mysqli_query($conn, $sql);
+$pending = mysqli_num_rows($result);
 $result1 = mysqli_query($conn, $sql1);
+$approved = mysqli_num_rows($result1);
 $result2 = mysqli_query($conn, $sql2);
+$completed = mysqli_num_rows($result2);
 $result3 = mysqli_query($conn, $sql3);
+$rejected = mysqli_num_rows($result3);
+
 ?>
 
 <!DOCTYPE html>
@@ -251,12 +256,7 @@ $result3 = mysqli_query($conn, $sql3);
                                                     <div id="navref1">
                                                         <span class="hidden-xs-down">
                                                             <i class="fas fa-clock"></i>
-                                                            <b>&nbsp Pending ( <?php $query2 = "SELECT COUNT(*) as pending FROM complaints_detail WHERE  status ='2'";
-                                                                                $output2 = mysqli_query($conn, $query2);
-                                                                                $row2 = mysqli_fetch_assoc($output2);
-                                                                                $pendingCount = $row2['pending'];
-                                                                                echo $pendingCount;
-                                                                                ?> ) </b>
+                                                            <b>&nbsp Pending (<?php echo $pending; ?>) </b>
                                                         </span>
                                                     </div>
                                                 </a>
@@ -266,12 +266,8 @@ $result3 = mysqli_query($conn, $sql3);
                                                     aria-selected="false"><span class="hidden-sm-up"></span>
                                                     <div id="navref2">
                                                         <span class="hidden-xs-down">
-                                                            <i class="fas fa-check"></i><b>&nbsp Approved ( <?php $query2 = "SELECT COUNT(*) as approved FROM complaints_detail WHERE (status ='4' or status ='6' or status='7' or status='10' or status='11' or status='13' or status='14' or status='15' or status='17' or status='18')";
-                                                                                                            $output2 = mysqli_query($conn, $query2);
-                                                                                                            $row2 = mysqli_fetch_assoc($output2);
-                                                                                                            $pendingCount = $row2['approved'];
-                                                                                                            echo $pendingCount;
-                                                                                                            ?> )</b>
+                                                            <i class="fas fa-check"></i><b>&nbsp Approved (<?php echo $approved;
+                                                                                                            ?>)</b>
                                                         </span>
                                                     </div>
                                                 </a>
@@ -281,12 +277,8 @@ $result3 = mysqli_query($conn, $sql3);
                                                     aria-selected="false"><span class="hidden-sm-up"></span>
                                                     <div id="navref3">
                                                         <span class="hidden-xs-down">
-                                                            <i class="mdi mdi-check-all"></i><b>&nbsp Completed ( <?php $query2 = "SELECT COUNT(*) as completed FROM complaints_detail WHERE  status ='16'";
-                                                                                                                    $output2 = mysqli_query($conn, $query2);
-                                                                                                                    $row2 = mysqli_fetch_assoc($output2);
-                                                                                                                    $pendingCount = $row2['completed'];
-                                                                                                                    echo $pendingCount;
-                                                                                                                    ?> )</b>
+                                                            <i class="mdi mdi-check-all"></i><b>&nbsp Completed (<?php echo $completed;
+                                                                                                                    ?>)</b>
                                                         </span>
                                                     </div>
                                                 </a>
@@ -296,12 +288,8 @@ $result3 = mysqli_query($conn, $sql3);
                                                     aria-selected="false"><span class="hidden-sm-up"></span>
                                                     <div id="navref4">
                                                         <span class="hidden-xs-down">
-                                                            <i class="mdi mdi-close-circle"></i><b>&nbsp Rejected ( <?php $query2 = "SELECT COUNT(*) as rejected FROM complaints_detail WHERE (status ='5' or status ='19' or status='20')";
-                                                                                                                    $output2 = mysqli_query($conn, $query2);
-                                                                                                                    $row2 = mysqli_fetch_assoc($output2);
-                                                                                                                    $pendingCount = $row2['rejected'];
-                                                                                                                    echo $pendingCount;
-                                                                                                                    ?> )</b>
+                                                            <i class="mdi mdi-close-circle"></i><b>&nbsp Rejected (<? echo $rejected;
+                                                                                                                    ?>)</b>
                                                         </span>
                                                     </div>
                                                 </a>
@@ -1061,6 +1049,25 @@ $result3 = mysqli_query($conn, $sql3);
         </div>
     </div>
 
+    <div class="modal fade" id="bmodalImage" tabindex="-1"
+        aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header" style="background:linear-gradient(to bottom right, #cc66ff 1%, #0033cc 100%);background-color:#7460ee;">
+                    <h5 class="modal-title" id="exampleModalLabel">Raise Complaint</h5>
+                    <button class="spbutton" type="button" class="btn-close" data-bs-dismiss="modal"
+                        aria-label="Close">
+                </div>
+                <div class="modal-body">
+                    <img id="bimg" src="" alt="Image Preview" style="max-width: 100%;" />
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="tab-pane p-20" id="home" role="tabpanel">
                                     <div class="modal fade" id="raisemodal" tabindex="-1"
                                         aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -1521,8 +1528,8 @@ $result3 = mysqli_query($conn, $sql3);
 
         //Image Modal Ajax
         $(document).on('click', '.showImage', function() {
-            var task_id = $(this).data('task-id');
-            $('#task_id').val(task_id);
+            var task_id = $(this).val();
+            console.log(task_id);
 
             $.ajax({
                 type: "POST",
@@ -1531,15 +1538,16 @@ $result3 = mysqli_query($conn, $sql3);
                     'get_image': true,
                     'task_id': task_id
                 },
-                dataType: "json",
                 success: function(response) {
-                    if (response.status == 200) {
-                        $('#modalImage').attr('src', response.data.images).show();
+                    console.log(response);
+                    var res = jQuery.parseJSON(response);
+                    if (res.status == 200) {
+                        $('#bimg').attr('src',"uploads/"+res.data);
+                        $('#bmodalImage').modal('show');
                     } else {
                         $('#modalImage').hide();
                         alert(response.message);
                     }
-                    $('#imageModal1').modal('show');
                 },
                 error: function(xhr, status, error) {
                     alert('An error occurred while retrieving the image.');

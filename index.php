@@ -11,50 +11,11 @@ if (isset($_SESSION['worker_id'])) {
 } else {
     die("Couldn't find department in session.");
 }
-
+// fetching worker details using department in session
 $qry = "SELECT * FROM worker_details WHERE worker_id='$worker_id'";
 $qry_run = mysqli_query($conn,$qry);
 $srow  = mysqli_fetch_array($qry_run);
 $dept = $srow['worker_dept'];
-
-
-$q1 = "SELECT * FROM complaints_detail as cd JOIN manager as m on cd.id = m.problem_id WHERE cd.status = '7' AND m.worker_id LIKE 'CIV%'";
-$q2 = "SELECT * FROM complaints_detail as cd JOIN manager as m on cd.id = m.problem_id WHERE cd.status = '7' AND m.worker_id LIKE 'CAR%'";
-$q3 = "SELECT * FROM complaints_detail as cd JOIN manager as m on cd.id = m.problem_id WHERE cd.status = '7' AND m.worker_id LIKE 'ELE%'";
-$q4 = "SELECT * FROM complaints_detail as cd JOIN manager as m on cd.id = m.problem_id WHERE cd.status = '7' AND m.worker_id LIKE 'INF%'";
-$q5 = "SELECT * FROM complaints_detail as cd JOIN manager as m on cd.id = m.problem_id WHERE cd.status = '7' AND m.worker_id LIKE 'PAR%'";
-$q6 = "SELECT * FROM complaints_detail as cd JOIN manager as m on cd.id = m.problem_id WHERE cd.status = '7' AND m.worker_id LIKE 'PLU%'";
-
-$r1 = mysqli_query($conn, $q1);
-
-$r2 = mysqli_query($conn, $q2);
-
-$r3 = mysqli_query($conn, $q3);
-
-$r4 = mysqli_query($conn, $q4);
-
-$r5 = mysqli_query($conn, $q5);
-
-$r6 = mysqli_query($conn, $q6);
-
-$c1 = mysqli_num_rows($r1);
-
-$c2 = mysqli_num_rows($r2);
-
-$c3 = mysqli_num_rows($r3);
-
-$c4 = mysqli_num_rows($r4);
-
-$c5 = mysqli_num_rows($r5);
-
-$c6 = mysqli_num_rows($r6);
-
-
-
-
-
-
-
 if (isset($_SESSION['worker_id'])) {
     $worker_id = $_SESSION['worker_id'];
    
@@ -273,6 +234,7 @@ $notcount = mysqli_num_rows($result4);
 
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -282,6 +244,7 @@ $notcount = mysqli_num_rows($result4);
     <link href="dist/css/style.min.css" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/styles.css">
 </head>
+
 <body>
     <div class="preloader">
         <div class="lds-ripple">
@@ -293,33 +256,43 @@ $notcount = mysqli_num_rows($result4);
         <header class="topbar" data-navbarbg="skin5">
             <nav class="navbar top-navbar navbar-expand-md navbar-dark">
                 <div class="navbar-header" data-logobg="skin5">
-                    <a class="nav-toggler waves-effect waves-light d-block d-md-none" href="javascript:void(0)"><i class="ti-menu ti-close"></i></a>
+                    <a class="nav-toggler waves-effect waves-light d-block d-md-none" href="javascript:void(0)"><i
+                            class="ti-menu ti-close"></i></a>
                     <a class="navbar-brand" href="https://www.mkce.ac.in">
                         <b class="logo-icon p-l-8">
-                            <img src="assets/images/logo-icon.png" alt="homepage" class="light-logo">   
+                            <img src="assets/images/logo-icon.png" alt="homepage" class="light-logo">
                         </b>
                         <span class="logo-text">
-                             <img src="assets/images/logo.png" alt="homepage" class="light-logo">   
+                            <img src="assets/images/logo.png" alt="homepage" class="light-logo">
                         </span>
                     </a>
-                    <a class="topbartoggler d-block d-md-none waves-effect waves-light" href="javascript:void(0)" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><i class="ti-more"></i></a>
+                    <a class="topbartoggler d-block d-md-none waves-effect waves-light" href="javascript:void(0)"
+                        data-toggle="collapse" data-target="#navbarSupportedContent"
+                        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><i
+                            class="ti-more"></i></a>
                 </div>
                 <div class="navbar-collapse collapse" id="navbarSupportedContent" data-navbarbg="skin5">
                     <ul class="navbar-nav float-left mr-auto">
-                        <li class="nav-item d-none d-md-block"><a class="nav-link sidebartoggler waves-effect waves-light" href="javascript:void(0)" data-sidebartype="mini-sidebar"><i class="mdi mdi-menu font-24"></i></a></li>
+                        <li class="nav-item d-none d-md-block"><a
+                                class="nav-link sidebartoggler waves-effect waves-light" href="javascript:void(0)"
+                                data-sidebartype="mini-sidebar"><i class="mdi mdi-menu font-24"></i></a></li>
                     </ul>
                     <ul class="navbar-nav float-right">
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle text-muted waves-effect waves-dark pro-pic" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="assets/images/users/1.jpg" alt="user" class="rounded-circle" width="31"></a>
+                            <a class="nav-link dropdown-toggle text-muted waves-effect waves-dark pro-pic" href=""
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img
+                                    src="assets/images/users/1.jpg" alt="user" class="rounded-circle" width="31"></a>
                             <div class="dropdown-menu dropdown-menu-right user-dd animated">
-                                <a class="dropdown-item" href="manager.html"><i class="ti-user m-r-5 m-l-5"></i>My Profile</a>
-                                
+                                <a class="dropdown-item" href="manager.html"><i class="ti-user m-r-5 m-l-5"></i>My
+                                    Profile</a>
+
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="login.php"><i class="fa fa-power-off m-r-5 m-l-5"></i> Logout</a>
-                               
+                                <a class="dropdown-item" href="login.php"><i class="fa fa-power-off m-r-5 m-l-5"></i>
+                                    Logout</a>
+
                             </div>
                         </li>
-                       
+
                     </ul>
                 </div>
             </nav>
@@ -327,21 +300,31 @@ $notcount = mysqli_num_rows($result4);
         <aside class="left-sidebar" data-sidebarbg="skin5">
             <div class="scroll-sidebar"><br>
                 <nav class="sidebar-nav">
-                <ul id="sidebarnav" class="p-t-30">
-                    <li class="sidebar-item"> <a id="view-work-task-history" class="sidebar-link waves-effect waves-dark sidebar-link" href="index.php" aria-expanded="false"><i class="mdi mdi-blur-linear"></i><span class="hide-menu">Dashboard</span></a></li>
-                <li class="sidebar-item"> <a id="view-work-task-history" class="sidebar-link waves-effect waves-dark sidebar-link" href="new_work.php" aria-expanded="false"><i class="mdi mdi-blur-linear"></i><span class="hide-menu">Work Asign</span></a></li>
+                    <ul id="sidebarnav" class="p-t-30">
+                        <li class="sidebar-item"> <a id="view-work-task-history"
+                                class="sidebar-link waves-effect waves-dark sidebar-link" href="index.php"
+                                aria-expanded="false"><i class="mdi mdi-blur-linear"></i><span
+                                    class="hide-menu">Dashboard</span></a></li>
+                        <li class="sidebar-item"> <a id="view-work-task-history"
+                                class="sidebar-link waves-effect waves-dark sidebar-link" href="new_work.php"
+                                aria-expanded="false"><i class="mdi mdi-blur-linear"></i><span class="hide-menu">Work
+                                    Asign</span></a></li>
 
-                    <li class="sidebar-item"> <a id="view-work-task-history" class="sidebar-link waves-effect waves-dark sidebar-link" href="workall.php" aria-expanded="false"><i class="mdi mdi-blur-linear"></i><span class="hide-menu"><?php echo $row['worker_dept'] ?></span></a></li>
+                        <li class="sidebar-item"> <a id="view-work-task-history"
+                                class="sidebar-link waves-effect waves-dark sidebar-link" href="workall.php"
+                                aria-expanded="false"><i class="mdi mdi-blur-linear"></i><span
+                                    class="hide-menu"><?php echo $row['worker_dept'] ?></span></a></li>
                     </ul>
                 </nav>
             </div>
         </aside>
         <div class="page-wrapper">
-             <div class="page-breadcrumb">
+            <div class="page-breadcrumb">
                 <div class="row">
                     <div class="col-12 d-flex no-block align-items-center">
-                        <marquee><b>WELCOME TO M.KUMARASAMY COLLEGE OF ENGINEERING - THALAVAPALAYAM,KARUR - 639113.</b></marquee>
-                       
+                        <marquee><b>WELCOME TO M.KUMARASAMY COLLEGE OF ENGINEERING - THALAVAPALAYAM,KARUR - 639113.</b>
+                        </marquee>
+
                     </div>
                 </div>
             </div>
@@ -352,7 +335,7 @@ $notcount = mysqli_num_rows($result4);
                             <div class="box bg-cyan text-center">
                                 <h1 class="font-light text-white"><i class="fas fa-user"></i></h1>
                                 <h3 class="text-white"><b> Name <br></b></h3>
-                                <h5 class="text-white" id="workerName" ><?php echo $row['worker_first_name']?></h5>
+                                <h5 class="text-white" id="workerName"><?php echo $row['worker_first_name']?></h5>
 
                             </div>
                         </div>
@@ -372,11 +355,11 @@ $notcount = mysqli_num_rows($result4);
                             <div class="box bg-warning text-center">
                                 <h1 class="font-light text-white"><i class="mdi mdi-account-card-details"></i></h1>
                                 <h3 class="text-white"><b>Designation<br></b></h3>
-                                <h5 id="workerdepartment" class="text-white" >Worker-Head</h5>
+                                <h5 id="workerdepartment" class="text-white">Worker-Head</h5>
 
 
                             </div>
-                        </div>                        
+                        </div>
                     </div>
                 </div><br>
                 <div class="card">
@@ -445,9 +428,9 @@ $notcount = mysqli_num_rows($result4);
             </div>
             <footer class="footer text-center">
                 <p><b>
-                    2024 © M.Kumarasamy College of Engineering All Rights Reserved.<br>
-                    Developed and Maintained by Technology Innovation Hub.
-                </b></p>
+                        2024 © M.Kumarasamy College of Engineering All Rights Reserved.<br>
+                        Developed and Maintained by Technology Innovation Hub.
+                    </b></p>
             </footer>
         </div>
     </div>
@@ -467,10 +450,9 @@ $notcount = mysqli_num_rows($result4);
     <script src="assets/libs/flot/jquery.flot.crosshair.js"></script>
     <script src="assets/libs/flot.tooltip/js/jquery.flot.tooltip.min.js"></script>
     <script src="dist/js/pages/chart/chart-page-init.js"></script>
-        
-       
+
+
 
 </body>
 
 </html>
-

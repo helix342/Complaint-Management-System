@@ -1,39 +1,24 @@
 <?php
 include("db.php");
 session_start();
-$_session['hod_id']= 12345;
-$hod_id =  $_session['hod_id'];
+$_session['eo_id'] = 12345;
+$eo_id = $_session['eo_id'];
 
-//Approve Button
-if (isset($_POST['approvebtn'])) {
+if (isset($_POST['approvefacbtn'])) {
     try {
-        $id = $_POST['approve'];
-
-        // Prepare the SQL statement
-        $query = "UPDATE complaints_detail SET status = ? WHERE id = ?";
-        $stmt = $conn->prepare($query);
-
-        if (!$stmt) {
-            throw new Exception('Prepare statement failed: ' . $conn->error);
-        }
-
-        // Bind parameters (status and id)
-        $status = 4;
-        $stmt->bind_param('ii', $status, $id);
-
-        // Execute the statement
-        if ($stmt->execute()) {
+        $id = mysqli_real_escape_string($conn, $_POST['approvefac']);
+        
+        $query = "UPDATE complaints_detail SET status = '22' WHERE id='$id'";
+        
+        if (mysqli_query($conn, $query))    {
             $res = [
                 'status' => 200,
                 'message' => 'Details Updated Successfully'
             ];
             echo json_encode($res);
         } else {
-            throw new Exception('Execution failed: ' . $stmt->error);
+            throw new Exception('Query Failed: ' . mysqli_error($conn));
         }
-
-        // Close the statement
-        $stmt->close();
     } catch (Exception $e) {
         $res = [
             'status' => 500,
@@ -42,7 +27,6 @@ if (isset($_POST['approvebtn'])) {
         echo json_encode($res);
     }
 }
-
 //Rejected Feedback
 if (isset($_POST['rejfeed'])) {
     try {

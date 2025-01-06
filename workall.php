@@ -9,7 +9,7 @@ if (isset($_SESSION['worker_id'])) {
 } else {
     die("Couldn't find department in session.");
 }
-
+//fetching worker head details using session v ar
 $qry = "SELECT * FROM worker_details WHERE worker_id='$worker_id'";
 $qry_run = mysqli_query($conn,$qry);
 $srow  = mysqli_fetch_array($qry_run);
@@ -217,54 +217,6 @@ $stmt->execute();
 $result4 = $stmt->get_result();
 $notcount = mysqli_num_rows($result4);
 
-
-//count for side bar starts
-
-$q1 = "SELECT * FROM complaints_detail as cd JOIN manager as m on cd.id = m.problem_id WHERE cd.status = '7' AND m.worker_id LIKE 'CIV%'";
-$q2 = "SELECT * FROM complaints_detail as cd JOIN manager as m on cd.id = m.problem_id WHERE cd.status = '7' AND m.worker_id LIKE 'CAR%'";
-$q3 = "SELECT * FROM complaints_detail as cd JOIN manager as m on cd.id = m.problem_id WHERE cd.status = '7' AND m.worker_id LIKE 'ELE%'";
-$q4 = "SELECT * FROM complaints_detail as cd JOIN manager as m on cd.id = m.problem_id WHERE cd.status = '7' AND m.worker_id LIKE 'INF%'";
-$q5 = "SELECT * FROM complaints_detail as cd JOIN manager as m on cd.id = m.problem_id WHERE cd.status = '7' AND m.worker_id LIKE 'PAR%'";
-$q6 = "SELECT * FROM complaints_detail as cd JOIN manager as m on cd.id = m.problem_id WHERE cd.status = '7' AND m.worker_id LIKE 'PLU%'";
-
-$r1 = mysqli_query($conn, $q1);
-
-$r2 = mysqli_query($conn, $q2);
-
-$r3 = mysqli_query($conn, $q3);
-
-$r4 = mysqli_query($conn, $q4);
-
-$r5 = mysqli_query($conn, $q5);
-
-$r6 = mysqli_query($conn, $q6);
-
-$c1 = mysqli_num_rows($r1);
-
-$c2 = mysqli_num_rows($r2);
-
-$c3 = mysqli_num_rows($r3);
-
-$c4 = mysqli_num_rows($r4);
-
-$c5 = mysqli_num_rows($r5);
-
-$c6 = mysqli_num_rows($r6);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//count for side bar ends
 
 ?>
 
@@ -577,7 +529,9 @@ $c6 = mysqli_num_rows($r6);
                                     </div>
                                 </div>
                                 <!--completed end-->
-                              
+                                
+                                <!-- Not approved task table-->
+
                                 <div class="tab-pane p-10" id="notapproved" role="tabpanel">
                                     <div class="p-10">
                                         <div class="p-10">
@@ -1170,6 +1124,7 @@ $(function() {
         });
     </script>
     <script>
+        //viewing complaint details in modal
     $(document).on('click', '.view-complaint', function(e) {
     e.preventDefault();
     var taskId = $(this).data('task-id');
@@ -1526,6 +1481,7 @@ $("#statusnotapproved").load(location.href + " #statusnotapproved > *", function
         });
     </script>
     <script>
+        //file validation after image
         function validateSize(input) {
             const fileSize = input.files[0].size / 1024;
             var ext = input.value.split(".");
@@ -1578,27 +1534,6 @@ $("#statusnotapproved").load(location.href + " #statusnotapproved > *", function
 
 
 
-        $(document).on('click','.summabtn',function(e){
-
-        
-            e.preventDefault();
-            $.ajax({
-                type:"POST",
-                url:"mail.php",
-                success:function(response){
-                    var res = jQuery.parseJSON(response);
-                    if(res.status==200){
-                        console.log("success");
-                    }
-                    else{
-                        console.log("error");
-                    }
-                }
-            })
-            
-
-
-        });
     </script>
 
 
