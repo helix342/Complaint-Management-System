@@ -622,7 +622,7 @@ $resultfac = mysqli_query($conn,$facquery);
                                                                                     </button>
                                                                                 </center>
                                                                             <?php } else { ?>
-                                                                                <span class="badge bg-success" style="font-size: 1.2em; color: #000; padding: 0.25em 0.5em;"><?php echo $statusMessage; ?></span>
+                                                                                <span class="badge bg-success" style="font-size: 1.2em; color: white; padding: 0.25em 0.5em;"><?php echo $statusMessage; ?></span>
                                                                             <?php } ?>
                                                                         </td>
                                                                     </tr>
