@@ -1034,10 +1034,13 @@ $rejected = mysqli_num_rows($result3);
         aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
-                <div class="modal-header" style="background:linear-gradient(to bottom right, #cc66ff 1%, #0033cc 100%);background-color:#7460ee;">
-                    <h5 class="modal-title" id="exampleModalLabel">Raise Complaint</h5>
-                    <button class="spbutton" type="button" class="btn-close" data-bs-dismiss="modal"
+                <div class="modal-header" style="background: linear-gradient(to bottom right, #cc66ff 1%, #0033cc 100%); color: white;">
+                    <h5 class="modal-title" id="exampleModalLabel">
+                        After Image</h5>
+                    <button type="button" class="close" data-dismiss="modal"
                         aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
                 <div class="modal-body">
                     <img id="afterimgcomp" src="" alt="Image Preview" style="max-width: 100%; display: none;" />
@@ -1053,10 +1056,13 @@ $rejected = mysqli_num_rows($result3);
         aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
-                <div class="modal-header" style="background:linear-gradient(to bottom right, #cc66ff 1%, #0033cc 100%);background-color:#7460ee;">
-                    <h5 class="modal-title" id="exampleModalLabel">Raise Complaint</h5>
-                    <button class="spbutton" type="button" class="btn-close" data-bs-dismiss="modal"
+                <div class="modal-header" style="background: linear-gradient(to bottom right, #cc66ff 1%, #0033cc 100%); color: white;">
+                    <h5 class="modal-title" id="exampleModalLabel">
+                        Before Image</h5>
+                    <button type="button" class="close" data-dismiss="modal"
                         aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
                 <div class="modal-body">
                     <img id="bimg" src="" alt="Image Preview" style="max-width: 100%;" />

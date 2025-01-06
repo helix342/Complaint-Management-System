@@ -521,14 +521,17 @@ $resultfac = mysqli_query($conn,$facquery);
                                                                 <label class="form-label" for="otherValue">Please specify: <span style="color: red;">*</span></label>
                                                                 <input class="form-control" type="text" id="otherValue" name="otherValue"> <br>
                                                             </div>
-
-                                                            
                                                             <div class="mb-3">
                                                                 <label for="description" class="form-label">Problem Description <span style="color: red;">*</span></label>
                                                                 <input type="text" class="form-control" name="problem_description" placeholder="Enter Description" required>
                                                             </div>
+
                                                             <div class="mb-3">
-                                                                <label for="images" class="form-label">Image <span style="color: red;">*</span> </label>
+                                                                <label for="itemno" class="form-label">Item Number(for electrical/itkm work)</label>
+                                                                <input type="text" class="form-control" name="itemno" placeholder="Eg: AC-102">
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label for="images" class="form-label">Image(less than 2mb)<span style="color: red;">*</span> </label>
                                                                 <input type="file" class="form-control" name="images" id="images" onchange="validateSize(this)" required>
                                                             </div>
                                                             <div class="mb-3">
@@ -1389,7 +1392,6 @@ $resultfac = mysqli_query($conn,$facquery);
 
         $(document).on('click','.fac',function(e){
             e.preventDefault();
-            console.log("hiii");
 
             $.ajax({
                 url: "login_backend.php",
@@ -1398,7 +1400,6 @@ $resultfac = mysqli_query($conn,$facquery);
                     "fac": true,
                 },
                 success: function(response) {
-                    console.log(response);
                     $('#cfaculty').html(response);
                 }
             });
