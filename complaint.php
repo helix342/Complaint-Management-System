@@ -19,6 +19,24 @@ $compcount2 = mysqli_num_rows($result4);
 $sql5 = "SELECT complaints_detail.*,manager.* FROM complaints_detail LEFT JOIN manager on complaints_detail.id=manager.problem_id WHERE status = 14";
 $result5 = mysqli_query($conn, $sql5);
 $compcount3 = mysqli_num_rows($result5);
+
+$sql11 = "SELECT 
+    cd.*, 
+    c.*, 
+    f.faculty_name, 
+    f.department, 
+    f.faculty_contact, 
+    f.faculty_mail 
+FROM 
+    complaints_detail AS cd 
+LEFT JOIN 
+    comments AS c ON cd.id = c.problem_id 
+JOIN 
+    faculty_details AS f ON cd.faculty_id = f.faculty_id 
+WHERE 
+    cd.status = 6";
+
+$result11 = mysqli_query($conn, $sql11);
 ?>
 <!DOCTYPE html>
 <html dir="ltr" lang="en">
@@ -159,7 +177,6 @@ $compcount3 = mysqli_num_rows($result5);
                 <nav class="sidebar-nav">
                     <ul id="sidebarnav" class="p-t-30">
                         <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link" href="p_index.php" aria-expanded="false"><i class="mdi mdi-view-dashboard"></i><span class="hide-menu">Dashboard</span></a></li>
-                        <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link" href="requirements1.php" aria-expanded="false"><i class="mdi mdi-chart-bar"></i><span class="hide-menu">Requirements</span></a></li>
                         <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link" href="complaint.php" aria-expanded="false"><i class="mdi mdi-chart-bubble"></i><span class="hide-menu">Complaint Status</span></a></li>
 
                     </ul>
@@ -213,7 +230,11 @@ $compcount3 = mysqli_num_rows($result5);
 
                                 <!-- Nav tabs -->
                                 <ul class="nav nav-tabs" role="tablist">
-                                    <li class="nav-item"> <a class="nav-link active" data-toggle="tab" href="#completed"
+                                <li class="nav-item"> <a class="nav-link active" data-toggle="tab" href="#table1"
+                                            role="tab"><span class="hidden-sm-up"></span> <span
+                                                class="hidden-xs-down"><i class="mdi mdi-book-open"></i>Requiremnets</span></a>
+                                    </li>
+                                    <li class="nav-item"> <a class="nav-link " data-toggle="tab" href="#completed"
                                             role="tab"><span class="hidden-sm-up"></span> <span
                                                 class="hidden-xs-down"><i class="mdi mdi-book-open"></i>Completed Work</span></a>
                                     </li>
@@ -227,8 +248,95 @@ $compcount3 = mysqli_num_rows($result5);
                                 <!-- Tab panes -->
                                 <!-- Tab panes -->
                                 <div class="tab-content tabcontent-border">
+
+
+                                <div class="tab-pane active p-20" id="table1" role="tabpanel">
+                                    <div class="p-20">
+                                        <div class="table-responsive">
+                                            <h5 class="card-title">Requirements</h5>
+                                            <table id="addnewtask" class="table table-striped table-bordered">
+                                        <thead>
+                                            <tr>
+
+                                                <th class="text-center" style="background:linear-gradient(to bottom right, #cc66ff 1%, #0033cc 100%); color:white;"><b>
+                                                        <h5>S.No</h5>
+                                                    </b></th>
+                                                <th class="text-center" style="background:linear-gradient(to bottom right, #cc66ff 1%, #0033cc 100%); color:white;"><b>
+                                                        <h5>Dept</h5>
+                                                    </b></th>
+                                                <th class="text-center" style="background:linear-gradient(to bottom right, #cc66ff 1%, #0033cc 100%); color:white;"><b>
+                                                        <h5>Block \ Venue</h5>
+                                                    </b></th>
+                                                <th class="text-center" style="background:linear-gradient(to bottom right, #cc66ff 1%, #0033cc 100%); color:white;"><b>
+                                                        <h5>Complaint</h5>
+                                                    </b></th>
+                                                <th class="text-center" style="background:linear-gradient(to bottom right, #cc66ff 1%, #0033cc 100%); color:white;"><b>
+                                                        <h5>Image</h5>
+                                                    </b></th>
+                                                <th class="text-center" style="background:linear-gradient(to bottom right, #cc66ff 1%, #0033cc 100%); color:white;"><b>
+                                                        <h5>Date_raised</h5>
+                                                    </b></th>
+
+                                                <th class="text-center" style="background:linear-gradient(to bottom right, #cc66ff 1%, #0033cc 100%); color:white;"><b>
+                                                        <h5>Requirements</h5>
+                                                    </b></th>
+                                                <th class="text-center" style="background:linear-gradient(to bottom right, #cc66ff 1%, #0033cc 100%); color:white;"><b>
+                                                        <h5>Action</h5>
+                                                    </b></th>
+
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <?php
+                                            $s = 1;
+                                            while ($row = mysqli_fetch_array($result11)) {
+                                            ?>
+                                                <tr>
+                                                    <th class="text-center" scope="row"><?php echo $s ?></td>
+                                                    <td class="text-center"><?php echo $row['department'] ?></td>
+                                                    <td class="text-center"><?php echo $row['block_venue'] ?> \ <?php echo $row['venue_name'] ?></td>
+
+                                                    <td class="text-center"><button type="button" value="<?php echo $row['problem_id']; ?>"
+                                                            class="btn viewcomplaint"
+                                                            data-value="<?php echo $row['fac_id']; ?>"
+                                                            data-toggle="modal"
+                                                            data-target="#complaintDetailsModal"><i class="fas fa-eye" style="font-size: 25px;"></i></button>
+                                                    </td>
+
+
+
+
+                                                    <td class="text-center">
+                                                                <button type="button" class="btn btn-light btn-sm showImage"
+                                                                    value="<?php echo $row['problem_id']; ?>" data-toggle="modal" data-target="#imageModal">
+                                                                    <i class="fas fa-image" style="font-size: 25px;"></i>
+                                                                </button>
+                                                            </td>
+
+                                                    <td class="text-center"><?php echo $row['date_of_reg'] ?></td>
+
+                                                    <td class="text-center"><?php echo $row['reason'] ?></td>
+                                                    <td class="text-center">
+                                                        <button type="button" value="<?php echo $row['problem_id'] ?>" class="btn btn-success userapprove"><i class="fas fa-check"></i></button>
+
+                                                        <button type="button" value="<?php echo $row['problem_id']; ?>" class="btn btn-danger userreject" data-toggle="modal" data-target="#rejectModal"><i class="fas fa-times"></i></button>
+
+                                                    </td>
+                                                </tr>
+                                            <?php
+                                            }
+                                            $s++
+                                            ?>
+
+                                        </tbody>
+
+                                    </table>
+                                        </div>
+
+                                    </div>
+                                </div>
                                      <!-- Completed Table -->
-                                <div class="tab-pane active p-20" id="completed" role="tabpanel">
+                                <div class="tab-pane p-20" id="completed" role="tabpanel">
                                     <div class="p-20">
                                         <div class="table-responsive">
                                             <h5 class="card-title">Work's Completed</h5>
@@ -718,6 +826,156 @@ $compcount3 = mysqli_num_rows($result5);
                 placement: 'top',
                 title: 'View Complaint'
             });
+        });
+
+        $(function() {
+            // Initialize the tooltip
+            $('[data-toggle="tooltip"]').tooltip();
+
+            // You can also set options manually if needed
+            $('.userreject').tooltip({
+                placement: 'top',
+                title: 'Reject'
+            });
+        });
+
+        $(function() {
+            // Initialize the tooltip
+            $('[data-toggle="tooltip"]').tooltip();
+
+            // You can also set options manually if needed
+            $('.userapprove').tooltip({
+                placement: 'top',
+                title: 'Accept'
+            });
+        });
+
+        $(function() {
+            // Initialize the tooltip
+            $('[data-toggle="tooltip"]').tooltip();
+
+            // You can also set options manually if needed
+            $('.showImage1').tooltip({
+                placement: 'top',
+                title: 'Before'
+            });
+        });
+        $(function() {
+            // Initialize the tooltip
+            $('[data-toggle="tooltip"]').tooltip();
+
+            // You can also set options manually if needed
+            $('.viewcomplaint').tooltip({
+                placement: 'top',
+                title: 'View Complaint'
+            });
+        });
+
+
+        $(document).ready(function() {
+            $('#addnewtask').DataTable();
+        });
+
+        //requirement approve
+        $(document).on('click', '.userapprove', function(e) {
+            e.preventDefault();
+            var user_id = $(this).val();
+            console.log(user_id);
+            if (confirm('Are you sure you want to approve?')) {
+
+                $.ajax({
+                    type: "POST",
+                    url: "backend1.php",
+                    data: {
+                        'approve_user': true,
+                        'user_id': user_id
+                    },
+                    success: function(response) {
+
+                        var res = jQuery.parseJSON(response);
+                        if (res.status == 500) {
+                            alert(res.message);
+                        } else {
+                            Swal.fire({
+                                title: "Approved!",
+                                text: "Requirements are verified!",
+                                icon: "success"
+                            });
+                            $('#addnewtask').load(location.href + " #addnewtask");
+                            $('#addnewtask').DataTable().destroy();
+
+                            $("#addnewtask").load(location.href + " #addnewtask > *", function() {
+                                // Reinitialize the DataTable after the content is loaded
+                                $('#addnewtask').DataTable();
+                            });
+                        }
+                    }
+                });
+            }
+        });
+
+        //reject 
+        $(document).on('submit', '#rejectreason', function(e) {
+            e.preventDefault(); // Prevent default form submission
+
+            // Create a FormData object from the form
+            var formData = new FormData(this);
+
+            // Get the problem_id from the button that triggered the modal
+            var problem_id = $('#rejectModal').data('problem_id');
+            console.log(problem_id);
+
+            // Append the problem_id to the FormData
+            formData.append("problem_id", problem_id);
+            formData.append("save_reason", true); // Add an identifier for the backend
+
+            // Perform the AJAX request
+            $.ajax({
+                type: "POST",
+                url: "backend1.php", // Replace with your backend PHP script
+                data: formData,
+                processData: false, // Important: Prevent jQuery from processing the data
+                contentType: false, // Important: Prevent jQuery from setting the content type
+                success: function(response) {
+                    console.log(response);
+                    var res = jQuery.parseJSON(response);
+
+                    if (res.status == 200) {
+                        // Hide the modal on success
+
+                        $('#rejectModal').modal('hide');
+
+                        // Reset the form after submission
+                        $('#rejectreason')[0].reset();
+                        // Reload the task or the section after update
+
+                        $('#addnewtask').load(location.href + " #addnewtask");
+                        $('#addnewtask').DataTable().destroy();
+
+                        $("#addnewtask").load(location.href + " #addnewtask > *", function() {
+                            // Reinitialize the DataTable after the content is loaded
+                            $('#addnewtask').DataTable();
+                        });
+                        alertify.error('Rejected Success');
+                    } else {
+                        // Handle errors
+                        alertify.error('Error Occured');
+                    }
+                },
+                error: function(xhr, status, error) {
+                    // Handle any errors that occurred during the request
+                    console.error('AJAX Error:', error);
+                    alert('An error occurred. Please try again.');
+                }
+            });
+        });
+
+        // Pass the problem_id to the modal when it is shown
+        $('#rejectModal').on('show.bs.modal', function(event) {
+            var button = $(event.relatedTarget); // Button that triggered the modal
+            var problem_id = button.val(); // Extract problem_id from button value
+            var modal = $(this);
+            modal.data('problem_id', problem_id); // Store problem_id in the modal's data attribute
         });
 
 
