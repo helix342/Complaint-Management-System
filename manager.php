@@ -2394,7 +2394,7 @@ $result11 = mysqli_query($conn, $sql11);
 
                             if (res.status == 200) {
 
-                                alert("Are you sure? you want to reject it!!");
+                                confirm("Are you sure? you want to reject it!!");
                                 alertify.set('notifier', 'position', 'top-right');
                                 alertify.error('Rejected');
                                 // Close modal
@@ -3062,9 +3062,20 @@ $result11 = mysqli_query($conn, $sql11);
                         processData: false,
                         contentType: false,
                         success: function(response) {
-                            if (response.includes("Success")) {
+
+                            var res = jQuery.parseJSON(response);
+
+                            if (res.status == 200) {
+                                alertify.set('notifier', 'position', 'top-right');
+                                alertify.success('User Added');
                                 $("#addworker").modal("hide");
                                 $('#workers')[0].reset();
+                                $('#worker_display').DataTable().destroy();
+                                $("#worker_display").load(location.href + " #worker_display > *", function() {
+                                    $('#worker_display').DataTable({
+                                        pageLength: 5
+                                    });
+                                });
 
 
 
@@ -3335,7 +3346,9 @@ $result11 = mysqli_query($conn, $sql11);
                             var res = jQuery.parseJSON(response);
                             console.log(res);
                             if (res.status == 200) {
-                                alert("user deleted succesfully!");
+
+                                alertify.set('notifier', 'position', 'top-right');
+                                alertify.error('deleted');
                                 $('#user_display').DataTable().destroy();
 
                                 $("#user_display").load(location.href + " #user_display > *", function() {
@@ -3365,9 +3378,10 @@ $result11 = mysqli_query($conn, $sql11);
                             var res = jQuery.parseJSON(response);
                             console.log(res);
                             if (res.status == 200) {
-                                alert("user deleted succesfully!");
-                                $('#worker_display').DataTable().destroy();
 
+                                alertify.set('notifier', 'position', 'top-right');
+                                alertify.error('Deleted');
+                                $('#worker_display').DataTable().destroy();
                                 $("#worker_display").load(location.href + " #worker_display > *", function() {
                                     $('#worker_display').DataTable({
                                         pageLength: 5
@@ -3397,12 +3411,12 @@ $result11 = mysqli_query($conn, $sql11);
                             var res = jQuery.parseJSON(response);
 
                             if (res.status == 200) {
-                                alert("user added sucessfully");
+                                alertify.set('notifier', 'position', 'top-right');
+                                alertify.success('User Added');
 
                                 $("#adduser").modal("hide");
                                 $("#user_data")[0].reset();
                                 $('#user_display').DataTable().destroy();
-
                                 $("#user_display").load(location.href + " #user_display > *", function() {
                                     $('#user_display').DataTable({
                                         pageLength: 5
