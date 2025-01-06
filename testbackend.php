@@ -1,7 +1,7 @@
 <?php
 include("db.php");
 
-
+/* 
 if (isset($_POST['view_complaint'])) {
     $complain_id = $_POST['user_id'];
     $fac_id = $_POST['fac_id'];
@@ -43,7 +43,7 @@ if (isset($_POST['view_complaint'])) {
         ]);
     }
 }
-
+ */
 
 
 /// Backend for worker details
@@ -223,7 +223,7 @@ if (isset($_POST['complaintfeed_id']) && isset($_POST['status'])) {
 
 
 
-
+/* 
 if (isset($_POST['get_aimage'])) {
     // Get the problem_id from POST request
     $problem_id = isset($_POST['problem2_id']) ? $_POST['problem2_id'] : '';
@@ -286,9 +286,9 @@ if (isset($_POST['get_aimage'])) {
     } else {
         echo json_encode(['status' => 404, 'message' => 'No task found for the provided problem ID']);
     }
-}
+} */
 
-if (isset($_POST['get_image'])) {
+/* if (isset($_POST['get_image'])) {
     $problem_id = isset($_POST['problem_id']) ? $_POST['problem_id'] : ''; // Ensure problem_id is set
     // Validate problem_id
     if (empty($problem_id)) {
@@ -318,7 +318,7 @@ if (isset($_POST['get_image'])) {
     $stmt->close();
     $conn->close();
     exit;
-}
+} */
 
 // View complaints based on status
 if (isset($_POST['facfeedview'])) {

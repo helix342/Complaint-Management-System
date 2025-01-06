@@ -751,8 +751,7 @@ $result11 = mysqli_query($conn, $sql11);
                                                                 <button type="button" value="<?php echo $row4['id']; ?>"
                                                                     class="btn viewcomplaint"
                                                                     data-value="<?php echo $row4['fac_id']; ?>"
-                                                                    data-toggle="modal"
-                                                                    data-target="#complaintDetailsModal">
+                                                                    >
                                                                     <i class="fas fa-eye" style="font-size: 25px;"></i>
                                                                 </button>
                                                             </td>
@@ -2650,16 +2649,16 @@ $result11 = mysqli_query($conn, $sql11);
                     console.log(user_id);
                     $.ajax({
                         type: "POST",
-                        url: "testbackend.php",
+                        url: 'cms_backend.php?action=view_complaint',
                         data: {
-                            view_complaint: true,
                             user_id: user_id,
                             fac_id: fac_id,
                         },
                         success: function(response) {
+                            console.log(response);
                             var res = jQuery.parseJSON(response);
                             console.log(res);
-                            if (res.status == 500) {
+                            if (res.status == 404) {
                                 alert(res.message);
                             } else {
                                 //$('#student_id2').val(res.data.uid);
@@ -2685,9 +2684,8 @@ $result11 = mysqli_query($conn, $sql11);
                     console.log(problem_id); // Ensure this logs correctly
                     $.ajax({
                         type: "POST",
-                        url: "testbackend.php",
+                        url: 'cms_backend.php?action=get_image',
                         data: {
-                            get_image: true,
                             problem_id: problem_id, // Correct POST key
                         },
                         dataType: "json", // Automatically parses JSON responses
@@ -2942,9 +2940,8 @@ $result11 = mysqli_query($conn, $sql11);
                     console.log(problem_id); // Ensure this logs correctly
                     $.ajax({
                         type: "POST",
-                        url: "testbackend.php",
+                        url: 'cms_backend.php?action=get_aimage',
                         data: {
-                            get_aimage: true,
                             problem2_id: problem_id, // Correct POST key
                         },
                         dataType: "json", // Automatically parses JSON responses
