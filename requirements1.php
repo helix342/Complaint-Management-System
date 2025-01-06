@@ -1,6 +1,6 @@
 <?php
 include("db.php");
-$sql1 = "SELECT 
+$sql11 = "SELECT 
     cd.*, 
     c.*, 
     f.faculty_name, 
@@ -16,7 +16,7 @@ JOIN
 WHERE 
     cd.status = 6";
 
-$result1 = mysqli_query($conn,$sql1);
+$result11 = mysqli_query($conn, $sql11);
 
 ?>
 
@@ -232,23 +232,29 @@ $result1 = mysqli_query($conn,$sql1);
                                         <tbody>
                                             <?php
                                             $s = 1;
-                                            while ($row = mysqli_fetch_array($result1)) {
+                                            while ($row = mysqli_fetch_array($result11)) {
                                             ?>
                                                 <tr>
                                                     <th class="text-center" scope="row"><?php echo $s ?></td>
                                                     <td class="text-center"><?php echo $row['department'] ?></td>
                                                     <td class="text-center"><?php echo $row['block_venue'] ?> \ <?php echo $row['venue_name'] ?></td>
 
-                                                    <td class="text-center"><button type="button" data-value="<?php echo $row['fac_id'];?>" class=" btn viewcomplaint margin-5" data-toggle="modal" data-target="#modal2" height="30px" width="30px"><i class="fas fa-eye" style="font-size: 25px;"></i></button></td>
-                                                    <!--Description id=problem-->
-
-
-                                              
-                                                                
-                                                    <td class="text-center">
-
-                                                        <button type="button" class="btn showImage1" data-toggle="modal" data-target="imageModal1" data-id="<?php echo $row['problem_id']; ?>"><i class="fas fa-image" style="font-size: 25px;"></i></button>
+                                                    <td class="text-center"><button type="button" value="<?php echo $row['problem_id']; ?>"
+                                                            class="btn viewcomplaint"
+                                                            data-value="<?php echo $row['fac_id']; ?>"
+                                                            data-toggle="modal"
+                                                            data-target="#complaintDetailsModal"><i class="fas fa-eye" style="font-size: 25px;"></i></button>
                                                     </td>
+
+
+
+
+                                                    <td class="text-center">
+                                                                <button type="button" class="btn btn-light btn-sm showImage"
+                                                                    value="<?php echo $row['problem_id']; ?>" data-toggle="modal" data-target="#imageModal">
+                                                                    <i class="fas fa-image" style="font-size: 25px;"></i>
+                                                                </button>
+                                                            </td>
 
                                                     <td class="text-center"><?php echo $row['date_of_reg'] ?></td>
 
@@ -281,74 +287,104 @@ $result1 = mysqli_query($conn,$sql1);
         </div>
     </div>
 
-    <div class="modal-body" style="padding: 15px; font-size: 1.1em; color: #333; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
+    <!-- Complaint Details Modal -->
+    <div class="modal fade" id="complaintDetailsModal" tabindex="-1" role="dialog" aria-labelledby="complaintDetailsModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content" style="border-radius: 8px; box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15); background-color: #f9f9f9;">
 
-                                                                    <!-- Complaint Info Section with minimized spacing -->
-                                                                    <ol class="list-group list-group-numbered" style="margin-bottom: 0;">
-                                                                        <li class="list-group-item d-flex justify-content-between align-items-start" style="padding: 10px; background-color: #fff;">
-                                                                            <div class="ms-2 me-auto">
-                                                                                <div class="fw-bold" style="font-size: 1.2em; font-weight: 600; color: #007bff;">Infra Faculty Name</div>
-                                                                                <b><span id="ifaculty_name" style="color: #555;"><?php echo $row['faculty_name'] ?></span></b>
-                                                                            </div>
-                                                                        </li>
-                                                                        <li class="list-group-item d-flex justify-content-between align-items-start" style="padding: 10px; background-color: #fff;">
-                                                                            <div class="ms-2 me-auto">
-                                                                                <div class="fw-bold" style="font-size: 1.2em; font-weight: 600; color: #007bff;">Mobile Number</div>
-                                                                                <b><span id="ifaculty_contact" style="color: #555;"><?php echo $row['faculty_contact'] ?></span></b>
-                                                                            </div>
-                                                                        </li>
-                                                                        <li class="list-group-item d-flex justify-content-between align-items-start" style="padding: 10px; background-color: #fff;">
-                                                                            <div class="ms-2 me-auto">
-                                                                                <div class="fw-bold" style="font-size: 1.2em; font-weight: 600; color: #007bff;">E-mail</div>
-                                                                                <b><span id="ifaculty_mail" style="color: #555;"><?php echo $row['faculty_mail'] ?></span></b>
-                                                                            </div>
-                                                                        </li>
+                <!-- Modal Header -->
+                <div class="modal-header" style="background-color: #007bff; color: white; border-radius: 8px 8px 0 0; padding: 15px;">
+                    <h5 class="modal-title" id="complaintDetailsModalLabel" style="font-weight: 700; font-size: 1.4em; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
+                        📋 Complaint Details
+                    </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="color: white; font-size: 1.2em;">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
 
-                                                                        <li class="list-group-item d-flex justify-content-between align-items-start" style="padding: 10px; background-color: #fff;">
-                                                                            <div class="ms-2 me-auto">
-                                                                                <div class="fw-bold" style="font-size: 1.2em; font-weight: 600; color: #007bff;">Type of Problem</div>
-                                                                                <b><span id="type_of_problem" style="color: #555;"><?php echo $row['type_of_problem'] ?></span></b>
-                                                                            </div>
-                                                                        </li>
-                                                                        <li class="list-group-item d-flex justify-content-between align-items-start" style="padding: 10px; background-color: #fff;">
-                                                                            <div class="ms-2 me-auto">
-                                                                                <div class="fw-bold" style="font-size: 1.2em; font-weight: 600; color: #007bff;">Faculty ID</div>
-                                                                                <b><span id="faculty_id" style="color: #555;"></span></b>
-                                                                            </div>
-                                                                        </li>
-                                                                        <li class="list-group-item d-flex justify-content-between align-items-start" style="padding: 10px; background-color: #fff;">
-                                                                            <div class="ms-2 me-auto">
-                                                                                <div class="fw-bold" style="font-size: 1.2em; font-weight: 600; color: #007bff;">Faculty Name</div>
-                                                                                <b><span id="faculty_name" style="color: #555;"></span></b>
-                                                                            </div>
-                                                                        </li>
-                                                                        <li class="list-group-item d-flex justify-content-between align-items-start" style="padding: 10px; background-color: #fff;">
-                                                                            <div class="ms-2 me-auto">
-                                                                                <div class="fw-bold" style="font-size: 1.2em; font-weight: 600; color: #007bff;">Faculty Desg</div>
-                                                                                <b><span id="faculty_desg" style="color: #555;"></span></b>
-                                                                            </div>
-                                                                        </li>
-                                                                        <li class="list-group-item d-flex justify-content-between align-items-start" style="padding: 10px; background-color: #fff;">
-                                                                            <div class="ms-2 me-auto">
-                                                                                <div class="fw-bold" style="font-size: 1.2em; font-weight: 600; color: #007bff;">Problem Description</div>
-                                                                                <div class="alert alert-light" role="alert" style="border-radius: 6px; background-color: #f1f1f1; padding: 15px; color: #333;">
-                                                                                    <b><span id="problem_description"><?php echo $row['problem_description'] ?></span></b>
-                                                                                </div>
-                                                                            </div>
-                                                                        </li>
-                                                                    </ol>
-                                                                </div>
+                <!-- Modal Body -->
+                <div class="modal-body" style="padding: 20px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
 
-                                                                <!-- Modal Footer with reduced padding -->
-                                                                <div class="modal-footer" style="border-top: none; justify-content: center; padding: 10px;">
-                                                                    <button type="button" class="btn btn-primary btn-lg" data-dismiss="modal" style="border-radius: 25px; padding: 10px 30px; font-size: 1.1em; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
-                                                                        Close
-                                                                    </button>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-    <!-- ============================================================== -->
+                    <!-- Complaint Info Section arranged in two-column layout -->
+                    <div class="row">
+                        <!-- Left Column -->
+                        <div class="col-md-6 mb-3">
+                            <div class="form-group">
+                                <label class="fw-bold" style="color: #007bff;">Complaint ID</label>
+                                <div class="text-muted"><b id="id"></b></div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="form-group">
+                                <label class="fw-bold" style="color: #007bff;">Infra Name</label>
+                                <div class="text-muted"><b id="faculty_name"></b></div>
+                            </div>
+                        </div>
+
+                        <!-- Right Column -->
+                        <div class="col-md-6 mb-3">
+                            <div class="form-group">
+                                <label class="fw-bold" style="color: #007bff;">Mobile Number</label>
+                                <div class="text-muted"><b id="faculty_contact"></b></div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <div class="form-group">
+                                <label class="fw-bold" style="color: #007bff;">E-mail</label>
+                                <div class="text-muted"><b id="faculty_mail"></b></div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <div class="form-group">
+                                <label class="fw-bold" style="color: #007bff;">Faculty_name</label>
+                                <div class="text-muted"><b id="fac_name"></b></div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <div class="form-group">
+                                <label class="fw-bold" style="color: #007bff;">Faculty_ID</label>
+                                <div class="text-muted"><b id="fac_id"></b></div>
+                            </div>
+                        </div>
+
+                        <!-- New row for Venue and Type of Problem -->
+                        <div class="col-md-6 mb-3">
+                            <div class="form-group">
+                                <label class="fw-bold" style="color: #007bff;">Venue Name</label>
+                                <div class="text-muted"><b id="venue_name"></b></div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="form-group">
+                                <label class="fw-bold" style="color: #007bff;">Type of Problem</label>
+                                <div class="text-muted"><b id="type_of_problem"></b></div>
+                            </div>
+                        </div>
+
+                        <!-- Full width for Problem Description -->
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="fw-bold" style="color: #007bff;">Problem Description</label>
+                                <div class="alert alert-light" role="alert" style="border-radius: 6px; background-color: #f1f1f1; padding: 15px; color: #333;">
+                                    <span id="problem_description"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Modal Footer with Save Button -->
+                <div class="modal-footer" style="background-color: #f1f1f1; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px; padding: 10px;">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    - ============================================================== -->
     <!-- End Container fluid  -->
     <!-- ============================================================== -->
     <!-- ============================================================== -->
@@ -570,14 +606,14 @@ $result1 = mysqli_query($conn,$sql1);
                         // Reset the form after submission
                         $('#rejectreason')[0].reset();
                         // Reload the task or the section after update
-                        
-                        $('#addnewtask').load(location.href + " #addnewtask");
-                            $('#addnewtask').DataTable().destroy();
 
-                            $("#addnewtask").load(location.href + " #addnewtask > *", function() {
-                                // Reinitialize the DataTable after the content is loaded
-                                $('#addnewtask').DataTable();
-                            });
+                        $('#addnewtask').load(location.href + " #addnewtask");
+                        $('#addnewtask').DataTable().destroy();
+
+                        $("#addnewtask").load(location.href + " #addnewtask > *", function() {
+                            // Reinitialize the DataTable after the content is loaded
+                            $('#addnewtask').DataTable();
+                        });
                         alertify.error('Rejected Success');
                     } else {
                         // Handle errors
@@ -628,35 +664,39 @@ $result1 = mysqli_query($conn,$sql1);
         });
 
 
-
-        $(document).on('click', '.viewcomplaint', function(e) {
+        $(document).on("click", ".viewcomplaint", function(e) {
             e.preventDefault();
-            var fac_id = $(".viewcomplaint").data("value"); 
-
-            console.log(fac_id);
+            var user_id = $(this).val();
+            var fac_id = $(".viewcomplaint").data("value");
+            console.log(user_id);
             $.ajax({
                 type: "POST",
-                url: "backend1.php",
+                url: "testbackend.php",
                 data: {
-                    'facultydetails': true,
-                    'fac_id':fac_id
+                    view_complaint: true,
+                    user_id: user_id,
+                    fac_id: fac_id,
                 },
                 success: function(response) {
-                    console.log(response);
                     var res = jQuery.parseJSON(response);
-                    console.log(res)
+                    console.log(res);
                     if (res.status == 500) {
                         alert(res.message);
                     } else {
-                        
-                        $('#faculty_name').text(res.data1.name);
-                        $('#faculty_id').text(res.data1.id);
-                        $('#faculty_dept').text(res.data1.dept);
-                        $('#faculty_desg').text(res.data1.design);
-                        $('#modal2').modal('show');
-                       
+                        //$('#student_id2').val(res.data.uid);
+                        $("#id").text(res.data.id);
+                        $("#type_of_problem").text(res.data.type_of_problem);
+                        $("#problem_description").text(res.data.problem_description);
+                        $("#faculty_name").text(res.data.faculty_name);
+                        $("#faculty_mail").text(res.data.faculty_mail);
+                        $("#faculty_contact").text(res.data.faculty_contact);
+                        $("#block_venue").text(res.data.block_venue);
+                        $("#venue_name").text(res.data.venue_name);
+                        $("#fac_name").text(res.data1.name);
+                        $("#fac_id").text(res.data1.id);
+                        $("#complaintDetailsModal").modal("show");
                     }
-                }
+                },
             });
         });
     </script>

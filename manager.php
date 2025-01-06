@@ -750,6 +750,7 @@ $result11 = mysqli_query($conn, $sql11);
                                                             <td class="text-center">
                                                                 <button type="button" value="<?php echo $row4['id']; ?>"
                                                                     class="btn viewcomplaint"
+                                                                    data-value="<?php echo $row4['fac_id']; ?>"
                                                                     data-toggle="modal"
                                                                     data-target="#complaintDetailsModal">
                                                                     <i class="fas fa-eye" style="font-size: 25px;"></i>

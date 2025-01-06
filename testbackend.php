@@ -145,15 +145,17 @@ if (isset($_POST['manager_approve'])) {
     $priority = $_POST['priority'];
     $deadline = $_POST['deadline'];
 
+    $nowdate = date('Y-m-d');
+
     // Insert into manager table
     $insertQuery = "INSERT INTO manager (problem_id, worker_dept, priority) VALUES (?, ?, ?)";
     $stmt = $conn->prepare($insertQuery);
     $stmt->bind_param('sss', $problem_id, $worker, $priority);
     if ($stmt->execute()) {
         // Update status in complaints_detail table
-        $updateQuery = "UPDATE complaints_detail SET days_to_complete = ?, status = '9' WHERE id = ?";
+        $updateQuery = "UPDATE complaints_detail SET days_to_complete = ?,manager_approve = ?,status = '9' WHERE id = ?";
         $stmtUpdate = $conn->prepare($updateQuery);
-        $stmtUpdate->bind_param('si', $deadline, $problem_id);
+        $stmtUpdate->bind_param('ssi', $deadline,$nowdate,$problem_id);
         if ($stmtUpdate->execute()) {
             $response = ['status' => 200, 'message' => 'Complaint accepted and status updated successfully!'];
         } else {
