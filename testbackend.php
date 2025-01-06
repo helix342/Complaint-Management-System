@@ -83,7 +83,8 @@ if (isset($_POST['see_worker_detail'])) {
     }
 }
 
-// Delete user
+
+/* // Delete user
 if (isset($_POST['delete_user'])) {
     $id = $_POST['id'];
 
@@ -111,10 +112,10 @@ if (isset($_POST['delete_worker'])) {
     echo json_encode([
         'status' => $query_obj ? 200 : 500
     ]);
-}
+} */
 
 // Reject reason
-if (isset($_POST['reject_complaint'])) {
+/* if (isset($_POST['reject_complaint'])) {
     try {
         $id = $_POST['id'];
         $reason = $_POST['feedback'];
@@ -136,10 +137,10 @@ if (isset($_POST['reject_complaint'])) {
             'message' => 'Error: ' . $e->getMessage()
         ]);
     }
-}
+} */
 
 // Accept reason
-if (isset($_POST['manager_approve'])) {
+/* if (isset($_POST['manager_approve'])) {
     $problem_id = $_POST['problem_id'];
     $worker = $_POST['worker_id'];
     $priority = $_POST['priority'];
@@ -167,10 +168,10 @@ if (isset($_POST['manager_approve'])) {
     }
     $stmt->close();
     echo json_encode($response);
-}
+} */
 
 // Handle reply submission for principal's query
-if (isset($_POST['submit_comment_reply'])) {
+/* if (isset($_POST['submit_comment_reply'])) {
     $task_id = $_POST['task_id'];
     $comment_reply = $_POST['comment_reply'];
     $reply_date = date('Y-m-d');
@@ -186,10 +187,10 @@ if (isset($_POST['submit_comment_reply'])) {
     }
     $stmt->close();
     echo json_encode($response);
-}
+} */
 
 // Update complaint status and reassign deadline
-if (isset($_POST['complaintfeed_id']) && isset($_POST['status'])) {
+/* if (isset($_POST['complaintfeed_id']) && isset($_POST['status'])) {
     $id = $_POST['complaintfeed_id'];
     $status = $_POST['status'];
     $current_date = date('Y-m-d');
@@ -220,7 +221,7 @@ if (isset($_POST['complaintfeed_id']) && isset($_POST['status'])) {
     }
     $stmt->close();
 }
-
+ */
 
 
 /* 
@@ -321,7 +322,7 @@ if (isset($_POST['get_aimage'])) {
 } */
 
 // View complaints based on status
-if (isset($_POST['facfeedview'])) {
+/* if (isset($_POST['facfeedview'])) {
     $student_id = mysqli_real_escape_string($conn, $_POST['user_id']);
     $query = "SELECT * FROM complaints_detail WHERE id = ? AND status IN ('13', '14')";
     $stmt = $conn->prepare($query);
@@ -334,10 +335,10 @@ if (isset($_POST['facfeedview'])) {
     } else {
         echo json_encode(['status' => 500, 'message' => 'Details not found.']);
     }
-}
+} */
 
 // Accept complaint with a reason
-if (isset($_POST['principal_complaint'])) {
+/* if (isset($_POST['principal_complaint'])) {
     $problem_id = $_POST['id'];
     $reason = $_POST['reason'];
     $insertQuery = "INSERT INTO comments (problem_id, reason) VALUES (?, ?)";
@@ -357,10 +358,10 @@ if (isset($_POST['principal_complaint'])) {
         echo json_encode(['status' => 500, 'message' => 'Failed to add comment.']);
     }
     $stmt->close();
-}
+} */
 
 // Fetch reject reason
-if (isset($_POST['get_reject_reason'])) {
+/* if (isset($_POST['get_reject_reason'])) {
     $complain_id = mysqli_real_escape_string($conn, $_POST['problem_id']);
     $query = "SELECT feedback FROM complaints_detail WHERE id = ?";
     $stmt = $conn->prepare($query);
@@ -373,10 +374,10 @@ if (isset($_POST['get_reject_reason'])) {
     } else {
         echo json_encode(['status' => 500, 'message' => 'Details not found.']);
     }
-}
+} */
 
 // Fetch worker phone number
-if (isset($_POST['get_worker_phone'])) {
+/* if (isset($_POST['get_worker_phone'])) {
     $complain_id = mysqli_real_escape_string($conn, $_POST['prblm_id']);
     $query = "
     SELECT w.* 
@@ -394,10 +395,10 @@ if (isset($_POST['get_worker_phone'])) {
     } else {
         echo json_encode(['status' => 500, 'message' => 'Details not found.']);
     }
-}
+} */
 
 // Add new worker
-if (isset($_POST['form1'])) {
+/* if (isset($_POST['form1'])) {
     $name = $_POST['w_name'];
     $contact = $_POST['w_phone'];
     $gender = $_POST['w_gender'];
@@ -427,10 +428,10 @@ if (isset($_POST['form1'])) {
     } else {
         echo json_encode(['status' => 500, 'message' => 'Error: Could not insert worker details.']);
     }
-}
+} */
 
 // Extend deadline
-if (isset($_POST["extend_deadlinedate"])) {
+/* if (isset($_POST["extend_deadlinedate"])) {
     try {
         $id = $_POST['id'];
         $dead_date = $_POST['extend_deadline'];
@@ -448,9 +449,9 @@ if (isset($_POST["extend_deadlinedate"])) {
     } catch (Exception $e) {
         echo json_encode(['status' => 500, 'message' => 'Error: ' . $e->getMessage()]);
     }
-}
+} */
 
-// Reassign complaint
+/* // Reassign complaint
 if (isset($_POST["reassign_complaint"])) {
     try {
         $id = $_POST['user_id'];
@@ -468,7 +469,7 @@ if (isset($_POST["reassign_complaint"])) {
     } catch (Exception $e) {
         echo json_encode(['status' => 500, 'message' => 'Error: ' . $e->getMessage()]);
     }
-}
+} */
 
 // Mark complaint as done with feedback
 if (isset($_POST["manager_feedbacks"])) {
@@ -492,7 +493,7 @@ if (isset($_POST["manager_feedbacks"])) {
 }
 
 // Add user to raise complaints
-if (isset($_POST["add_user"])) {
+/* if (isset($_POST["add_user"])) {
     try {
         $name = $_POST["name"];
         $id = $_POST["userid"];
@@ -515,7 +516,7 @@ if (isset($_POST["add_user"])) {
         echo json_encode(['status' => 500, 'message' => 'Error: ' . $e->getMessage()]);
     }
 }
-
+ */
 //backend for worker details
 /* if (isset($_POST['fac_feed_rate'])) {
     header('Content-Type: application/json');

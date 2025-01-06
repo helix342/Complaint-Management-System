@@ -2382,11 +2382,10 @@ $result11 = mysqli_query($conn, $sql11);
                 $(document).on("submit", "#rejectForm", function(e) {
                     e.preventDefault();
                     var formData = new FormData(this);
-                    formData.append("reject_complaint", true);
-
+            
                     $.ajax({
                         type: "POST",
-                        url: "testbackend.php",
+                        url: 'cms_backend.php?action=reject_complaint',
                         data: formData,
                         processData: false,
                         contentType: false,
@@ -2476,12 +2475,11 @@ $result11 = mysqli_query($conn, $sql11);
                     console.log("User ID:", user_id);
 
                     $.ajax({
-                        url: "testbackend.php",
+                        url: 'cms_backend.php?action=reassign_complaint',
                         type: "POST",
                         data: {
                             user_id: user_id,
                             worker: worker,
-                            reassign_complaint: true,
                         },
                         success: function(response) {
                             var res = jQuery.parseJSON(response);
@@ -2530,10 +2528,9 @@ $result11 = mysqli_query($conn, $sql11);
                     e.preventDefault();
                     var data = new FormData(this);
                     console.log(data);
-                    data.append("manager_approve", true);
-
+                   
                     $.ajax({
-                        url: "testbackend.php",
+                        url: 'cms_backend.php?action=manager_approve',
                         type: "POST",
                         data: data,
                         processData: false,
@@ -2591,11 +2588,10 @@ $result11 = mysqli_query($conn, $sql11);
                 $(document).on("submit", "#principal_Form", function(e) {
                     e.preventDefault();
                     var formData = new FormData(this);
-                    formData.append("principal_complaint", true);
 
                     $.ajax({
                         type: "POST",
-                        url: "testbackend.php",
+                        url: 'cms_backend.php?action=principal_complaint',
                         data: formData,
                         processData: false,
                         contentType: false,
@@ -2655,7 +2651,7 @@ $result11 = mysqli_query($conn, $sql11);
                             fac_id: fac_id,
                         },
                         success: function(response) {
-                            console.log(response);
+                        
                             var res = jQuery.parseJSON(response);
                             console.log(res);
                             if (res.status == 404) {
@@ -2742,12 +2738,11 @@ $result11 = mysqli_query($conn, $sql11);
 
                         // AJAX request to send the reply to the backend
                         $.ajax({
-                            url: "testbackend.php", // Your backend file
+                            url: 'cms_backend.php?action=submit_comment_reply',// Your backend file
                             type: "POST",
                             data: {
                                 task_id: taskId,
                                 comment_reply: commentReply,
-                                submit_comment_reply: true,
                             },
                             success: function(response) {
                                 var res = jQuery.parseJSON(response);
@@ -2778,9 +2773,8 @@ $result11 = mysqli_query($conn, $sql11);
                     $(document).data("feedid", user_id);
                     $.ajax({
                         type: "POST",
-                        url: "testbackend.php",
+                        url: 'cms_backend.php?action=facfeedview',
                         data: {
-                            facfeedview: true,
                             user_id: user_id,
                         },
                         success: function(response) {
@@ -2868,7 +2862,7 @@ $result11 = mysqli_query($conn, $sql11);
                     function updateComplaintStatus(complaintfeedId, status, reassign_deadline = null) {
                         $.ajax({
                             type: "POST",
-                            url: "testbackend.php",
+                            url: 'cms_backend.php?action=reassign_work',
                             data: {
                                 complaintfeed_id: complaintfeedId,
                                 status: status,
@@ -2889,7 +2883,7 @@ $result11 = mysqli_query($conn, $sql11);
 
 
 
-                // Function to update the complaint status
+              /*   // Function to update the complaint status
                 function updateComplaintStatus(complaintfeedId, status, reassign_deadline = null) {
                     $.ajax({
                         type: "POST",
@@ -2907,7 +2901,7 @@ $result11 = mysqli_query($conn, $sql11);
                             }
                         }
                     });
-                }
+                } */
 
                 //Reject Reason from principal
                 $(document).on("click", ".rejectreasonbtn", function(e) {
@@ -2916,9 +2910,8 @@ $result11 = mysqli_query($conn, $sql11);
                     console.log(id12);
                     $.ajax({
                         type: "POST",
-                        url: "testbackend.php",
+                        url:'cms_backend.php?action=get_reject_reason',
                         data: {
-                            get_reject_reason: true,
                             problem_id: id12,
                         },
                         success: function(response) {
@@ -2987,7 +2980,7 @@ $result11 = mysqli_query($conn, $sql11);
                     XLSX.writeFile(we, 'workers_data.xlsx');
                 });
 
-                //worker phone number fertch
+                /* //worker phone number fertch
                 $(document).on('click', ".worker_det", function(e) {
                     e.preventDefault();
                     var prblm_id = $(this).val();
@@ -3012,7 +3005,7 @@ $result11 = mysqli_query($conn, $sql11);
                             }
                         },
                     });
-                });
+                }); */
 
                 //exctend deadline
                 $(document).on("click", ".deadline_extend", function(e) {
@@ -3026,9 +3019,9 @@ $result11 = mysqli_query($conn, $sql11);
                     console.log("Haii!!");
                     var data = new FormData(this);
                     console.log(data);
-                    data.append("extend_deadlinedate", true);
+    
                     $.ajax({
-                        url: "testbackend.php",
+                        url: 'cms_backend.php?action=extend_deadlinedate',
                         type: "POST",
                         data: data,
                         processData: false,
@@ -3061,9 +3054,9 @@ $result11 = mysqli_query($conn, $sql11);
                     e.preventDefault();
                     var dt = new FormData(this);
                     console.log(dt);
-                    dt.append("form1", true);
+
                     $.ajax({
-                        url: "testbackend.php",
+                        url: 'cms_backend.php?action=addworker',
                         type: "POST",
                         data: dt,
                         processData: false,
@@ -3093,14 +3086,13 @@ $result11 = mysqli_query($conn, $sql11);
                     var store_rating = $(document).data("ratings");
                     console.log(store_rating);
                     fd.append("ratings", store_rating);
-                    fd.append("manager_feedbacks", true);
                     var manfeed = $(document).data("feedid")
                     console.log(manfeed);
                     fd.append("id", manfeed);
 
                     $.ajax({
                         type: "POST",
-                        url: "testbackend.php",
+                        url: 'cms_backend.php?action=manager_feedbacks',
                         data: fd,
                         processData: false,
                         contentType: false,
@@ -3335,9 +3327,8 @@ $result11 = mysqli_query($conn, $sql11);
                     console.log(id);
                     $.ajax({
                         type: "POST",
-                        url: "testbackend.php",
+                        url: 'cms_backend.php?action=delete_user',
                         data: {
-                            delete_user: true,
                             id: id,
                         },
                         success: function(response) {
@@ -3366,9 +3357,8 @@ $result11 = mysqli_query($conn, $sql11);
                     console.log(id);
                     $.ajax({
                         type: "POST",
-                        url: "testbackend.php",
+                        url: 'cms_backend.php?action=delete_worker',
                         data: {
-                            delete_worker: true,
                             id: id,
                         },
                         success: function(response) {
@@ -3399,7 +3389,7 @@ $result11 = mysqli_query($conn, $sql11);
                     console.log(form);
                     $.ajax({
                         type: "POST",
-                        url: "testbackend.php",
+                        url: 'cms_backend.php?action=add_user',
                         data: form,
                         contentType: false,
                         processData: false,
