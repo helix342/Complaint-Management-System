@@ -296,18 +296,20 @@ $result11 = mysqli_query($conn, $sql11);
                                                     <td class="text-center"><?php echo $row['department'] ?></td>
                                                     <td class="text-center"><?php echo $row['block_venue'] ?> \ <?php echo $row['venue_name'] ?></td>
 
-                                                    <td class="text-center"><button type="button" value="<?php echo $row['problem_id']; ?>"
-                                                            class="btn viewcomplaint"
-                                                            data-value="<?php echo $row['fac_id']; ?>"
-                                                            data-toggle="modal"
-                                                            data-target="#complaintDetailsModal"><i class="fas fa-eye" style="font-size: 25px;"></i></button>
-                                                    </td>
+                                                    <td class="text-center">
+                                                                <button type="button" value="<?php echo $row['problem_id']; ?>"
+                                                                    class="btn viewcomplaint"
+                                                                    data-value="<?php echo $row['fac_id']; ?>"
+                                                                    >
+                                                                    <i class="fas fa-eye" style="font-size: 25px;"></i>
+                                                                </button>
+                                                            </td>
 
 
 
 
                                                     <td class="text-center">
-                                                                <button type="button" class="btn btn-light btn-sm showImage"
+                                                    <button type="button" class="btn btn-light btn-sm showImage"
                                                                     value="<?php echo $row['problem_id']; ?>" data-toggle="modal" data-target="#imageModal">
                                                                     <i class="fas fa-image" style="font-size: 25px;"></i>
                                                                 </button>
@@ -384,7 +386,8 @@ $result11 = mysqli_query($conn, $sql11);
                                                             <td class="text-center">
                                                                 <button type="button" value="<?php echo $row6['id']; ?>"
                                                                     class="btn viewcomplaint"
-                                                                    data-value="<?php echo $row6['fac_id']; ?>">
+                                                                    data-value="<?php echo $row6['fac_id']; ?>"
+                                                                    >
                                                                     <i class="fas fa-eye" style="font-size: 25px;"></i>
                                                                 </button>
                                                             </td>
@@ -483,18 +486,19 @@ $result11 = mysqli_query($conn, $sql11);
                                                                         <td class="text-center">
                                                                 <button type="button" value="<?php echo $row['id']; ?>"
                                                                     class="btn viewcomplaint"
-                                                                    data-value="<?php echo $row['fac_id']; ?>">
+                                                                    data-value="<?php echo $row['fac_id']; ?>"
+                                                                    >
                                                                     <i class="fas fa-eye" style="font-size: 25px;"></i>
                                                                 </button>
-                                                            </td>      
+                                                            </td>     
                                                             <td class="text-center"><?php echo $row['manager_approve'] ?></td>
                                                             <td class="text-center"><?php echo $row['days_to_complete'] ?></td>
                                                             <td class="text-center">
                                                                 <button type="button" class="btn btn-light btn-sm showImage"
-                                                                    value="<?php echo $row['id']; ?>" data-toggle="modal" data-target="#imageModal">
+                                                                    value="<?php echo $row7['id']; ?>" data-toggle="modal" data-target="#imageModal">
                                                                     <i class="fas fa-image" style="font-size: 25px;"></i>
                                                                 </button>
-                                                                <button value="<?php echo $row['id']; ?>" type="button"
+                                                                <button value="<?php echo $row7['id']; ?>" type="button"
                                                                     class="btn btn-light btn-sm imgafter"
                                                                     data-toggle="modal">
                                                                     <i class="fas fa-images" style="font-size: 25px;"></i>
@@ -591,31 +595,34 @@ $result11 = mysqli_query($conn, $sql11);
     <!-- Problem Description Modal -->
 
 
-    <!--image modal-->
-    <div class="modal fade" id="imageModal" tabindex="-1" role="dialog" aria-labelledby="imageModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header" style="background: linear-gradient(to bottom right, #cc66ff 1%, #0033cc 100%); color: white;">
-                    <h5 class="modal-title" id="imageModalLabel">Problem Image</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <form id="rejectreason">
-                    <div class="modal-body">
-                        <img id="modalImage" src="" alt="Image" class="img-fluid" style="width:1500px;height:250px;">
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    </div>
-                </form>
+<!-- Before Image Modal -->
+<div class="modal fade" id="imageModal" tabindex="-1" role="dialog"
+    aria-labelledby="imageModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="imageModalLabel">Image</h5>
+                <button type="button" class="close" data-dismiss="modal"
+                    aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <img id="modalImage" src="" alt="Image" class="img-fluid"
+                    style="width: 100%; height: auto;">
+                <!-- src will be set dynamically -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary"
+                    data-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
+</div>
 
      <!-- Complaint Details Modal -->
      <div class="modal fade" id="complaintDetailsModal" tabindex="-1" role="dialog" aria-labelledby="complaintDetailsModalLabel" aria-hidden="true">
-                                <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
                                     <div class="modal-content" style="border-radius: 8px; box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15); background-color: #f9f9f9;">
 
                                         <!-- Modal Header -->
@@ -713,7 +720,7 @@ $result11 = mysqli_query($conn, $sql11);
 
 
                              <!-- After Image Modal -->
-                             <div class="modal fade" id="afterImageModal" tabindex="-1" role="dialog"
+                            <div class="modal fade" id="afterImageModal" tabindex="-1" role="dialog"
                                 aria-labelledby="afterImageModalLabel" aria-hidden="true">
                                 <div class="modal-dialog modal-lg" role="document">
                                     <div class="modal-content">
@@ -736,30 +743,7 @@ $result11 = mysqli_query($conn, $sql11);
                             </div>
 
 
-                             <!-- Before Image Modal -->
-                             <div class="modal fade" id="imageModal" tabindex="-1" role="dialog"
-                                aria-labelledby="imageModalLabel" aria-hidden="true">
-                                <div class="modal-dialog" role="document">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="imageModalLabel">Image</h5>
-                                            <button type="button" class="close" data-dismiss="modal"
-                                                aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <img id="modalImage" src="" alt="Image" class="img-fluid"
-                                                style="width: 100%; height: auto;">
-                                            <!-- src will be set dynamically -->
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary"
-                                                data-dismiss="modal">Close</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                             
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
@@ -981,32 +965,45 @@ $result11 = mysqli_query($conn, $sql11);
 
 
 
-        //image
-        // Show image
-        $(document).on('click', '.showImage', function() {
-            var user_id = $(this).data('id'); // Get the user ID from data attribute
-            console.log(user_id);
-
-            $.ajax({
-                type: "POST",
-                url: "backend1.php",
-                data: {
-                    'get_image': true,
-                    'user_id': user_id
-                },
-                success: function(response) {
-                    var res = jQuery.parseJSON(response);
-                    console.log(res);
-
-                    if (res.status == 500) {
-                        alert(res.message);
-                    } else {
-                        $('#modalImage').attr('src', 'uploads/' + res.data.images); // Dynamically set the image source
-                        $('#imageModal').modal('show'); // Show the modal
-                    }
-                }
-            });
-        });
+        //Before image
+        $(document).on("click", ".showImage", function() {
+                    var problem_id = $(this).val(); // Get the problem_id from button value
+                    console.log(problem_id); // Ensure this logs correctly
+                    $.ajax({
+                        type: "POST",
+                        url: 'cms_backend.php?action=get_image',
+                        data: {
+                            problem_id: problem_id, // Correct POST key
+                        },
+                        dataType: "json", // Automatically parses JSON responses
+                        success: function(response) {
+                            console.log(response); // Log the parsed JSON response
+                            if (response.status == 200) {
+                                // Dynamically set the image source
+                                $("#modalImage").attr("src", "uploads/" + response.data.images);
+                                // Show the modal
+                                $("#imageModal").modal("show");
+                            } else {
+                                // Handle case where no image is found
+                                alert(
+                                    response.message || "An error occurred while retrieving the image."
+                                );
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            // Log the full error details for debugging
+                            console.error("AJAX Error: ", xhr.responseText);
+                            alert(
+                                "An error occurred: " +
+                                error +
+                                "\nStatus: " +
+                                status +
+                                "\nDetails: " +
+                                xhr.responseText
+                            );
+                        },
+                    });
+                });
 
         //to shows table
         $(document).ready(function() {
@@ -1133,127 +1130,14 @@ $result11 = mysqli_query($conn, $sql11);
             }
         });
 
-        $(document).on('click', '.afterImage', function() {
-            var user_id = $(this).data('id'); // Get the user ID from data attribute
-            console.log(user_id);
-
-            $.ajax({
-                type: "POST",
-                url: "backend1.php",
-                data: {
-                    'after_image': true,
-                    'user_id': user_id
-                },
-                success: function(response) {
-                    var res = jQuery.parseJSON(response);
-                    console.log(res);
-
-                    if (res.status == 500) {
-                        alert(res.message);
-                    } else {
-                        $('#modalImage').attr('src', 'uploads/' + res.data.after_photo); // Dynamically set the image source
-                        $('#imageModal').modal('show'); // Show the modal
-                    }
-                }
-            });
-        });
-
-
-
-        $(document).ready(function() {
-                    $("#completed_table").DataTable();
-                });
-
-
-                 //jquerry for view complaint
-                 $(document).on("click", ".viewcomplaint", function(e) {
-                    e.preventDefault();
-                    var user_id = $(this).val();
-                    var fac_id = $(".viewcomplaint").data("value");
-                    console.log(user_id);
-                    console.log(fac_id);
-                    $.ajax({
-                        type: "POST",
-                        url: "testbackend.php",
-                        data: {
-                            view_complaint: true,
-                            user_id: user_id,
-                            fac_id: fac_id,
-                        },
-                        success: function(response) {
-                            var res = jQuery.parseJSON(response);
-                            console.log(res);
-                            if (res.status == 500) {
-                                alert(res.message);
-                            } else {
-                                //$('#student_id2').val(res.data.uid);
-                                $("#id").text(res.data.id);
-                                $("#type_of_problem").text(res.data.type_of_problem);
-                                $("#problem_description").text(res.data.problem_description);
-                                $("#faculty_name").text(res.data.faculty_name);
-                                $("#faculty_mail").text(res.data.faculty_mail);
-                                $("#faculty_contact").text(res.data.faculty_contact);
-                                $("#block_venue").text(res.data.block_venue);
-                                $("#venue_name").text(res.data.venue_name);
-                                $("#fac_name").text(res.data1.name);
-                                $("#fac_id").text(res.data1.id);
-                                $("#complaintDetailsModal").modal("show");
-                            }
-                        },
-                    });
-                });
-
-
-                $(document).on("click", ".showImage", function() {
+       //after image
+       $(document).on("click", ".imgafter", function() {
                     var problem_id = $(this).val(); // Get the problem_id from button value
                     console.log(problem_id); // Ensure this logs correctly
                     $.ajax({
                         type: "POST",
-                        url: "testbackend.php",
+                        url: 'cms_backend.php?action=get_aimage',
                         data: {
-                            get_image: true,
-                            problem_id: problem_id, // Correct POST key
-                        },
-                        dataType: "json", // Automatically parses JSON responses
-                        success: function(response) {
-                            console.log(response); // Log the parsed JSON response
-                            if (response.status == 200) {
-                                // Dynamically set the image source
-                                $("#modalImage").attr("src", "uploads/" + response.data.images);
-                                // Show the modal
-                                $("#imageModal").modal("show");
-                            } else {
-                                // Handle case where no image is found
-                                alert(
-                                    response.message || "An error occurred while retrieving the image."
-                                );
-                            }
-                        },
-                        error: function(xhr, status, error) {
-                            // Log the full error details for debugging
-                            console.error("AJAX Error: ", xhr.responseText);
-                            alert(
-                                "An error occurred: " +
-                                error +
-                                "\nStatus: " +
-                                status +
-                                "\nDetails: " +
-                                xhr.responseText
-                            );
-                        },
-                    });
-                });
-
-
-                 //after image
-                 $(document).on("click", ".imgafter", function() {
-                    var problem_id = $(this).val(); // Get the problem_id from button value
-                    console.log(problem_id); // Ensure this logs correctly
-                    $.ajax({
-                        type: "POST",
-                        url: "testbackend.php",
-                        data: {
-                            get_aimage: true,
                             problem2_id: problem_id, // Correct POST key
                         },
                         dataType: "json", // Automatically parses JSON responses
@@ -1278,6 +1162,53 @@ $result11 = mysqli_query($conn, $sql11);
                     // Reset the image source to a default or blank placeholder
                     $("#modalImage2").attr("src", "path/to/placeholder_image.jpg");
                 });
+
+
+
+        $(document).ready(function() {
+                    $("#completed_table").DataTable();
+                });
+
+
+                //jquerry for view complaint
+                $(document).on("click", ".viewcomplaint", function(e) {
+                    e.preventDefault();
+                    var user_id = $(this).val();
+                    var fac_id = $(".viewcomplaint").data("value");
+                    console.log(user_id);
+                    console.log(fac_id);
+                    $.ajax({
+                        type: "POST",
+                        url: 'cms_backend.php?action=view_complaint',
+                        data: {
+                            user_id: user_id,
+                            fac_id: fac_id,
+                        },
+                        success: function(response) {
+                            console.log(response);
+                            var res = jQuery.parseJSON(response);
+                            console.log(res);
+                            if (res.status == 404) {
+                                alert(res.message);
+                            } else {
+                                //$('#student_id2').val(res.data.uid);
+                                $("#id").text(res.data.id);
+                                $("#type_of_problem").text(res.data.type_of_problem);
+                                $("#problem_description").text(res.data.problem_description);
+                                $("#faculty_name").text(res.data.faculty_name);
+                                $("#faculty_mail").text(res.data.faculty_mail);
+                                $("#faculty_contact").text(res.data.faculty_contact);
+                                $("#block_venue").text(res.data.block_venue);
+                                $("#venue_name").text(res.data.venue_name);
+                                $("#fac_name").text(res.data1.name);
+                                $("#fac_id").text(res.data1.id);
+                                $("#complaintDetailsModal").modal("show");
+                            }
+                        },
+                    });
+                });
+
+
     </script>
 
 
