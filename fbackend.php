@@ -39,6 +39,7 @@ if (isset($_POST['faculty_id'])) {
     $venue_name = mysqli_real_escape_string($conn, $_POST['venue_name']);
     $type_of_problem = mysqli_real_escape_string($conn, $_POST['type_of_problem']);
     $problem_description = mysqli_real_escape_string($conn, $_POST['problem_description']);
+    $itemno = mysqli_real_escape_string($conn, $_POST['itemno']);
     $date_of_reg = mysqli_real_escape_string($conn, $_POST['date_of_reg']);
     $status = $_POST['status'];
 
@@ -79,8 +80,8 @@ if (isset($_POST['faculty_id'])) {
 
 
     // Insert data into the database
-    $query = "INSERT INTO complaints_detail (faculty_id,fac_id,block_venue, venue_name, type_of_problem, problem_description, images, date_of_reg, status) 
-              VALUES ('$faculty_id','$fac_id', '$block_venue', '$venue_name', '$type_of_problem', '$problem_description', '$images', '$date_of_reg', '$status')";
+    $query = "INSERT INTO complaints_detail (faculty_id,fac_id,block_venue, venue_name, type_of_problem, problem_description,itemno, images, date_of_reg, status) 
+              VALUES ('$faculty_id','$fac_id', '$block_venue', '$venue_name', '$type_of_problem', '$problem_description','$itemno', '$images', '$date_of_reg', '$status')";
 
     if (mysqli_query($conn, $query)) {
         echo json_encode(['status' => 200, 'message' => 'Success']);
