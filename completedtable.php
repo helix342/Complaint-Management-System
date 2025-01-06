@@ -65,6 +65,7 @@ $resultfac = mysqli_query($conn,$facquery);
 
     <link rel="icon" href="assets/images/favicon.png">
     <link rel="stylesheet" href="assets/css/styles.css">
+    
     <style>
         .nav-tabs .nav-link {
             color: #0033cc;
@@ -472,7 +473,7 @@ $resultfac = mysqli_query($conn,$facquery);
                                             <div class="modal-content">
                                                 <div class="modal-header" style="background:linear-gradient(to bottom right, #cc66ff 1%, #0033cc 100%);background-color:#7460ee;">
                                                     <h5 class="modal-title" id="exampleModalLabel">Raise Complaint</h5>
-                                                    <button class="spbutton" type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    <button class="spbutton" type="button" class="btn-close" data-dismiss="modal"
                                                         aria-label="Close">
                                                 </div>
                                                 <div>
@@ -540,7 +541,7 @@ $resultfac = mysqli_query($conn,$facquery);
                                                         </div>
                                                         <input type="hidden" name="status" value="2">
                                                         <div class="modal-footer">
-                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                                                             <button type="submit" class="btn btn-primary">Submit</button>
                                                         </div>
                                                     </form>
@@ -556,7 +557,7 @@ $resultfac = mysqli_query($conn,$facquery);
                                             <div class="card">
                                                 <div class="card-body">
                                                     <div>
-                                                        <button type="button" class="btn btn-info float-right fac" data-bs-toggle="modal" data-bs-target="#cmodal">Raise Compliant</button>
+                                                        <button type="button" class="btn btn-info float-right fac" data-toggle="modal" data-target="#cmodal">Raise Compliant</button>
                                                         <br>
                                                         <br>
                                                     </div>
@@ -610,9 +611,10 @@ $resultfac = mysqli_query($conn,$facquery);
                                                                         <td class="text-center"><?php echo $row['problem_description']; ?></td>
                                                                         <td class="text-center"><?php echo $row['date_of_reg']; ?></td>
                                                                         <td class="text-center">
-                                                                            <button type="button" class="btn showImage" value="<?php echo $row['id']; ?>">
-                                                                                <i class="fas fa-image" style="font-size: 25px;"></i>
-                                                                            </button>
+                                                                        <button type="button" class="btn btn-light btn-sm showImage"
+                                                                    value="<?php echo $row['id']; ?>">
+                                                                    <i class="fas fa-image" style="font-size: 25px;"></i>
+                                                                </button>
                                                                         </td>
                                                                         <td class="text-center">
                                                                             <?php if ($row['status'] == 2) { ?>
@@ -622,6 +624,8 @@ $resultfac = mysqli_query($conn,$facquery);
                                                                                     </button>
                                                                                 </center>
                                                                             <?php } else { ?>
+                                                                       
+                                                                       
                                                                                 <span class="badge bg-success" style="font-size: 1.2em; color: white; padding: 0.25em 0.5em;"><?php echo $statusMessage; ?></span>
                                                                             <?php } ?>
                                                                         </td>
@@ -672,24 +676,7 @@ $resultfac = mysqli_query($conn,$facquery);
                                 <!------------------Complain form Page Ends----------------->
 
 
-                                <!-- Modal image view-->
-                                <div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header" style="background:linear-gradient(to bottom right, #cc66ff 1%, #0033cc 100%);background-color:#7460ee;">
-                                                <h5 class="modal-title" id="imageModalLabel">Image</h5>
-                                                <button class="spbutton" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                                            </div>
-                                            <div class="modal-body">
-                                                <img id="modalImage" src="" alt="Image" class="img-fluid" style="width: 100%; height: auto;">
-                                                <!-- src will be set dynamically -->
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+
 
 
                                 <!------------------Work in Progress Starts----------------->
@@ -754,7 +741,7 @@ $resultfac = mysqli_query($conn,$facquery);
                                                                 <td class="text-center">
                                                                     <?php if ($row['status'] == 11 || $row['status'] == 18) { ?>
                                                                         <!-- Button to open the feedback modal -->
-                                                                        <button type="button" class="btn btn-info feedbackBtn" data-problem-id="<?php echo $row['id']; ?>" data-bs-toggle="modal" data-bs-target="#feedback_modal">Feedback</button>
+                                                                        <button type="button" class="btn btn-info feedbackBtn" data-problem-id="<?php echo $row['id']; ?>" data-toggle="modal" data-target="#feedback_modal">Feedback</button>
                                                                     <?php } else { ?>
                                                                         <button type="button" disabled>Feedback</button>
                                                                     <?php } ?>
@@ -815,7 +802,7 @@ $resultfac = mysqli_query($conn,$facquery);
                                         <div class="modal-content">
                                             <div class="modal-header" style="background: linear-gradient(to bottom right, #cc66ff 1%, #0033cc 100%); background-color: #7460ee; color: white;">
                                                 <h5 class="modal-title" id="workerModalLabel">Worker Details</h5>
-                                                <button class="spbutton" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                <button class="spbutton" type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
                                             </div>
                                             <div class="modal-body">
                                                 <div class="box" style="background-color: #f7f7f7; border: 1px solid #ccc; padding: 15px; margin-bottom: 10px; border-radius: 5px;">
@@ -836,7 +823,7 @@ $resultfac = mysqli_query($conn,$facquery);
                                         <div class="modal-content">
                                             <div class="modal-header" style="background:linear-gradient(to bottom right, #cc66ff 1%, #0033cc 100%);background-color:#7460ee;">
                                                 <h5 class="modal-title" id="feedbackModalLabel">Feedback Form</h5>
-                                                <button class="spbutton" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                                                <button class="spbutton" type="button" class="btn-close" data-dismiss="modal" aria-label="Close">
                                             </div>
                                             <div class="modal-body">
                                                 <form id="add_feedback">
@@ -864,7 +851,7 @@ $resultfac = mysqli_query($conn,$facquery);
                                                         <textarea name="feedback" id="feedback" class="form-control" placeholder="Enter Feedback" style="width: 100%; height: 150px;"></textarea>
                                                     </div>
                                                     <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                                                         <button type="submit" class="btn btn-primary">Submit</button>
                                                     </div>
                                                 </form>
@@ -916,6 +903,32 @@ $resultfac = mysqli_query($conn,$facquery);
                                     </div>
                                 </div>
                                 <!---------------------Completed Work Table Ends------------------------------>
+
+
+                                <!-- Before Image Modal -->
+<div class="modal fade" id="imageModal" tabindex="-1" role="dialog"
+    aria-labelledby="imageModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="imageModalLabel">Image</h5>
+                <button type="button" class="close" data-dismiss="modal"
+                    aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <img id="modalImage" src="" alt="Image" class="img-fluid"
+                    style="width: 100%; height: auto;">
+                <!-- src will be set dynamically -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary"
+                    data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 
 
@@ -1193,43 +1206,46 @@ $resultfac = mysqli_query($conn,$facquery);
         });
 
 
-        // Show image in modal
-        $(document).on('click', '#viewImageButton', function() {
-            var imageSrc = $('#preview_image').attr('src');
-            if (imageSrc) {
-                $('#preview_images').show();
-            } else {
-                alert('No image found');
-            }
-        });
-        // Show image
-        $(document).on('click', '.showImage', function() {
-            var id = $(this).val(); // Get the id from button value
-            console.log(id); // Ensure this logs correctly
-            $.ajax({
-                type: "POST",
-                url: "fbackend.php",
-                data: {
-                    'get_image': true,
-                    'id': id // Correct POST key
-                },
-                dataType: "json", // Automatically parses JSON responses
-                success: function(response) {
-                    console.log(response);
-                    if (response.status == 200) {
-                        $('#modalImage').attr('src', 'uploads/' + response.data.images);
-                        $('#imageModal').modal('show');
-                    } else {
-                        alert(response.message || 'An error occurred while retrieving the image.');
-                    }
-                },
-                error: function(xhr, status, error) {
-                    // Log the full error details for debugging
-                    console.error("AJAX Error: ", xhr.responseText);
-                    alert('An error occurred: ' + error + "\nStatus: " + status + "\nDetails: " + xhr.responseText);
-                }
-            });
-        });
+       
+       //Before image
+       $(document).on("click", ".showImage", function() {
+                    var problem_id = $(this).val(); // Get the problem_id from button value
+                    console.log(problem_id); // Ensure this logs correctly
+                    $.ajax({
+                        type: "POST",
+                        url: 'cms_backend.php?action=get_image',
+                        data: {
+                            problem_id: problem_id, // Correct POST key
+                        },
+                        dataType: "json", // Automatically parses JSON responses
+                        success: function(response) {
+                            console.log(response); // Log the parsed JSON response
+                            if (response.status == 200) {
+                                // Dynamically set the image source
+                                $("#modalImage").attr("src", "uploads/" + response.data.images);
+                                // Show the modal
+                                $("#imageModal").modal("show");
+                            } else {
+                                // Handle case where no image is found
+                                alert(
+                                    response.message || "An error occurred while retrieving the image."
+                                );
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            // Log the full error details for debugging
+                            console.error("AJAX Error: ", xhr.responseText);
+                            alert(
+                                "An error occurred: " +
+                                error +
+                                "\nStatus: " +
+                                status +
+                                "\nDetails: " +
+                                xhr.responseText
+                            );
+                        },
+                    });
+                });
 
 
         // Display worker details in work in progress

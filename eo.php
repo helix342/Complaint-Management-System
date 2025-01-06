@@ -1344,7 +1344,7 @@ $rejected = mysqli_num_rows($result3);
                 formdata1.append("reject_id", reject_id);
                 $.ajax({
                     type: "POST",
-                    url: "backendfull.php",
+                    url: 'cms_backend.php?action=rejfeedbackeo',
                     data: formdata1,
                     processData: false,
                     contentType: false,
@@ -1438,7 +1438,7 @@ $rejected = mysqli_num_rows($result3);
             formData.append("hod",true);
             $.ajax({
                 type: "POST",
-                url: "backendfull.php",
+                url: 'cms_backend.php?action=addcomplaint',
                 data: formData,
                 processData: false,
                 contentType: false,
@@ -1475,7 +1475,7 @@ $rejected = mysqli_num_rows($result3);
             console.log(user_id)
             $.ajax({
                 type: "POST",
-                url: "backendfull.php",
+                url: "cms_backend.php?action=seeproblem",
                 data: {
                     'seedetails': true,
                     'user_id': user_id
@@ -1507,7 +1507,7 @@ $rejected = mysqli_num_rows($result3);
             console.log(fac_id);
             $.ajax({
                 type: "POST",
-                url: "backendfull.php",
+                url: 'cms_backend.php?action=facinfohod',
                 data: {
                     'facultydetails': true,
                     'user_id': user_id,
@@ -1540,7 +1540,7 @@ $rejected = mysqli_num_rows($result3);
 
             $.ajax({
                 type: "POST",
-                url: "backendfull.php",
+                url: 'cms_backend.php?action=bimgforhod',
                 data: {
                     'get_image': true,
                     'task_id': task_id
@@ -1570,7 +1570,7 @@ $rejected = mysqli_num_rows($result3);
             // Fetch the image from the server
             $.ajax({
                 type: "POST",
-                url: "backendfull.php",
+                url: 'cms_backend.php?action=aimgforhod',
                 data: {
                     'after_image': true,
                     'task_id': task_id
@@ -1621,14 +1621,14 @@ $rejected = mysqli_num_rows($result3);
             $("#oth").val(finalValue);
         }
 
-        //Rejected Tab Feedback
+        //Rejected Tab Reason
         $(document).on('click', '#rejectedfeedback', function(e) {
             e.preventDefault();
             var user_idrej = $(this).val();
             console.log(user_idrej)
             $.ajax({
                 type: "POST",
-                url: "backendfull.php",
+                url: 'cms_backend.php?action=rejfeedback',
                 data: {
                     'seefeedback': true,
                     'user_idrej': user_idrej
