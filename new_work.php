@@ -50,108 +50,6 @@ AND
 cd.status = '9'
 ";
 $result4 = mysqli_query($conn, $sql4);
-
-
-
-//dynamically fetching workers available for asigning
-if (isset($_POST['work'])) {
-    $work = $_POST['worker_dept'];
-
-    $sql8 = "SELECT worker_id, worker_first_name FROM worker_details WHERE worker_dept = ? AND usertype = 'worker'";
-    $stmt = mysqli_prepare($conn, $sql8);
-
-    mysqli_stmt_bind_param($stmt, "s", $work);
-
-    mysqli_stmt_execute($stmt);
-
-    $result8 = mysqli_stmt_get_result($stmt);
-
-    $options = '';
-
-    while ($row = mysqli_fetch_assoc($result8)) {
-        $options .= '<option value="' . $row['worker_id'] . '">' . $row['worker_id'] . ' - ' . $row['worker_first_name'] . '</option>';
-    }
-
-    echo $options;
-    exit();
-}
-
-//accepting the complaint in head
-if (isset($_POST['form'])) {
-    $problem_id = $_POST['user_id'] ?? null;
-
-    if ($problem_id) {
-        // Prepare the SQL query
-        $updateQuery = "UPDATE complaints_detail SET status = ? WHERE id = ?";
-        $stmt = mysqli_prepare($conn, $updateQuery);
-
-        if ($stmt) {
-            // Bind parameters to the prepared statement
-            $status = 10;
-            mysqli_stmt_bind_param($stmt, "ii", $status, $problem_id);
-
-            // Execute the prepared statement
-            if (mysqli_stmt_execute($stmt)) {
-                echo "Success: Complaint accepted and status updated successfully!";
-            } else {
-                echo "Error: Failed to update complaint status.";
-            }
-
-            // Close the statement
-            mysqli_stmt_close($stmt);
-        } else {
-            echo "Error: Failed to prepare the update query.";
-        }
-    } else {
-        echo "Error: Problem ID is missing.";
-    }
-
-    exit;
-}
-
-
-if (isset($_POST['view_complaint'])) {
-    $complain_id = $_POST['user_id'];
-
-    // First query
-    $query = "
-        SELECT cd.*, faculty_details.faculty_name, faculty_details.faculty_contact, 
-               faculty_details.faculty_mail, faculty_details.department, cd.block_venue
-        FROM complaints_detail cd
-        JOIN faculty_details ON cd.faculty_id = faculty_details.faculty_id
-        WHERE cd.id = ?
-    ";
-    $stmt = mysqli_prepare($conn, $query);
-    mysqli_stmt_bind_param($stmt, "s", $complain_id);
-    mysqli_stmt_execute($stmt);
-    $User_data = mysqli_fetch_assoc(mysqli_stmt_get_result($stmt));
-    mysqli_stmt_close($stmt);
-
-   
-
-    // Response
-    if ($User_data) {
-        echo json_encode([
-            'status' => 200,
-            'message' => 'Details fetched successfully by ID',
-            'data' => $User_data,
-        ]);
-    } else {
-        echo json_encode([
-            'status' => 404,
-            'message' => 'Details not found'
-        ]);
-    }
-}
-
-
-
-
-
-
-
-
-
 ?>
 
 <!DOCTYPE html>
@@ -958,10 +856,9 @@ if (isset($_POST['view_complaint'])) {
             var user_id = $(this).val();
             console.log(user_id);
             $.ajax({
-                url: "new_work.php",
+                url: 'cms_backend1.php?action=wacceptcomp',
                 type: "POST",
                 data: {
-                    'form': true,
                     'user_id': user_id
                 },
                 success: function(response) {
@@ -1009,9 +906,8 @@ if (isset($_POST['view_complaint'])) {
             console.log(user_id);
             $.ajax({
                 type: "POST",
-                url: "new_work.php",
+                url: 'cms_backend1.php?action=whviewcomp',
                 data: {
-                    view_complaint: true,
                     user_id: user_id,
                     fac_id: 1,
                 },
@@ -1040,9 +936,8 @@ if (isset($_POST['view_complaint'])) {
             console.log(problem_id);
             $.ajax({
                 type: "POST",
-                url: "testbackend.php",
+                url: 'cms_backend.php?action=get_image',
                 data: {
-                    get_image: true,
                     problem_id: problem_id,
                 },
                 dataType: "json",
@@ -1076,9 +971,8 @@ if (isset($_POST['view_complaint'])) {
             var problem_id = $(this).val();
             $.ajax({
                 type: "POST",
-                url: "testbackend.php",
+                url: 'cms_backend.php?action=get_aimage',
                 data: {
-                    get_aimage: true,
                     problem2_id: problem_id,
                 },
                 dataType: "json",

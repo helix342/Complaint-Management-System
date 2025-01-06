@@ -1276,6 +1276,12 @@ $result11 = mysqli_query($conn, $sql11);
                                                         <th class="text-center"><b>
                                                                 <h5>Completed Details</h5>
                                                             </b></th>
+                                                            <th class="text-center"><b>
+                                                                <h5>Item No</h5>
+                                                            </b></th>
+                                                        <th class="text-center"><b>
+                                                                <h5>Amount Spent</h5>
+                                                            </b></th>
                                                         <th class="text-center">
                                                             <b>
                                                                 <h5>Faculty Feedback</h5>
@@ -1322,6 +1328,9 @@ $result11 = mysqli_query($conn, $sql11);
                                                                 Completed by: <?php echo $User_data['worker_first_name'] ?> | <br>
                                                                 Department: <?php echo $User_data['worker_dept'] ?>
                                                             </td>
+                                                            <td class="text-center"><?php echo $row['itemno'] ?></td>
+                                                            <td class="text-center"><?php echo $row['amount_spent'] ?></td>
+
                                                             <td class="text-center"><?php echo $row['feedback'] ?> <br>Ratings: <?php echo $row['rating'] ?></td>
                                                             <td class="text-center"><?php echo $row['mfeedback'] ?> <br>Ratings: <?php echo $row['mrating'] ?></td>
                                                             <td class="text-center"><?php echo $row['date_of_completion'] ?></td>

@@ -767,6 +767,10 @@ $notcount = mysqli_num_rows($result4);
                         <label class="form-label">Add Image-Proof</label>
                         <input onchange="validateSize(this)" class="form-control" type="file" id="imgafter">
                     </div>
+                    <div class="mb-3">
+                        <label class="form-label">Amount Spent?(if Please specify)</label>
+                        <input class="form-control" type="text" id="amtspent">
+                    </div>
                     <label class="form-label">Task Completion</label><br>
                     <div class="form-check form-check-inline">
                         <input class="form-check-input" type="radio" name="completionStatus" id="inlineRadio1" value="Fully Completed">
@@ -1130,10 +1134,9 @@ $(function() {
     var taskId = $(this).data('task-id');
 
     $.ajax({
-        url: 'backend.php',
+        url: 'cms_backend1.php?action=wviewcomp',
         type: 'POST',
         data: {
-            fetch_details: true,
             task_id: taskId
         },
         success: function(response) {
@@ -1167,81 +1170,6 @@ $(function() {
 });
 
 </script>
-    <script>
-        //start work in new task table
-        $(document).ready(function() {
-            $('.start-work-btn').click(function(e) {
-                e.preventDefault();
-                var taskId = $(this).data('task-id');
-                console.log(taskId);
-
-                $.ajax({
-                    url: 'backend.php',
-                    type: 'POST',
-                    data: {
-                        start_work: true,
-                        task_id: taskId
-                    },
-                    success: function(response) {
-                        var res = jQuery.parseJSON(response);
-                        if(res.status == 200) {
-                            $('#addnewtask').DataTable().destroy();
-
-$("#addnewtask").load(location.href + " #addnewtask > *", function() {
-    // Reinitialize the DataTable after the content is loaded
-    $('#addnewtask').DataTable();
-});
-$('#statusinprogress').DataTable().destroy();
-
-$("#statusinprogress").load(location.href + " #statusinprogress > *", function() {
-    // Reinitialize the DataTable after the content is loaded
-    $('#statusinprogress').DataTable();
-});
-
-$('#approval').DataTable().destroy();
-
-$("#approval").load(location.href + " #approval > *", function() {
-    // Reinitialize the DataTable after the content is loaded
-    $('#approval').DataTable();
-});
-
-$('#addnewtaskcompleted').DataTable().destroy();
-
-$("#addnewtaskcompleted").load(location.href + " #addnewtaskcompleted > *", function() {
-    // Reinitialize the DataTable after the content is loaded
-    $('#addnewtaskcompleted').DataTable();
-});
-
-$('#statusnotapproved').DataTable().destroy();
-
-$("#statusnotapproved").load(location.href + " #statusnotapproved > *", function() {
-    // Reinitialize the DataTable after the content is loaded
-    $('#statusnotapproved').DataTable();
-});
-
-$('#ref1').load(location.href + " #ref1");
-                            $('#ref2').load(location.href + " #ref2");
-
-                            $('#ref3').load(location.href + " #ref3");
-
-                            $('#ref4').load(location.href + " #ref4");
-
-                            $('#ref5').load(location.href + " #ref5");
-
-
-
-
-                        }
-                        else{
-                            alert('Something went wrong')
-                        }
-                    }
-                });
-            });
-        });
-
-            
-        </script>
 <script>
         //work completed status in inprogress table
         $(document).on('click', '.work-comp', function(e) {
@@ -1276,6 +1204,7 @@ $('#ref1').load(location.href + " #ref1");
         var reason = $('#reason').val(); // Capture reason from the input field
         var w_name = $('#worker').val();
         var o_name = $('#otherValue').val();
+        var amt = $('#amtspent').val();
         var p_id = $('#complaint_id77').val();
         console.log(w_name);
         console.log(o_name);
@@ -1298,6 +1227,7 @@ $('#ref1').load(location.href + " #ref1");
         formData.append('w_name',w_name);
         formData.append('o_name',o_name);
         formData.append('p_id',p_id);
+        formData.append('amt',amt);
 
         if (imgAfter) {
             formData.append('img_after', imgAfter);
@@ -1308,7 +1238,7 @@ $('#ref1').load(location.href + " #ref1");
 
         // AJAX request to submit the form data
         $.ajax({
-            url: 'backend.php',
+            url: 'cms_backend1.php?action=workcompletion',
             type: 'POST',
             data: formData,
             contentType: false,
@@ -1409,9 +1339,8 @@ $("#statusnotapproved").load(location.href + " #statusnotapproved > *", function
 
             $.ajax({
                 type: "POST",
-                url: "backend.php",
+                url: 'cms_backend1.php?action=wafterimage',
                 data: {
-                    'get_image': true,
                     'task_id': task_id
                 },
                 dataType: "json",
@@ -1450,9 +1379,8 @@ $("#statusnotapproved").load(location.href + " #statusnotapproved > *", function
 
             $.ajax({
                 type: "POST",
-                url: "backend.php",
+                url: 'cms_backend1.php?action=wbeforeimg',
                 data: {
-                    'get_bef': true,
                     'task_id': task_id
                 },
                 dataType: "json",
@@ -1519,10 +1447,9 @@ $("#statusnotapproved").load(location.href + " #statusnotapproved > *", function
             console.log(worker_dept);
 
             $.ajax({
-                url: "backend.php",
+                url: 'cms_backend1.php?action=wworkerassign',
                 type: "POST",
                 data: {
-                    "work": true,
                     "worker_dept": worker_dept
                 },
                 success: function(response) {
