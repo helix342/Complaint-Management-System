@@ -110,6 +110,41 @@ if (isset($_POST['form'])) {
 }
 
 
+if (isset($_POST['view_complaint'])) {
+    $complain_id = $_POST['user_id'];
+
+    // First query
+    $query = "
+        SELECT cd.*, faculty_details.faculty_name, faculty_details.faculty_contact, 
+               faculty_details.faculty_mail, faculty_details.department, cd.block_venue
+        FROM complaints_detail cd
+        JOIN faculty_details ON cd.faculty_id = faculty_details.faculty_id
+        WHERE cd.id = ?
+    ";
+    $stmt = mysqli_prepare($conn, $query);
+    mysqli_stmt_bind_param($stmt, "s", $complain_id);
+    mysqli_stmt_execute($stmt);
+    $User_data = mysqli_fetch_assoc(mysqli_stmt_get_result($stmt));
+    mysqli_stmt_close($stmt);
+
+   
+
+    // Response
+    if ($User_data) {
+        echo json_encode([
+            'status' => 200,
+            'message' => 'Details fetched successfully by ID',
+            'data' => $User_data,
+        ]);
+    } else {
+        echo json_encode([
+            'status' => 404,
+            'message' => 'Details not found'
+        ]);
+    }
+}
+
+
 
 
 
@@ -369,6 +404,7 @@ if (isset($_POST['form'])) {
                                                                     <button type="button"
                                                                         value="<?php echo $row4['id']; ?>"
                                                                         class="btn btn viewcomplaint"
+                                                                        
                                                                         data-toggle="modal"
                                                                         data-target="#complaintDetailsModal">
                                                                         <i class="fas fa-eye"
@@ -973,7 +1009,7 @@ if (isset($_POST['form'])) {
             console.log(user_id);
             $.ajax({
                 type: "POST",
-                url: "testbackend.php",
+                url: "new_work.php",
                 data: {
                     view_complaint: true,
                     user_id: user_id,
