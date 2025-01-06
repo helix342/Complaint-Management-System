@@ -6,7 +6,7 @@ $eo_id = $_session['eo_id'];
 
 if (isset($_POST['approvefacbtn'])) {
     try {
-        $id = mysqli_real_escape_string($conn, $_POST['approvefac']);
+        $id = mysqli_real_escape_string($conn, $_POST['approveid']);
         
         $query = "UPDATE complaints_detail SET status = '22' WHERE id='$id'";
         
